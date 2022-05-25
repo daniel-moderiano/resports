@@ -2,6 +2,7 @@ import { useGapiClient } from 'hooks/useGapiClient';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { useQuery } from 'react-query'
 
 
 interface ChannelResult {
@@ -18,6 +19,32 @@ interface ChannelResult {
 
 export default function Home() {
   useGapiClient();
+
+  const { isLoading, isError, data, error } = useQuery(['request'], async () => {
+    return gapi.client.request({
+      'path': 'https://youtube.googleapis.com/youtube/v3/chans',
+      params: {
+        id: 'UCj1J3QuIftjOq9iv_rr7Egw',
+        part: 'contentDetails, snippet'
+      }
+    });
+  });
+
+  useEffect(() => {
+    if (data) {
+      console.log('Loaded');
+
+      console.log(data);
+    }
+
+    if (isLoading) {
+      console.log('Loading...');
+    }
+
+    if (error) {
+      console.log(error);
+    }
+  }, [data, isLoading, error])
 
   const makeRequest = async () => {
     // Make an API request
