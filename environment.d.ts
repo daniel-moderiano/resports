@@ -3,7 +3,7 @@ export { };
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      GOOGLE_API_KEY: string;
+      NEXT_PUBLIC_YOUTUBE_API_KEY: string;
     }
   }
 }
