@@ -2,13 +2,15 @@ import { Html, Head, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
 export default function Document() {
+  console.log('Running doc.ts');
+
   return (
     <Html lang='en'>
       <Head />
       <body>
         <Main />
         <NextScript />
-        <script src="https://apis.google.com/js/api.js"></script>
+        <script id="gapi-script" src="https://apis.google.com/js/api.js" async></script>
       </body>
     </Html>
   )

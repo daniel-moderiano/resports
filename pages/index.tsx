@@ -1,6 +1,6 @@
-/* global gapi */
-
+import { useGapiClient } from 'hooks/useGapiClient';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 
@@ -17,32 +17,9 @@ interface ChannelResult {
 };
 
 export default function Home() {
-  function starter() {
-    // 2. Initialize the JavaScript client library.
-    gapi.client.init({
-      'apiKey': process.env.NEXT_PUBLIC_YOUTUBE_API_KEY,
-    }).then(function () {
-      // 3. Initialize and make the API request.
-      return gapi.client.request({
-        'path': 'https://youtube.googleapis.com/youtube/v3/channels',
-        params: {
-          id: 'UCj1J3QuIftjOq9iv_rr7Egw',
-          part: 'contentDetails, snippet'
-        }
-      })
-    }).then(function (response) {
-      console.log(response.result);
-    }, function (reason) {
-      console.log('Error: ' + reason.result.er);
-    });
-  };
+  useGapiClient();
 
-  const start = async () => {
-    // Initialise a Google API client with the provided API key
-    await gapi.client.init({
-      'apiKey': process.env.NEXT_PUBLIC_YOUTUBE_API_KEY,
-    });
-
+  const makeRequest = async () => {
     // Make an API request
     try {
       const response = await gapi.client.request({
@@ -58,20 +35,11 @@ export default function Home() {
       // The vast majority of errors will be HTTP errors (400, 404, 403, etc.), in which case the response object will still be provided, but with an result.error property
       if (typeof error === 'object' && error !== null) {     // HTTP error has occurred
         console.log(error.result.error.message);
+      } else {
+        console.log(error);
       }
     }
   }
-
-
-
-  useEffect(() => {
-    if (typeof gapi === 'undefined') {
-      console.log('GAPI loading...');
-    } else {
-      console.log('GAPI loaded');
-      gapi.load('client', start);
-    }
-  }, [])
 
   return (
     <div>
@@ -82,6 +50,7 @@ export default function Home() {
 
       <main>
         <div>Hello</div>
+        <Link href="/test"><a>Test page</a></Link>
       </main>
 
       <footer>
