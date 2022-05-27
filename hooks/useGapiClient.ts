@@ -11,12 +11,14 @@ export const useGapiClient = () => {
       gapi.client.init({
         'apiKey': process.env.NEXT_PUBLIC_YOUTUBE_API_KEY,
       })
+        // TODO: Determine what to do here
         .then(() => console.log('GAPI initialised'))
         .catch(err => console.log(err))
     };
 
     // Check that the GAPI script has loaded and is available. Because of the server-side rendering, theoretically there shouldn't be a case where this hook is called before the GAPI script has initialised?
     if (typeof gapi === 'undefined') {
+      // TODO: Determine what to do here
       console.error('GAPI script unavailable');
     } else {
       if (!gapiClientReady) {   // GAPI client has not previously been initialised
