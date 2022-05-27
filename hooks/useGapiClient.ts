@@ -1,7 +1,10 @@
 // This hook contains an empty dependency array to ensure the Google API client is only initialised once and should then on be available to the whole application.
+import { useGapiContext } from "context/GapiContext";
 import { useEffect } from "react";
 
 export const useGapiClient = () => {
+  const { gapiClientReady, setGapiClientReady } = useGapiContext();
+
   useEffect(() => {
     // Initialises an instance of the GAPI client using the provided API key. If OAuth is required, these credentials may be provided here.
     const initialiseGapi = async () => {
@@ -17,7 +20,10 @@ export const useGapiClient = () => {
       console.log('GAPI script unavailable');
     } else {
       console.log('GAPI script loaded');
-      gapi.load('client', initialiseGapi);
+      if (!gapiClientReady) {   // GAPI client has not previously been initialised
+        gapi.load('client', initialiseGapi);
+        setGapiClientReady(true);
+      }
     }
-  }, []);
+  }, [gapiClientReady, setGapiClientReady]);
 }

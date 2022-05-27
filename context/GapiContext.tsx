@@ -5,11 +5,15 @@ interface GapiContextInterface {
   setGapiClientReady: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+interface GapiContextProps {
+  children: React.ReactNode;
+}
+
 // Create an instance of React Context. Default GAPI loaded state should be false until the API has loaded.
-export const GapiContext = React.createContext<GapiContextInterface | null>(null);
+export const GapiContext = React.createContext({} as GapiContextInterface);
 
 // Provide an indication of whether the GAPI client is ready to make API requests or not
-export const GapiContextProvider = (children: React.ReactNode) => {
+export const GapiContextProvider = ({ children }: GapiContextProps) => {
   // gapiClientReady is the key boolean value that will be required by most YouTube-related components. The setGapi function is required by the GAPI initialisation component only
   const [gapiClientReady, setGapiClientReady] = React.useState(false);
 
