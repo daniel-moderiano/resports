@@ -18,7 +18,6 @@ interface ChannelResult {
 }
 
 export default function Home() {
-  useGapiClient();
   const { gapiClientReady } = useGapiContext();
 
   const { isLoading, isError, data, error, isIdle } = useQuery(['request'], async () => {
