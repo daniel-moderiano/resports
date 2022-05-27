@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query'
 
-
 interface ChannelResult {
   kind: string;
   etag: string;
@@ -21,13 +20,16 @@ export default function Home() {
   useGapiClient();
 
   const { isLoading, isError, data, error } = useQuery(['request'], async () => {
-    return gapi.client.request({
-      'path': 'https://youtube.googleapis.com/youtube/v3/chans',
+    // GAPI client will throw it's own error if there is a problem with the request, there is no need for a specific try/catch here
+    const response = await gapi.client.request({
+      'path': 'https://youtube.googleapis.com/youtube/v3/channels',
       params: {
         id: 'UCj1J3QuIftjOq9iv_rr7Egw',
         part: 'contentDetails, snippet'
       }
     });
+
+    return response.result;
   });
 
   useEffect(() => {
@@ -67,6 +69,7 @@ export default function Home() {
       }
     }
   }
+
 
   return (
     <div>
