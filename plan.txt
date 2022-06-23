@@ -32,7 +32,7 @@ An important page; shows a channel's uploads
 Critically, it cannot show all videos on load. It must be selective loading controlled by the user
 Allows the user to unsubscribe
 
---- Player ---
+--- Watch ---
 The centerpiece page. A custom video player with anti-spoiler features
  - Custom playback controls with no video duration
  - No comments or recommended videos (in sidebar or on video pause/end)
