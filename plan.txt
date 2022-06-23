@@ -46,6 +46,10 @@ Should have user details
 Should offer the user options to change/update details
 Should offer option to delete account
 
+--- Search Results ---
+Should display channel search results 
+Unsure about video searching feature at this stage - perhaps a toggle for this
+
 
 ##### KEY COMPONENTS / DESIGN #####
 
