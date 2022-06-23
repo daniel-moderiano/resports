@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react'
-import Home from '@/pages/index'
+import SearchResults from '../pages/searchResults';
 
 describe('Home', () => {
-  it('renders a heading', () => {
-    render(<Home />)
+  it('renders a link', () => {
+    render(<SearchResults />)
 
     const heading = screen.getByRole('heading', {
-      name: /welcome to next\.js!/i,
+      name: /search results/i,
     })
 
     expect(heading).toBeInTheDocument()
