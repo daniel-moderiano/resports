@@ -22,16 +22,16 @@ export default function Home() {
 
   const { isLoading, isError, data, error, isIdle } = useQuery(['request'], async () => {
     // GAPI client will throw it's own error if there is a problem with the request, there is no need for a specific try/catch here
-    const response = await gapi.client.request({
-      'path': 'https://youtube.googleapis.com/youtube/v3/channels',
-      params: {
-        id: 'UCj1J3QuIftjOq9iv_rr7Egw',
-        part: 'contentDetails, snippet'
-      }
-    });
+    // const response = await gapi.client.request({
+    //   'path': 'https://youtube.googleapis.com/youtube/v3/channels',
+    //   params: {
+    //     id: 'UCj1J3QuIftjOq9iv_rr7Egw',
+    //     part: 'contentDetails, snippet'
+    //   }
+    // });
 
     // Successful response can be safely assigned to the ChannelResult type here
-    return response.result as ChannelResult;
+    // return response.result as ChannelResult;
   }, {
     enabled: gapiClientReady,
   });
