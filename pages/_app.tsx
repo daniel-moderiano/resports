@@ -1,4 +1,5 @@
-import '@/styles/global.css'
+import '@/styles/global.css';
+import Layout from '@/components/layout/Layout';
 import type { AppProps } from 'next/app'
 import { GapiContextProvider } from 'context/GapiContext'
 import {
@@ -13,7 +14,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <GapiContextProvider>
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </QueryClientProvider>
     </GapiContextProvider>
   )
