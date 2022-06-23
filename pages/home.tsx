@@ -1,5 +1,4 @@
 import { useGapiContext } from 'context/GapiContext';
-import { useGapiClient } from 'hooks/useGapiClient';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect } from 'react';

@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-const test = () => {
+const TestPage = () => {
   return (
     <div>
       <Link href="/"><a>Home</a></Link>
@@ -8,4 +8,4 @@ const test = () => {
   )
 }
 
-export default test
+export default TestPage
