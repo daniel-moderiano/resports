@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import SearchResults from '../pages/searchResults';
+import SearchResults from '../../pages/searchResults';
 
 describe('Home', () => {
   it('renders a link', () => {

@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import Account from '../pages/account';
+import Subscriptions from '../../pages/subscriptions';
 
-describe('Account page', () => {
+describe('Subscriptions page', () => {
   it('renders a heading', () => {
-    render(<Account />)
+    render(<Subscriptions />)
 
     const heading = screen.getByRole('heading', {
-      name: /account/i,
+      name: /subscriptions/i,
     })
 
     expect(heading).toBeInTheDocument()

@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import Home from '../pages/index'
+import Watch from '../../pages/watch';
 
-describe('Home page', () => {
+describe('Watch page', () => {
   it('renders a heading', () => {
-    render(<Home />)
+    render(<Watch />)
 
     const heading = screen.getByRole('heading', {
-      name: /home/i,
+      name: /watch/i,
     })
 
     expect(heading).toBeInTheDocument()
