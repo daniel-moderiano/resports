@@ -1,7 +1,7 @@
 // * If anchor tags are to be placed in the list items, these should become role="menuitem" and the <li> tags should have role="none"
 
 // The Nav is also likely to contain a search bar and a logo, that links back to the home page
-import styles from '../../styles/Nav.module.css'
+import styles from '../../styles/componentStyles/Nav.module.css'
 
 const Nav = () => {
   return (

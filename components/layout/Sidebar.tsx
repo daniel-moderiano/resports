@@ -1,7 +1,8 @@
+import styles from '../../styles/componentStyles/Sidebar.module.css'
 
 const Sidebar = () => {
   return (
-    <div id="sidebar" data-testid="sidebar">Sidebar</div>
+    <div className={styles.sidebar} data-testid="sidebar">SB</div>
   )
 }
 
