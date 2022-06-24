@@ -1,5 +1,5 @@
 
-const SearchResults = () => {
+const Results = () => {
   return (
     <div>
       <h2>Search Results</h2>
@@ -7,4 +7,4 @@ const SearchResults = () => {
   )
 }
 
-export default SearchResults
+export default Results

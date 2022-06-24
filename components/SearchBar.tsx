@@ -13,7 +13,7 @@ const SearchBar = () => {
       <label htmlFor="search">
         <input type="text" id="search" placeholder='Search channels' onChange={handleChange} value={searchQuery} />
       </label>
-      <Link href="/search-results">
+      <Link href="/results">
         <a>Search</a>
       </Link>
     </div>
