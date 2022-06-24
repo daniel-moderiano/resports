@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import Results from '../../pages/results';
+import Search from '../../pages/search';
 
 describe('Home', () => {
   it('renders a link', () => {
-    render(<Results />)
+    render(<Search />)
 
     const heading = screen.getByRole('heading', {
       name: /search results/i,

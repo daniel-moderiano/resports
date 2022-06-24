@@ -17,7 +17,7 @@ const SearchBar = () => {
       <label htmlFor="search">
         <input type="text" id="search" placeholder='Search channels' onChange={handleChange} value={searchQuery} />
       </label>
-      <Link href={`/search/${searchQuery}`}>
+      <Link href={{ pathname: '/search', query: { keyword: 'hello' } }}>
         <a onClick={handleSearch}>Search</a>
       </Link>
     </div>
