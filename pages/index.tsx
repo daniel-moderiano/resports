@@ -1,21 +1,21 @@
 import Head from 'next/head';
 import Example from './exampleQuery';
+import styles from '../styles/pageStyles/index.module.css'
 
 export default function Home() {
   return (
-    <div>
+    <>
       <Head>
         <title>Resports</title>
       </Head>
-
-      <main>
+      <h2>Home</h2>
+      <main className={styles.main}>
         {/* Uncomment the Example component to see the GAPI request in action */}
         {/* <Example /> */}
-        <h2>Home</h2>
+        <div>
+          Hello
+        </div>
       </main>
-
-      <footer>
-      </footer>
-    </div>
+    </>
   )
 }
