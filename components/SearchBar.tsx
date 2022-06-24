@@ -8,13 +8,17 @@ const SearchBar = () => {
     setSearchQuery(e.target.value);
   }
 
+  const handleSearch = () => {
+    console.log(searchQuery);
+  }
+
   return (
     <div>
       <label htmlFor="search">
         <input type="text" id="search" placeholder='Search channels' onChange={handleChange} value={searchQuery} />
       </label>
-      <Link href="/results">
-        <a>Search</a>
+      <Link href={`/search/${searchQuery}`}>
+        <a onClick={handleSearch}>Search</a>
       </Link>
     </div>
 
