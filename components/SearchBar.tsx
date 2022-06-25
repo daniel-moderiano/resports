@@ -5,31 +5,32 @@ const SearchBar = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
-
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   }
 
-  // used whenever the user clicks the search button
   const handleClick = () => {
-    console.log(searchQuery);
-    router.push({ pathname: '/search', query: { searchQuery } }).then(() => {
-      console.log('Successfully redirected');
-    }).catch(() => {
-      console.log('Error occurred');
-    })
+    // Router.push returns a promise, but this is an odd choice, and at this change there is no intention of awaiting this promise for handling. The void keyword indicates this choice
+    void router.push({ pathname: '/search', query: { searchQuery } })
   }
-
 
   return (
     <div>
       <label htmlFor="search">
-        <input type="text" id="search" placeholder='Search channels' onChange={handleChange} value={searchQuery} />
+        <input
+          type="text"
+          id="search"
+          placeholder='Search channels'
+          onChange={handleChange}
+          value={searchQuery}
+        />
       </label>
-      <button onClick={handleClick} disabled={searchQuery.trim() === ''}>Search</button>
+      <button
+        onClick={handleClick}
+        disabled={searchQuery.trim() === ''}>
+        Search
+      </button>
     </div>
-
   )
 }
 
