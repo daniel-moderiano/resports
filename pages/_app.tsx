@@ -1,7 +1,7 @@
 import '@/styles/global.css';
 import Layout from '@/components/layout/Layout';
 import type { AppProps } from 'next/app'
-import { GapiContextProvider } from 'context/GapiContext'
+import { GapiContextProvider } from '../context/GapiContext'
 import {
   QueryClient,
   QueryClientProvider,
