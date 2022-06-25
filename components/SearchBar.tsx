@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router';
+import styles from '../styles/componentStyles/SearchBar.module.css'
 
+// TODO: Add search icon instead of text 'search'
+// TODO: Add custom disabled styles that replicate normal btn, but with 'stop sign' cursor
+
+// This component is expected to live in the header and remain visible from all pages of the application
 const SearchBar = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,15 +21,17 @@ const SearchBar = () => {
 
   return (
     <div>
-      <label htmlFor="search">
-        <input
-          type="text"
-          id="search"
-          placeholder='Search channels'
-          onChange={handleChange}
-          value={searchQuery}
-        />
-      </label>
+      <label htmlFor="search" className={styles.label}>Search</label>
+      <input
+        type="text"
+        id="search"
+        placeholder='Search channels'
+        onChange={handleChange}
+        value={searchQuery}
+        spellCheck="false"
+        autoCorrect="false"
+        autoComplete="false"
+      />
       <button
         onClick={handleClick}
         disabled={searchQuery.trim() === ''}>
