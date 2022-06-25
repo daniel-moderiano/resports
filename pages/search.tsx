@@ -4,15 +4,12 @@ import { ParsedUrlQuery } from "querystring";
 const Search = () => {
   // Extract the query params in object form
   const router = useRouter();
+  console.log(router);
+
   const UrlQuery = router.query;
 
-  const isValidQuery = (query: ParsedUrlQuery) => {
-    // Check for presence of correct search param
-    if (!query.searchQuery) {   // this will also include a blank search query!
-      return false
-    }
-    return true;
-  }
+  // Use this to ensure that both whitespace/empty queries and queries without 'searchQuery' property are rejected
+  const isValidQuery = (query: ParsedUrlQuery) => query.searchQuery ? true : false;
 
   return (
     <div>

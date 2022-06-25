@@ -1,8 +1,13 @@
-import { render, screen } from '@testing-library/react'
-import Search from '../../pages/search';
+import { getPage } from 'next-page-tester';
+import { screen } from '@testing-library/react';
 
-describe('Home', () => {
-  it('renders a link', () => {
-    expect(true).toBe(true)
-  })
-})
+describe('Search page', () => {
+  it('renders search page', async () => {
+    const { render } = await getPage({
+      route: '/search',
+    });
+
+    render();
+    expect(screen.getByText('Search page')).toBeInTheDocument();
+  });
+});
