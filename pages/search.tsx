@@ -14,18 +14,11 @@ const Search = () => {
     return true;
   }
 
-  if (isValidQuery(UrlQuery)) {
-    return (
-      <div>
-        <h2>You searched for {isValidQuery(UrlQuery) ? UrlQuery.searchQuery : 'an invalid result'}</h2>
-      </div>
-    )
-  } else {
-    // Return user to home page if they attempt an invalid search
-    console.log('Invalid search');
-    // void keyword marks this promise as deliberately not awaited/handled. The alternative is a .then().catch() chain
-    void router.push('/')
-  }
+  return (
+    <div>
+      <h2>You searched for {isValidQuery(UrlQuery) ? UrlQuery.searchQuery : 'an invalid result'}</h2>
+    </div>
+  )
 }
 
-export default Search
+export default Search;
