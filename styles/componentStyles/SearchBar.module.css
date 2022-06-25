@@ -1,3 +1,9 @@
+.searchBar {
+  display: flex;
+  align-items: center;
+  
+}
+
 /* Visible to screen readers only */
 .label {
   position: absolute;
@@ -9,4 +15,10 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
