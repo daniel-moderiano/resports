@@ -7,6 +7,13 @@ import { SearchListResponse } from "types/youtubeAPITypes";
 export const useYouTubeSearch = (searchQuery: string, searchType: string, conditions?: boolean) => {
   const { gapiClientReady } = useGapiContext();
 
+  let enableApi = gapiClientReady;
+
+  // Adds the custom conditions to the enable param that allows query to take place
+  if (conditions === false) {
+    enableApi = gapiClientReady && conditions;
+  }
+
   const { isLoading, isError, data, error, isIdle } = useQuery(['searchResults', searchQuery], async () => {
     // GAPI client will throw it's own error if there is a problem with the request, there is no need for a specific try/catch here
     const response = await gapi.client.request({
@@ -22,7 +29,7 @@ export const useYouTubeSearch = (searchQuery: string, searchType: string, condit
     return response.result as SearchListResponse;
   }, {
     // Check for additional conditions before formulating enabled expression. gapiClientReady must always be present
-    enabled: conditions ? (conditions && gapiClientReady) : gapiClientReady,
+    enabled: enableApi,
   });
 
   return {
