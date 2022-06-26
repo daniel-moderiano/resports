@@ -1,4 +1,4 @@
-import { isValidQuery } from '../../pages/search'
+import { isValidQuery } from '../pages/search'
 
 describe('Search query handling', () => {
   it('recognises empty search query as invalid', () => {

@@ -1,14 +1,9 @@
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
-import { useGapiContext } from '../context/GapiContext';
-import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
-import { SearchListResponse } from "types/youtubeAPITypes";
+import { useEffect } from 'react';
 import { useYouTubeSearch } from "../hooks/useYoutubeSearch";
-import * as React from 'react'
 
 // TODO: handle search that produces no results
-// TODO: Attempt to pass sanitised query into youtube hook
 
 // Use this to ensure searchQueries provided via the URL are in the correct format for API calls
 // Exported for testing purposes
@@ -19,9 +14,13 @@ export const isValidQuery = (query: ParsedUrlQuery) => {
   return false;
 }
 
+// Provide a sanitised string input to the YouTube API hook. Default to empty string which is a 'general search', however empty string will not pass a validation check so the API should not be called regardless
 export const sanitiseQuery = (query: ParsedUrlQuery) => {
   if (isValidQuery(query)) {
+    // This is a safe type assertion as the valid query check has passed
     return query.searchQuery as string;
+  } else {
+    return '';
   }
 }
 
@@ -32,9 +31,8 @@ const Search = () => {
   const router = useRouter();
   const UrlQuery = router.query;
 
-
   const { isLoading, isError, data, error, isIdle } = useYouTubeSearch(
-    UrlQuery.searchQuery,
+    sanitiseQuery(UrlQuery),
     'channel',
     isValidQuery(UrlQuery)
   );
