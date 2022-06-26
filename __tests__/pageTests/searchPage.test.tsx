@@ -1,3 +1,5 @@
+// ! This file has been left here as an example of how to mock useRouter
+
 import { render, screen } from '@testing-library/react';
 import Search from '../../pages/search';
 import { useRouter } from "next/router";
