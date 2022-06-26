@@ -3,48 +3,10 @@ import { ParsedUrlQuery } from "querystring";
 import { useGapiContext } from '../context/GapiContext';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
+import { SearchListResponse } from "types/youtubeAPITypes";
 
-// Individual search result items
-interface SearchResult {
-  kind: string;
-  etag: string;
-  id: {
-    kind: string;
-    videoId?: string;
-    channelId?: string;
-    playlistId?: string;
-  },
-  snippet: {
-    publishedAt: string;
-    channelId: string;
-    title: string;
-    description: string;
-    thumbnails: {
-      [key: string]: {
-        url: string,
-        width?: number;
-        height?: number;
-      }
-    },
-    channelTitle: string,
-    liveBroadcastContent: string
-  }
-}
-
-// Returned by the Search: list YouTube API method
-interface SearchListResponse {
-  kind: string;
-  etag: string;
-  nextPageToken?: string;
-  prevPageToken?: string;
-  regionCode: string;
-  pageInfo: {
-    totalResults: number;
-    resultsPerPage: number;
-  }
-  items: SearchResult[];
-}
-
+// ! Use this variable to control whether active API calls are made
+const active = false;
 
 // Use this to ensure searchQueries provided via the URL are in the correct format for API calls
 // Exported for testing purposes
@@ -56,15 +18,11 @@ export const isValidQuery = (query: ParsedUrlQuery) => {
 }
 
 // TODO: Consider a toggle between channels/playlists/videos, or a seies or checkboxes
-// TODO: Add GAPI client search request using React Query. Enable on isValidQuery check!
 
 const Search = () => {
   // Extract the query params in object form
   const router = useRouter();
   const UrlQuery = router.query;
-  // Set here to avoid constant API calls burning quota
-  // const UrlQuery = {};
-
 
   const { gapiClientReady } = useGapiContext();
 
@@ -82,7 +40,7 @@ const Search = () => {
 
     return response.result as SearchListResponse;
   }, {
-    enabled: (gapiClientReady && isValidQuery(UrlQuery)),
+    enabled: (gapiClientReady && isValidQuery(UrlQuery) && active),
   });
 
 
@@ -102,7 +60,7 @@ const Search = () => {
     }
 
     if (isIdle) {
-      console.log('Awaiting client to be ready');
+      console.log('Awaiting conditions for API call');
     }
   }, [data, isLoading, error, isIdle])
 
