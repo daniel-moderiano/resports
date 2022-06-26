@@ -77,7 +77,7 @@ describe('Search bar component', () => {
     const mockRouter = {
       push: jest.fn()
     };
-    (useRouter as jest.Mock).mockReturnValue(mockRouter)
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
 
     render(<SearchBar />)
     const input: HTMLInputElement = screen.getByPlaceholderText(/search channels/i);

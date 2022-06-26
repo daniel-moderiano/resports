@@ -6,6 +6,9 @@ const Search = () => {
   const router = useRouter();
   const UrlQuery = router.query;
 
+  console.log(UrlQuery);
+
+
   // Use this to ensure that both whitespace/empty queries and queries without 'searchQuery' property are rejected
   const isValidQuery = (query: ParsedUrlQuery) => query.searchQuery ? true : false;
 
