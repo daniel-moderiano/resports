@@ -1,12 +1,11 @@
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useGapiContext } from '../context/GapiContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { SearchListResponse } from "types/youtubeAPITypes";
-
-// ! Use this variable to control whether active API calls are made
-const active = false;
+import { useYouTubeSearch } from "hooks/useYoutubeSearch";
+import * as React from 'react'
 
 // Use this to ensure searchQueries provided via the URL are in the correct format for API calls
 // Exported for testing purposes
@@ -24,24 +23,42 @@ const Search = () => {
   const router = useRouter();
   const UrlQuery = router.query;
 
-  const { gapiClientReady } = useGapiContext();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [enableApiCall, setEnableApiCall] = useState(false);
 
-  const { isLoading, isError, data, error, isIdle } = useQuery(['request'], async () => {
-    // GAPI client will throw it's own error if there is a problem with the request, there is no need for a specific try/catch here
-    const response = await gapi.client.request({
-      'path': 'https://youtube.googleapis.com/youtube/v3/search',
-      params: {
-        part: 'snippet',    // the type/nature of data returned
-        q: UrlQuery.searchQuery,    //search query
-        type: 'channel',   // restrict to channels only
-        maxResults: 25    // max number of results per page
-      }
-    });
+  const { isLoading, isError, data, error, isIdle } = useYouTubeSearch(searchQuery, 'channel', enableApiCall)
 
-    return response.result as SearchListResponse;
-  }, {
-    enabled: (gapiClientReady && isValidQuery(UrlQuery) && active),
-  });
+  useEffect(() => {
+    if (isValidQuery(UrlQuery)) {
+      // This type assertion is appropriate once the query is validated
+      setSearchQuery(UrlQuery.searchQuery as string)
+      setEnableApiCall(true);
+    } else {
+      setEnableApiCall(false);
+      // TODO: Handle invalid search query here
+    }
+  }, [UrlQuery])
+
+  // const { gapiClientReady } = useGapiContext();
+
+  // const { isLoading, isError, data, error, isIdle } = useQuery(['request'], async () => {
+  //   // GAPI client will throw it's own error if there is a problem with the request, there is no need for a specific try/catch here
+  //   const response = await gapi.client.request({
+  //     'path': 'https://youtube.googleapis.com/youtube/v3/search',
+  //     params: {
+  //       part: 'snippet',    // the type/nature of data returned
+  //       q: UrlQuery.searchQuery,    //search query
+  //       type: 'channel',   // restrict to channels only
+  //       maxResults: 25    // max number of results per page
+  //     }
+  //   });
+
+  //   return response.result as SearchListResponse;
+  // }, {
+  //   enabled: (gapiClientReady && isValidQuery(UrlQuery)),
+  // });
+
+
 
 
   useEffect(() => {
@@ -66,15 +83,18 @@ const Search = () => {
 
   return (
     <div>
-      <h2 className="title">You searched for {isValidQuery(UrlQuery) ? UrlQuery.searchQuery : 'an invalid result'}</h2>
-      {data && (
+      {isLoading ? (<div>Loading</div>) : (
         <>
-          {data.items.map((item) => (
-            <div key={item.etag}>
-              <h3>{item.snippet.channelTitle}</h3>
-              <p>{item.snippet.description}</p>
-            </div>
-          ))}
+          {data && (
+            <>
+              {data.items.map((item) => (
+                <div key={item.etag}>
+                  <h3>{item.snippet.channelTitle}</h3>
+                  <p>{item.snippet.description}</p>
+                </div>
+              ))}
+            </>
+          )}
         </>
       )}
     </div>
