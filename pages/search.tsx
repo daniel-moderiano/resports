@@ -1,3 +1,4 @@
+import { useTwitchSearch } from "hooks/useTwitchSearch";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect } from 'react';
@@ -37,6 +38,11 @@ const Search = () => {
     isValidQuery(UrlQuery)
   );
 
+  const { isLoading: isTwitchLoading, isError: isTwitchError, data: twitchData, error: twitchError, isIdle: isTwitchIdle } = useTwitchSearch(
+    sanitiseQuery(UrlQuery),
+    isValidQuery(UrlQuery)
+  );
+
   useEffect(() => {
     if (error) {
       console.log(error);
@@ -47,23 +53,29 @@ const Search = () => {
     }
   }, [error, isIdle])
 
+  useEffect(() => {
+    if (isTwitchLoading) {
+      console.log('Twitch loading');
+    }
+
+    if (twitchData) {
+      console.log(twitchData);
+    }
+
+    if (twitchError) {
+      console.log(twitchError);
+    }
+
+    if (isTwitchIdle) {
+      console.log('Awaiting conditions for Twitch API call');
+    }
+  }, [isTwitchLoading, isTwitchIdle, twitchData, twitchError])
+
   return (
     <div>
       <div>You searched for {UrlQuery.searchQuery}</div>
-      {isLoading ? (<div>Loading...</div>) : (
-        <>
-          {data && (
-            <>
-              {data.items.map((item) => (
-                <div key={item.etag}>
-                  <h3>{item.snippet.channelTitle}</h3>
-                  <p>{item.snippet.description}</p>
-                </div>
-              ))}
-            </>
-          )}
-        </>
-      )}
+      {isTwitchLoading && <div>Twitch loading...</div>}
+      {isLoading && <div>YouTube loading...</div>}
     </div>
   )
 }
