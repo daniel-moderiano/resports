@@ -33,21 +33,11 @@ const Search = () => {
 
   const { isLoading, isError, data, error, isIdle } = useYouTubeSearch(
     sanitiseQuery(UrlQuery),
-    'channel',
+    'video,channel',
     isValidQuery(UrlQuery)
   );
 
   useEffect(() => {
-    if (data) {
-      console.log('Loaded');
-
-      console.log(data);
-    }
-
-    if (isLoading) {
-      console.log('Loading...');
-    }
-
     if (error) {
       console.log(error);
     }
@@ -55,7 +45,7 @@ const Search = () => {
     if (isIdle) {
       console.log('Awaiting conditions for API call');
     }
-  }, [data, isLoading, error, isIdle])
+  }, [error, isIdle])
 
   return (
     <div>

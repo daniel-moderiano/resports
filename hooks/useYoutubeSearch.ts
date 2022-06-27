@@ -7,6 +7,15 @@ import { SearchListResponse } from "types/youtubeAPITypes";
 export const useYouTubeSearch = (searchQuery: string, searchType: string, conditions?: boolean) => {
   const { gapiClientReady } = useGapiContext();
 
+  let enableApi = false;
+
+  // ! Default this API call to NEVER occur in development unless manually set here. This API call cost 100 units of quota, so if you burn through 100 calls, every youtube API feature is locked for 24 hours.
+  if (process.env.NODE_ENV === 'production') {
+    enableApi = true;
+  } else {
+    enableApi = false;
+  }
+
   const { isLoading, isError, data, error, isIdle } = useQuery(['searchResults', searchQuery], async () => {
     // GAPI client will throw it's own error if there is a problem with the request, there is no need for a specific try/catch here
     const response = await gapi.client.request({
@@ -21,8 +30,8 @@ export const useYouTubeSearch = (searchQuery: string, searchType: string, condit
 
     return response.result as SearchListResponse;
   }, {
-    // Check for additional conditions before formulating enabled expression. gapiClientReady must always be present
-    enabled: (conditions !== undefined) ? (conditions && gapiClientReady) : gapiClientReady,
+    // Check for additional conditions before formulating enabled expression. gapiClientReady must always be present, as must enableApi
+    enabled: (conditions !== undefined) ? (conditions && gapiClientReady && enableApi) : (gapiClientReady && enableApi)
   });
 
   return {
