@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useYouTubeSearch } from "../hooks/useYoutubeSearch";
 
 // TODO: handle search that produces no results
+// TODO: Consider a toggle between channels/playlists/videos, or a seies or checkboxes
 
 // Use this to ensure searchQueries provided via the URL are in the correct format for API calls
 // Exported for testing purposes
@@ -24,7 +25,6 @@ export const sanitiseQuery = (query: ParsedUrlQuery) => {
   }
 }
 
-// TODO: Consider a toggle between channels/playlists/videos, or a seies or checkboxes
 
 const Search = () => {
   // Extract the query params in object form
