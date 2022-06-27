@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@twurple/api": "^5.1.6",
+    "@twurple/auth": "^5.1.6",
     "next": "^12.1.6",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",

@@ -33,7 +33,7 @@ const Search = () => {
 
   const { isLoading, isError, data, error, isIdle } = useYouTubeSearch(
     sanitiseQuery(UrlQuery),
-    'video,channel',
+    'channel',
     isValidQuery(UrlQuery)
   );
 
