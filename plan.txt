@@ -68,3 +68,5 @@ Optional additions features
 
 
 
+TESTING
+Consider using Playwright for browser end-to-end testing!
