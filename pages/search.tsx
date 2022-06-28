@@ -1,8 +1,8 @@
+import TwitchSearchTab from "@/components/TwitchSearchTab";
+import YouTubeSearchTab from "@/components/YouTubeSearchTab";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
-
-// TODO: handle search that produces no results
-// TODO: Consider a toggle between channels/playlists/videos, or a seies or checkboxes
+import { useState } from "react";
 
 // Use this to ensure searchQueries provided via the URL are in the correct format for API calls
 // Exported for testing purposes
@@ -29,10 +29,22 @@ const Search = () => {
   const router = useRouter();
   const UrlQuery = router.query;
 
+  const [activeTab, setActiveTab] = useState('twitch')
 
   return (
     <div>
-      Search page. Tabs to be added.
+      <div>
+        <button>Search Twitch</button>
+        <button>Search YouTube</button>
+      </div>
+      <div>
+        {activeTab === 'twitch' && (
+          <YouTubeSearchTab searchQuery={sanitiseQuery(UrlQuery)} isValidSearch={isValidQuery(UrlQuery)} />
+        )}
+        {activeTab === 'youtube' && (
+          <TwitchSearchTab searchQuery={sanitiseQuery(UrlQuery)} isValidSearch={isValidQuery(UrlQuery)} />
+        )}
+      </div>
     </div>
   )
 }

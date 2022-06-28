@@ -9,6 +9,8 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(() => ({ searchQuery: 'test' })),
 }));
 
+// TODO: Add search tab hook mocks to avoid errors
+
 
 describe('Search results page', () => {
   describe('Tab switching logic', () => {

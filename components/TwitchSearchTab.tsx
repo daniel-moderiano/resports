@@ -2,13 +2,16 @@ import { useEffect } from 'react';
 import { useTwitchSearch } from '../hooks/useTwitchSearch';
 import TwitchChannelResult from './TwitchChannelResult'
 
+// TODO: handle search that produces no results
+
 interface TwitchSearchTabProps {
   searchQuery: string;
+  isValidSearch: boolean;
 }
 
-const TwitchSearchTab = ({ searchQuery }: TwitchSearchTabProps) => {
+const TwitchSearchTab = ({ searchQuery, isValidSearch }: TwitchSearchTabProps) => {
 
-  const { isLoading, isError, data, error, isIdle } = useTwitchSearch(searchQuery);
+  const { isLoading, isError, data, error, isIdle } = useTwitchSearch(searchQuery, isValidSearch);
 
   useEffect(() => {
     if (data) {
