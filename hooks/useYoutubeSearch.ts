@@ -1,6 +1,6 @@
 import { useGapiContext } from "../context/GapiContext";
 import { useQuery } from "react-query";
-import { SearchListResponse } from "types/youtubeAPITypes";
+import { YouTubeSearchListResponse } from "types/youtubeAPITypes";
 
 // searchType should be a comma separated list of one or more of channels, playlist, and video (e.g. "channel,video")
 // conditions specify any additional criteria that must evaluate to true before the query is executed
@@ -28,7 +28,7 @@ export const useYouTubeSearch = (searchQuery: string, searchType: string, condit
       }
     });
 
-    return response.result as SearchListResponse;
+    return response.result as YouTubeSearchListResponse;
   }, {
     // Check for additional conditions before formulating enabled expression. gapiClientReady must always be present, as must enableApi
     enabled: (conditions !== undefined) ? (conditions && gapiClientReady && enableApi) : (gapiClientReady && enableApi)

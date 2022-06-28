@@ -1,7 +1,35 @@
 // * Use this file to declare any typings related to the YouTube API
 
+// YouTube Snippet (a summary of the search result item)
+export interface YouTubeSearchResultSnippet {
+  publishedAt: string;
+  channelId: string;
+  title: string;
+  description: string;
+  thumbnails: {
+    default: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+    medium: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+    high: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+  },
+  channelTitle: string,
+  liveBroadcastContent: string;
+  publishTime?: string;
+}
+
 // Individual search result items
-export interface SearchResult {
+export interface YouTubeSearchResult {
   kind: string;
   etag: string;
   id: {
@@ -10,25 +38,11 @@ export interface SearchResult {
     channelId?: string;
     playlistId?: string;
   },
-  snippet: {
-    publishedAt: string;
-    channelId: string;
-    title: string;
-    description: string;
-    thumbnails: {
-      [key: string]: {
-        url: string,
-        width?: number;
-        height?: number;
-      }
-    },
-    channelTitle: string,
-    liveBroadcastContent: string
-  }
+  snippet: YouTubeSearchResultSnippet;
 }
 
 // Result returned by the Search: list YouTube API method
-export interface SearchListResponse {
+export interface YouTubeSearchListResponse {
   kind: string;
   etag: string;
   nextPageToken?: string;
@@ -38,5 +52,5 @@ export interface SearchListResponse {
     totalResults: number;
     resultsPerPage: number;
   }
-  items: SearchResult[];
+  items: YouTubeSearchResult[];
 }
