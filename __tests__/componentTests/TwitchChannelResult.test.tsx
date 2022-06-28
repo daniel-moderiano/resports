@@ -34,7 +34,7 @@ describe('Twitch channel result component', () => {
   it('Includes channel thumbnail', () => {
     render(<TwitchChannelResult channelData={testData} />)
     const thumbnail = screen.getByRole('img');
-    expect(thumbnail).toBeInTheDocument()
+    expect(thumbnail).toBeInTheDocument();
   });
 
   it('Includes channel name', () => {
@@ -51,7 +51,7 @@ describe('Twitch channel result component', () => {
 
   it('Does not show LIVE indicator for currently offline channel', () => {
     render(<TwitchChannelResult channelData={testData} />)
-    const live = screen.getByText('LIVE');
+    const live = screen.queryByText('LIVE');
     expect(live).not.toBeInTheDocument()
   });
 

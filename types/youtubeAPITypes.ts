@@ -7,11 +7,21 @@ export interface YouTubeSearchResultSnippet {
   title: string;
   description: string;
   thumbnails: {
-    [key: string]: {
+    default: {
       url: string,
       width?: number;
       height?: number;
-    }
+    };
+    medium?: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+    high?: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
   },
   channelTitle: string,
   liveBroadcastContent: string;
