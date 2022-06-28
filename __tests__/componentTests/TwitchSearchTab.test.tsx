@@ -13,7 +13,7 @@ jest.mock('../../hooks/useTwitchSearch', () => ({
 
 describe('Twitch search tab component', () => {
   it("Renders the component", () => {
-    render(<TwitchSearchTab searchQuery='gaming' />)
+    render(<TwitchSearchTab searchQuery='gaming' isValidSearch={true} />)
     const test = screen.getByText(/you searched for/i)
     expect(test).toBeInTheDocument();
   });

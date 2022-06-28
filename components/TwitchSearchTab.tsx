@@ -29,6 +29,7 @@ const TwitchSearchTab = ({ searchQuery, isValidSearch }: TwitchSearchTabProps) =
 
   return (
     <div>
+      <h2>Twitch Tab</h2>
       <div>You searched for {searchQuery}</div>
       {isLoading && <div>Twitch loading...</div>}
       {isLoading && <div>YouTube loading...</div>}

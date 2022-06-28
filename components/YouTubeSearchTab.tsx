@@ -742,6 +742,7 @@ const YouTubeSearchTab = ({ searchQuery, isValidSearch }: YouTubeSearchTabProps)
 
   return (
     <div>
+      <h2>YouTube tab</h2>
       <div>You searched for {searchQuery}</div>
       {isLoading && <div>YouTube loading...</div>}
       {testData && (

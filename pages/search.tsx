@@ -37,12 +37,13 @@ const Search = () => {
         <button>Search Twitch</button>
         <button>Search YouTube</button>
       </div>
+      <h2>You search for {UrlQuery.searchQuery}</h2>
       <div>
         {activeTab === 'twitch' && (
-          <YouTubeSearchTab searchQuery={sanitiseQuery(UrlQuery)} isValidSearch={isValidQuery(UrlQuery)} />
+          <TwitchSearchTab searchQuery={sanitiseQuery(UrlQuery)} isValidSearch={isValidQuery(UrlQuery)} />
         )}
         {activeTab === 'youtube' && (
-          <TwitchSearchTab searchQuery={sanitiseQuery(UrlQuery)} isValidSearch={isValidQuery(UrlQuery)} />
+          <YouTubeSearchTab searchQuery={sanitiseQuery(UrlQuery)} isValidSearch={isValidQuery(UrlQuery)} />
         )}
       </div>
     </div>
