@@ -44,6 +44,10 @@ const Search = () => {
   );
 
   useEffect(() => {
+    if (data) {
+      console.log(data);
+
+    }
     if (error) {
       console.log(error);
     }
@@ -51,7 +55,7 @@ const Search = () => {
     if (isIdle) {
       console.log('Awaiting conditions for API call');
     }
-  }, [error, isIdle])
+  }, [error, isIdle, data])
 
   useEffect(() => {
     if (isTwitchLoading) {
