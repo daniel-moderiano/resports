@@ -14,7 +14,8 @@ export interface YouTubeSearchResultSnippet {
     }
   },
   channelTitle: string,
-  liveBroadcastContent: string
+  liveBroadcastContent: string;
+  publishTime?: string;
 }
 
 // Individual search result items

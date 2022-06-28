@@ -1,4 +1,4 @@
-import { HelixChannelSearchResult } from "@twurple/api/lib";
+import { HelixChannelSearchResultData } from "@twurple/api/lib/api/helix/search/HelixChannelSearchResult";
 
 // TWITCH Channel
 const twitchChannel = {
@@ -16,7 +16,7 @@ const twitchChannel = {
 }
 
 interface TwitchChannelResultProps {
-  channelData: HelixChannelSearchResult;
+  channelData: HelixChannelSearchResultData;
 }
 
 const ChannelResult = ({ channelData }: TwitchChannelResultProps) => {
