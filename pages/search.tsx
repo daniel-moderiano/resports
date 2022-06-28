@@ -753,10 +753,10 @@ const Search = () => {
     isValidQuery(UrlQuery)
   );
 
-  // const { isLoading: isTwitchLoading, isError: isTwitchError, data: twitchData, error: twitchError, isIdle: isTwitchIdle } = useTwitchSearch(
-  //   sanitiseQuery(UrlQuery),
-  //   isValidQuery(UrlQuery)
-  // );
+  const { isLoading: isTwitchLoading, isError: isTwitchError, data: twitchData, error: twitchError, isIdle: isTwitchIdle } = useTwitchSearch(
+    sanitiseQuery(UrlQuery),
+    isValidQuery(UrlQuery)
+  );
 
   useEffect(() => {
     if (data) {
@@ -795,13 +795,13 @@ const Search = () => {
       <div>You searched for {UrlQuery.searchQuery}</div>
       {/* {isTwitchLoading && <div>Twitch loading...</div>} */}
       {isLoading && <div>YouTube loading...</div>}
-      {/* {twitchData && (
+      {twitchData && (
         <>
           {twitchData.data.map((channel) => (
             <TwitchChannelResult key={channel.id} channelData={channel} />
           ))}
         </>
-      )} */}
+      )}
       {testData && (
         <>
           {testData.items.map((channel) => (

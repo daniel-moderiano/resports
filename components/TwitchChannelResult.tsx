@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { HelixChannelSearchResult } from "@twurple/api/lib/api/helix/search/HelixChannelSearchResult";
+import styles from '../styles/componentStyles/TwitchSearchResult.module.css'
 
 interface TwitchChannelResultProps {
   channelData: HelixChannelSearchResult;
@@ -7,18 +8,18 @@ interface TwitchChannelResultProps {
 
 const ChannelResult = ({ channelData }: TwitchChannelResultProps) => {
   return (
-    <div>
-      <div>
-        <Image src={channelData.thumbnailUrl} alt={`${channelData.displayName} channel thumbnail`} height={100} width={100} />
-      </div>
-      <div>
-        <h3>{channelData.displayName}</h3>
+    <div className={styles.channel}>
+      <div className={styles.imgContainer}>
+        <Image src={channelData.thumbnailUrl} alt={`${channelData.displayName} channel thumbnail`} height={100} width={100} className={styles.thumbnail} layout="fixed" />
         {channelData.isLive && (
-          <span>
+          <span className={styles.live}>
             LIVE
           </span>
         )}
-        <div>{channelData.gameName}</div>
+      </div>
+      <div className={styles.channelText}>
+        <h3 className={styles.channelTitle}>{channelData.displayName}</h3>
+        <p className={styles.game}>{channelData.gameName}</p>
       </div>
     </div>
   )
