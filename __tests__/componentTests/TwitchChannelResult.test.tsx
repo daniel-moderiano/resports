@@ -1,33 +1,45 @@
 import { render, screen } from '@testing-library/react'
-import { HelixChannelSearchResultData } from '@twurple/api/lib/api/helix/search/HelixChannelSearchResult';
 import TwitchChannelResult from '../../components/TwitchChannelResult';
+import { HelixChannelSearchResult } from '@twurple/api/lib/api/helix/search/HelixChannelSearchResult';
 
-const testData: HelixChannelSearchResultData = {
-  broadcaster_language: "en",
-  broadcaster_login: "loserfruit",
-  display_name: "Loserfruit",
-  game_id: "498000",
-  game_name: "House Flipper",
+const testData: HelixChannelSearchResult = {
+  _client: {},
+  // @ts-expect-error exact getUser implementation not needed in these tests
+  getUser: jest.fn,
+  // @ts-expect-error exact getGame implementation not needed in these tests
+  getGame: jest.fn,
+  // @ts-expect-error exact getTags implementation not needed in these tests
+  getTags: jest.fn,
+  displayName: "loserfruit",
+  gameId: "509658",
+  gameName: "Just Chatting",
   id: "41245072",
-  is_live: false,
-  tag_ids: [],
-  thumbnail_url: "https://static-cdn.jtvnw.net/jtv_user_pictures/fd17325a-7dc2-46c6-8617-e90ec259501c-profile_image-300x300.png",
-  title: "loserfruit",
-  started_at: ""
+  isLive: false,
+  language: "en",
+  name: "smasherger",
+  startDate: null,
+  tagIds: [],
+  thumbnailUrl: "https://static-cdn.jtvnw.net/jtv_user_pictures/fd17325a-7dc2-46c6-8617-e90ec259501c-profile_image-300x300.png"
 }
 
-const testDataLive: HelixChannelSearchResultData = {
-  broadcaster_language: "en",
-  broadcaster_login: "loserfruit",
-  display_name: "Loserfruit",
-  game_id: "498000",
-  game_name: "House Flipper",
+const testDataLive: HelixChannelSearchResult = {
+  _client: {},
+  // @ts-expect-error exact getUser implementation not needed in these tests
+  getUser: jest.fn,
+  // @ts-expect-error exact getGame implementation not needed in these tests
+  getGame: jest.fn,
+  // @ts-expect-error exact getTags implementation not needed in these tests
+  getTags: jest.fn,
+  displayName: "loserfruit",
+  gameId: "509658",
+  gameName: "Just Chatting",
   id: "41245072",
-  is_live: true,
-  tag_ids: [],
-  thumbnail_url: "https://static-cdn.jtvnw.net/jtv_user_pictures/fd17325a-7dc2-46c6-8617-e90ec259501c-profile_image-300x300.png",
-  title: "loserfruit",
-  started_at: ""
+  isLive: true,
+  language: "en",
+  name: "smasherger",
+  startDate: null,
+  tagIds: [],
+  thumbnailUrl: "https://static-cdn.jtvnw.net/jtv_user_pictures/fd17325a-7dc2-46c6-8617-e90ec259501c-profile_image-300x300.png"
 }
 
 describe('Twitch channel result component', () => {

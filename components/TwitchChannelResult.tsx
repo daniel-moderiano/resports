@@ -1,5 +1,5 @@
-import { HelixChannelSearchResultData } from "@twurple/api/lib/api/helix/search/HelixChannelSearchResult";
 import Image from "next/image";
+import { HelixChannelSearchResult } from "@twurple/api/lib/api/helix/search/HelixChannelSearchResult";
 
 // TWITCH Channel
 const twitchChannel = {
@@ -17,18 +17,18 @@ const twitchChannel = {
 }
 
 interface TwitchChannelResultProps {
-  channelData: HelixChannelSearchResultData;
+  channelData: HelixChannelSearchResult;
 }
 
 const ChannelResult = ({ channelData }: TwitchChannelResultProps) => {
   return (
     <div>
       <div>
-        <Image src={channelData.thumbnail_url} alt={`${channelData.display_name} channel thumbnail`} layout="fill" />
+        <Image src={channelData.thumbnailUrl} alt={`${channelData.displayName} channel thumbnail`} layout="fill" />
       </div>
       <div>
-        <h3>{channelData.display_name}</h3>
-        {channelData.is_live && (
+        <h3>{channelData.displayName}</h3>
+        {channelData.isLive && (
           <span>
             LIVE
           </span>

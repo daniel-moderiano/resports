@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect } from 'react';
 import { useYouTubeSearch } from "../hooks/useYoutubeSearch";
+import TwitchChannelResult from '../components/TwitchChannelResult'
 
 // TODO: handle search that produces no results
 // TODO: Consider a toggle between channels/playlists/videos, or a seies or checkboxes
@@ -62,8 +63,8 @@ const Search = () => {
       console.log('Twitch loading');
     }
 
-    if (twitchData) {
-      console.log(twitchData);
+    if (twitchData?.data) {
+      console.log(twitchData.data[0]);
     }
 
     if (twitchError) {
@@ -80,8 +81,16 @@ const Search = () => {
       <div>You searched for {UrlQuery.searchQuery}</div>
       {isTwitchLoading && <div>Twitch loading...</div>}
       {isLoading && <div>YouTube loading...</div>}
+      {twitchData && (
+        <>
+          {twitchData.data.map((channel) => (
+            <TwitchChannelResult key={channel.id} channelData={channel} />
+          ))}
+        </>
+      )}
     </div>
   )
 }
 
 export default Search;
+
