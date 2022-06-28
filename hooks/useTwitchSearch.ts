@@ -8,7 +8,8 @@ export const useTwitchSearch = (searchQuery: string, conditions?: boolean) => {
     // The apiClient from the twurple library has internal error handling; no manual error handling is required here.
     const response = await apiClient.search.searchChannels(searchQuery);
 
-    return response;
+    // * This ignores pagination at this stage
+    return response.data;
   }, {
     // Check for additional conditions before formulating enabled expression. gapiClientReady must always be present, as must enableApi
     enabled: (conditions !== undefined) ? conditions : true

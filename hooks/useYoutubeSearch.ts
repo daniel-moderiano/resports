@@ -28,6 +28,7 @@ export const useYouTubeSearch = (searchQuery: string, searchType: string, condit
       }
     });
 
+    // * This ignores pagination at this stage
     return response.result as YouTubeSearchListResponse;
   }, {
     // Check for additional conditions before formulating enabled expression. gapiClientReady must always be present, as must enableApi
