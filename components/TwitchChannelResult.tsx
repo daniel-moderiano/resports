@@ -24,7 +24,7 @@ const ChannelResult = ({ channelData }: TwitchChannelResultProps) => {
   return (
     <div>
       <div>
-        <Image src={channelData.thumbnailUrl} alt={`${channelData.displayName} channel thumbnail`} layout="fill" />
+        <Image src={channelData.thumbnailUrl} alt={`${channelData.displayName} channel thumbnail`} height={100} width={100} />
       </div>
       <div>
         <h3>{channelData.displayName}</h3>

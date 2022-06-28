@@ -4,6 +4,7 @@ import { ParsedUrlQuery } from "querystring";
 import { useEffect } from 'react';
 import { useYouTubeSearch } from "../hooks/useYoutubeSearch";
 import TwitchChannelResult from '../components/TwitchChannelResult'
+import YouTubeChannelResult from "@/components/YouTubeChannelResult";
 
 // TODO: handle search that produces no results
 // TODO: Consider a toggle between channels/playlists/videos, or a seies or checkboxes
@@ -39,52 +40,59 @@ const Search = () => {
     isValidQuery(UrlQuery)
   );
 
-  const { isLoading: isTwitchLoading, isError: isTwitchError, data: twitchData, error: twitchError, isIdle: isTwitchIdle } = useTwitchSearch(
-    sanitiseQuery(UrlQuery),
-    isValidQuery(UrlQuery)
-  );
+  // const { isLoading: isTwitchLoading, isError: isTwitchError, data: twitchData, error: twitchError, isIdle: isTwitchIdle } = useTwitchSearch(
+  //   sanitiseQuery(UrlQuery),
+  //   isValidQuery(UrlQuery)
+  // );
 
-  useEffect(() => {
-    if (data) {
-      console.log(data);
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log(data);
 
-    }
-    if (error) {
-      console.log(error);
-    }
+  //   }
+  //   if (error) {
+  //     console.log(error);
+  //   }
 
-    if (isIdle) {
-      console.log('Awaiting conditions for API call');
-    }
-  }, [error, isIdle, data])
+  //   if (isIdle) {
+  //     console.log('Awaiting conditions for API call');
+  //   }
+  // }, [error, isIdle, data])
 
-  useEffect(() => {
-    if (isTwitchLoading) {
-      console.log('Twitch loading');
-    }
+  // useEffect(() => {
+  //   if (isTwitchLoading) {
+  //     console.log('Twitch loading');
+  //   }
 
-    if (twitchData?.data) {
-      console.log(twitchData.data[0]);
-    }
+  //   if (twitchData?.data) {
+  //     console.log(twitchData.data[0]);
+  //   }
 
-    if (twitchError) {
-      console.log(twitchError);
-    }
+  //   if (twitchError) {
+  //     console.log(twitchError);
+  //   }
 
-    if (isTwitchIdle) {
-      console.log('Awaiting conditions for Twitch API call');
-    }
-  }, [isTwitchLoading, isTwitchIdle, twitchData, twitchError])
+  //   if (isTwitchIdle) {
+  //     console.log('Awaiting conditions for Twitch API call');
+  //   }
+  // }, [isTwitchLoading, isTwitchIdle, twitchData, twitchError])
 
   return (
     <div>
       <div>You searched for {UrlQuery.searchQuery}</div>
-      {isTwitchLoading && <div>Twitch loading...</div>}
+      {/* {isTwitchLoading && <div>Twitch loading...</div>} */}
       {isLoading && <div>YouTube loading...</div>}
-      {twitchData && (
+      {/* {twitchData && (
         <>
           {twitchData.data.map((channel) => (
             <TwitchChannelResult key={channel.id} channelData={channel} />
+          ))}
+        </>
+      )} */}
+      {data && (
+        <>
+          {data.items.map((channel) => (
+            <YouTubeChannelResult key={channel.etag} channelData={channel.snippet} />
           ))}
         </>
       )}

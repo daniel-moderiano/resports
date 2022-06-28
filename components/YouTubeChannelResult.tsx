@@ -9,7 +9,7 @@ const YouTubeChannelResult = ({ channelData }: YouTubeChannelResultProps) => {
   return (
     <div>
       <div>
-        <Image src={channelData.thumbnails.default?.url} alt={`${channelData.channelTitle} channel thumbnail`} layout="fill" />
+        <Image src={channelData.thumbnails.default?.url} alt={`${channelData.channelTitle} channel thumbnail`} height={100} width={100} />
       </div>
       <div>
         <h3>{channelData.channelTitle}</h3>
