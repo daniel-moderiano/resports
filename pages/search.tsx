@@ -31,11 +31,13 @@ const Search = () => {
 
   const [activeTab, setActiveTab] = useState('twitch')
 
+
+
   return (
     <div>
       <div>
-        <button>Search Twitch</button>
-        <button>Search YouTube</button>
+        <button onClick={() => setActiveTab('twitch')}>Search Twitch</button>
+        <button onClick={() => setActiveTab('youtube')}>Search YouTube</button>
       </div>
       <h2>You search for {UrlQuery.searchQuery}</h2>
       <div>
