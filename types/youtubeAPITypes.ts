@@ -12,12 +12,12 @@ export interface YouTubeSearchResultSnippet {
       width?: number;
       height?: number;
     };
-    medium?: {
+    medium: {
       url: string,
       width?: number;
       height?: number;
     };
-    high?: {
+    high: {
       url: string,
       width?: number;
       height?: number;
