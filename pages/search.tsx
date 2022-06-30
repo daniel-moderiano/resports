@@ -10,12 +10,12 @@ const Search = () => {
 
   const [activeTab, setActiveTab] = useState('twitch')
 
-  // Avoid displaying the default search results page. This alleviates the need to conditionally run the API queries based on checking for valid queries.
-  if (!isValidQuery(UrlQuery)) {
-    return (
-      <div>That is an invalid search. Try another.</div>
-    )
-  }
+  // // Avoid displaying the default search results page. This alleviates the need to conditionally run the API queries based on checking for valid queries.
+  // if (!isValidQuery(UrlQuery)) {
+  //   return (
+  //     <div>That is an invalid search. Try another.</div>
+  //   )
+  // }
 
   return (
     <div>
