@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useYouTubeSearch } from '../hooks/useYoutubeSearch';
 import YouTubeChannelResult from './YouTubeChannelResult';
 
@@ -723,25 +722,7 @@ const testData = {
 }
 
 const YouTubeSearchTab = ({ searchQuery }: YouTubeSearchTabProps) => {
-  const { isLoading, isError, data, error, isIdle } = useYouTubeSearch(searchQuery, 'channel');
-
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data);
-  //   }
-
-  //   if (isLoading) {
-  //     console.log('YouTube loading');
-  //   }
-
-  //   if (error) {
-  //     console.log(error);
-  //   }
-
-  //   if (isIdle) {
-  //     console.log('Awaiting conditions for API call');
-  //   }
-  // }, [error, isIdle, data, isLoading])
+  const { isLoading, isError, data, error } = useYouTubeSearch(searchQuery, 'channel');
 
   return (
     <div>

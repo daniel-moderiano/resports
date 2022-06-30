@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useTwitchSearch } from '../hooks/useTwitchSearch';
 import TwitchChannelResult from './TwitchChannelResult'
 
@@ -9,31 +8,14 @@ interface TwitchSearchTabProps {
 }
 
 const TwitchSearchTab = ({ searchQuery }: TwitchSearchTabProps) => {
-
-  const { isLoading, isError, data, error, isIdle } = useTwitchSearch(searchQuery);
-
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data);
-  //   }
-  //   if (error) {
-  //     console.log(error);
-  //   }
-
-  //   if (isLoading) {
-  //     console.log('Twitch loading');
-  //   }
-
-  //   if (isIdle) {
-  //     console.log('Awaiting conditions for API call');
-  //   }
-  // }, [error, isIdle, data, isLoading])
+  const { isLoading, isError, data, error } = useTwitchSearch(searchQuery);
 
   return (
     <div>
-      <h2>Twitch Tab</h2>
-      <div>You searched for {searchQuery}</div>
-      {isLoading && <div>Twitch loading...</div>}
+      {isLoading && (<div>Twitch loading...</div>)}
+
+      {isError && (<div>An error has occurred</div>)}
+
       {data && (
         <>
           {data.map((channel) => (

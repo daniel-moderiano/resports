@@ -7,7 +7,6 @@ interface mockTwitchSearchHook {
   isError: boolean,
   data: HelixChannelSearchResult[] | undefined,
   error: unknown,
-  isIdle: boolean
 }
 
 // Provides two example Twitch channel results in the correct API format
@@ -61,7 +60,6 @@ const mockSearch: mockTwitchSearchHook = {
   isError: false,
   data: undefined,
   error: null,
-  isIdle: false
 }
 
 // This mock will produce whichever custom parameters are specified in the mockSearch object above
@@ -98,7 +96,8 @@ describe('Twitch search tab component', () => {
   });
 
   it('Renders data correctly (no loaders/error UI present)', () => {
-    mockSearch.isIdle = false;
+    mockSearch.isError = false;
+    mockSearch.isLoading = false;
     mockSearch.data = testData;
     render(<TwitchSearchTab searchQuery='gaming' />)
 
@@ -120,7 +119,8 @@ describe('Twitch search tab component', () => {
   });
 
   it('Renders custom message for searches that return no results', () => {
-    mockSearch.isIdle = false;
+    mockSearch.isError = false;
+    mockSearch.isLoading = false;
     // This data does not contain any channel items
     mockSearch.data = [];
     render(<TwitchSearchTab searchQuery='gaming' />)

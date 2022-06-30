@@ -46,10 +46,16 @@ const Search = () => {
       <h2>You search for {UrlQuery.searchQuery}</h2>
       <div>
         {activeTab === 'twitch' && (
-          <TwitchSearchTab searchQuery={sanitiseQuery(UrlQuery)} />
+          <section>
+            <h3>Twitch results</h3>
+            <TwitchSearchTab searchQuery={sanitiseQuery(UrlQuery)} />
+          </section>
         )}
         {activeTab === 'youtube' && (
-          <YouTubeSearchTab searchQuery={sanitiseQuery(UrlQuery)} />
+          <section>
+            <h3>Twitch results</h3>
+            <YouTubeSearchTab searchQuery={sanitiseQuery(UrlQuery)} />
+          </section>
         )}
       </div>
     </div>
