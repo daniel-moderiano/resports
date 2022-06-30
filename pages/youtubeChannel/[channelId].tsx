@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router';
 
-const Channel = () => {
+const YouTubeChannel = () => {
   const router = useRouter();
   const { channelId } = router.query;
 
   return (
     <div>
-      <h2>Channel</h2>
+      <h2>YouTubeChannel</h2>
       <p>{channelId}</p>
     </div>
   )
 }
 
-export default Channel
+export default YouTubeChannel

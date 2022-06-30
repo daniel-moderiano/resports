@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Channel from '../../pages/channel/[channelId]';
+import TwitchChannel from '../../pages/twitchChannel/[channelId]';
 import { useRouter } from 'next/router';
 
 // Globally mock the next router and useRouter hook. This mock prevents an reference error when the component attempts to read the router.query object from useRouter
@@ -16,7 +16,7 @@ const setSearchQuery = (query: Record<string, unknown>) => {
 describe('Channel page', () => {
   it('renders a heading', () => {
     setSearchQuery({ channelId: '1234' })
-    render(<Channel />)
+    render(<TwitchChannel />)
 
     const heading = screen.getByRole('heading', {
       name: /channel/i,
