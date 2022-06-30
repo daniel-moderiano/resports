@@ -726,26 +726,23 @@ const testData = {
 const YouTubeSearchTab = ({ searchQuery, isValidSearch }: YouTubeSearchTabProps) => {
   const { isLoading, isError, data, error, isIdle } = useYouTubeSearch(searchQuery, 'channel', isValidSearch);
 
-  console.log(data);
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log(data);
+  //   }
 
+  //   if (isLoading) {
+  //     console.log('YouTube loading');
+  //   }
 
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
+  //   if (error) {
+  //     console.log(error);
+  //   }
 
-    if (isLoading) {
-      console.log('YouTube loading');
-    }
-
-    if (error) {
-      console.log(error);
-    }
-
-    if (isIdle) {
-      console.log('Awaiting conditions for API call');
-    }
-  }, [error, isIdle, data, isLoading])
+  //   if (isIdle) {
+  //     console.log('Awaiting conditions for API call');
+  //   }
+  // }, [error, isIdle, data, isLoading])
 
   return (
     <div>

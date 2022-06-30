@@ -22,7 +22,7 @@ jest.mock('../../hooks/useYoutubeSearch', () => ({
   useYouTubeSearch: () => ({
     isLoading: false,
     isError: false,
-    data: false,
+    data: null,
     error: false,
     isIdle: false
   }),
@@ -32,7 +32,7 @@ jest.mock('../../hooks/useTwitchSearch', () => ({
   useTwitchSearch: () => ({
     isLoading: false,
     isError: false,
-    data: false,
+    data: null,
     error: false,
     isIdle: false
   }),
