@@ -1,13 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import TwitchChannelResult from '../../components/TwitchChannelResult';
 import { HelixChannelSearchResult } from '@twurple/api/lib/api/helix/search/HelixChannelSearchResult';
-// jest.setup.js
-
-import { setConfig } from 'next/config'
-import config from '../../next.config'
-
-// Make sure you can use "publicRuntimeConfig" within tests.
-setConfig(config)
 
 const testData: HelixChannelSearchResult = {
   _client: {},

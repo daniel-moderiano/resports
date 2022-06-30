@@ -1,54 +1,95 @@
-// ! This file has been left here as an example of how to mock useRouter
-
 import { render, screen } from '@testing-library/react';
 import Search from '../../pages/search';
-import { useRouter } from "next/router";
+import userEvent from '@testing-library/user-event';
+import { useRouter } from 'next/router';
 
-// Use in conjunction with setSearchQuery function to set custom search queries to test handling of different queries
-interface UrlQuery {
-  searchQuery?: string;
-}
-
-// Globally mock the next router and useRouter hook. You must provide a custom mockImplementation in each test that uses the router however!
+// Globally mock the next router and useRouter hook. This mock prevents an reference error when the component attempts to read the router.query object from useRouter
 jest.mock("next/router", () => ({
   __esModule: true,
   useRouter: jest.fn(),
 }));
 
-// Use in individual tests to provide a custom searchQuery for the component/page to handle
-const setSearchQuery = (query: UrlQuery) => {
+// Use this in individual tests to provide a custom searchQuery for the component/page to handle
+const setSearchQuery = (query: Record<string, unknown>) => {
   (useRouter as jest.Mock).mockImplementation(() => ({ query }));
 }
 
+// Mock the use..X..Search hooks to avoid errors
+jest.mock('../../hooks/useYoutubeSearch', () => ({
+  useYouTubeSearch: () => ({
+    isLoading: false,
+    isError: false,
+    data: undefined,
+    error: false,
+    isIdle: false
+  }),
+}));
+
+jest.mock('../../hooks/useTwitchSearch', () => ({
+  useTwitchSearch: () => ({
+    isLoading: false,
+    isError: false,
+    data: undefined,
+    error: false,
+    isIdle: false
+  }),
+}));
+
 
 describe('Search results page', () => {
-  describe('Search query handling', () => {
-    it('recognises empty search query as invalid', () => {
-      setSearchQuery({ searchQuery: '' })
+  describe('Query handling', () => {
+    it('Displays the normal tabbed search page for valid queries', () => {
+      setSearchQuery({ searchQuery: 'test' });
       render(<Search />)
-      const msg = screen.getByText(/invalid/i);
-      expect(msg).toBeInTheDocument()
+      // These buttons will appear by default when a valid query is used
+      const youtubeButton = screen.getByText(/search youtube/i);
+      const twitchButton = screen.getByText(/search twitch/i);
+      expect(youtubeButton).toBeInTheDocument();
+      expect(twitchButton).toBeInTheDocument();
     });
 
-    it('recognises whitespace search query as invalid', () => {
-      setSearchQuery({ searchQuery: '   ' })
+    it('Displays an invalid query warning when the user delivers an invalid query', () => {
+      setSearchQuery({ searchQuery: '    ' });
       render(<Search />)
-      const msg = screen.getByText(/invalid/i);
-      expect(msg).toBeInTheDocument()
+      // Ensure the default display is hidden
+      const youtubeButton = screen.queryByText(/search youtube/i);
+      const twitchButton = screen.queryByText(/search twitch/i);
+      expect(youtubeButton).not.toBeInTheDocument();
+      expect(twitchButton).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Tab switching logic', () => {
+    it('Displays tab buttons for both platforms', () => {
+      // Set valid search for this (and therefore subsequent) tests
+      setSearchQuery({ searchQuery: 'test' });
+      render(<Search />)
+      const youtubeButton = screen.getByText(/search youtube/i);
+      const twitchButton = screen.getByText(/search twitch/i);
+      expect(youtubeButton).toBeInTheDocument()
+      expect(twitchButton).toBeInTheDocument()
     });
 
-    it('recognises lack of searchQuery param as invalid', () => {
-      setSearchQuery({})
+    it('Displays Twitch tab active by default', () => {
       render(<Search />)
-      const msg = screen.getByText(/invalid/i);
-      expect(msg).toBeInTheDocument()
+      const twitchTab = screen.getByText(/twitch tab/i);
+      expect(twitchTab).toBeInTheDocument()
     });
 
-    it('recognises valid search queries and extracts search term', () => {
-      setSearchQuery({ searchQuery: 'hello' })
+    it('Hides YouTube tab by default', () => {
       render(<Search />)
-      const msg = screen.getByText(/hello/i);
-      expect(msg).toBeInTheDocument()
+      const youtubeTab = screen.queryByText(/youtube tab/i);
+      expect(youtubeTab).not.toBeInTheDocument()
     });
-  })
+
+    it('Switches platform tabs when tab switcher is clicked', async () => {
+      render(<Search />)
+      const youtubeButton = screen.getByText(/search youtube/i);
+
+      // Switch tabs here
+      await userEvent.click(youtubeButton);
+      const youtubeTab = screen.getByText(/youtube tab/i);
+      expect(youtubeTab).toBeInTheDocument();
+    });
+  });
 })

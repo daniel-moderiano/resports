@@ -3,21 +3,23 @@ import { useQuery } from "react-query";
 import { YouTubeSearchListResponse } from "types/youtubeAPITypes";
 
 // searchType should be a comma separated list of one or more of channels, playlist, and video (e.g. "channel,video")
-// conditions specify any additional criteria that must evaluate to true before the query is executed
+// Conditions specify any additional criteria that must evaluate to true before the query is executed
 export const useYouTubeSearch = (searchQuery: string, searchType: string, conditions?: boolean) => {
   const { gapiClientReady } = useGapiContext();
 
   let enableApi = false;
 
   // ! Default this API call to NEVER occur in development unless manually set here. This API call cost 100 units of quota, so if you burn through 100 calls, every youtube API feature is locked for 24 hours.
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'development') {
     enableApi = true;
   } else {
     enableApi = false;
   }
 
-  const { isLoading, isError, data, error, isIdle } = useQuery(['searchResults', searchQuery], async () => {
+  const { isLoading, isError, data, error } = useQuery(['youtubeSearchResults', searchQuery], async () => {
     // GAPI client will throw it's own error if there is a problem with the request, there is no need for a specific try/catch here
+    console.log('Calling YouTube API fetch');
+
     const response = await gapi.client.request({
       'path': 'https://youtube.googleapis.com/youtube/v3/search',
       params: {
@@ -28,6 +30,7 @@ export const useYouTubeSearch = (searchQuery: string, searchType: string, condit
       }
     });
 
+    // * This ignores pagination at this stage
     return response.result as YouTubeSearchListResponse;
   }, {
     // Check for additional conditions before formulating enabled expression. gapiClientReady must always be present, as must enableApi
@@ -39,6 +42,5 @@ export const useYouTubeSearch = (searchQuery: string, searchType: string, condit
     isError,
     data,
     error,
-    isIdle
   }
 }
