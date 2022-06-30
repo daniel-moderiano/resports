@@ -17,6 +17,8 @@ const Search = () => {
     )
   }
 
+  // Added new line
+
   return (
     <div>
       <div>
