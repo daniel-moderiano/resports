@@ -3,10 +3,6 @@ import Search from '../../pages/search';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 
-interface UrlQuery {
-  searchQuery?: string;
-}
-
 // Globally mock the next router and useRouter hook. This mock prevents an reference error when the component attempts to read the router.query object from useRouter
 jest.mock("next/router", () => ({
   __esModule: true,
@@ -14,7 +10,7 @@ jest.mock("next/router", () => ({
 }));
 
 // Use this in individual tests to provide a custom searchQuery for the component/page to handle
-const setSearchQuery = (query: UrlQuery) => {
+const setSearchQuery = (query: Record<string, unknown>) => {
   (useRouter as jest.Mock).mockImplementation(() => ({ query }));
 }
 

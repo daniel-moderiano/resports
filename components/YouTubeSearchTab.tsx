@@ -6,7 +6,6 @@ import YouTubeChannelResult from './YouTubeChannelResult';
 
 interface YouTubeSearchTabProps {
   searchQuery: string;
-  isValidSearch: boolean;
 }
 
 // ! Use this data for UI handling and design. Calling the actual API is expensive and should be avoided in development where possible.
@@ -723,8 +722,8 @@ const testData = {
   ]
 }
 
-const YouTubeSearchTab = ({ searchQuery, isValidSearch }: YouTubeSearchTabProps) => {
-  const { isLoading, isError, data, error, isIdle } = useYouTubeSearch(searchQuery, 'channel', isValidSearch);
+const YouTubeSearchTab = ({ searchQuery }: YouTubeSearchTabProps) => {
+  const { isLoading, isError, data, error, isIdle } = useYouTubeSearch(searchQuery, 'channel');
 
   // useEffect(() => {
   //   if (data) {

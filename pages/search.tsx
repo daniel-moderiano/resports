@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useState } from "react";
 
+// * Both query functions exported for testing purposes
 // Use this to ensure searchQueries provided via the URL are in the correct format for API calls
-// Exported for testing purposes
 export const isValidQuery = (query: ParsedUrlQuery) => {
   if (typeof query.searchQuery === 'string') {   // covers lack of searchQuery param
     return query.searchQuery.trim() !== '';   // covers empty/whitespace strings
@@ -25,7 +25,6 @@ export const sanitiseQuery = (query: ParsedUrlQuery) => {
 
 
 const Search = () => {
-  // Extract the query params in object form
   const router = useRouter();
   const UrlQuery = router.query;
 
@@ -47,10 +46,10 @@ const Search = () => {
       <h2>You search for {UrlQuery.searchQuery}</h2>
       <div>
         {activeTab === 'twitch' && (
-          <TwitchSearchTab searchQuery={sanitiseQuery(UrlQuery)} isValidSearch={isValidQuery(UrlQuery)} />
+          <TwitchSearchTab searchQuery={sanitiseQuery(UrlQuery)} />
         )}
         {activeTab === 'youtube' && (
-          <YouTubeSearchTab searchQuery={sanitiseQuery(UrlQuery)} isValidSearch={isValidQuery(UrlQuery)} />
+          <YouTubeSearchTab searchQuery={sanitiseQuery(UrlQuery)} />
         )}
       </div>
     </div>

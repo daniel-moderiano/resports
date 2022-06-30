@@ -98,7 +98,7 @@ jest.mock('../../hooks/useYoutubeSearch', () => ({
 describe('YouTube search tab component', () => {
   it('Renders only loading UI while data is loading', () => {
     mockSearch.isLoading = true;
-    render(<YouTubeSearchTab searchQuery='gaming' isValidSearch={true} />)
+    render(<YouTubeSearchTab searchQuery='gaming' />)
 
     // Check error UI is not present
     const error = screen.queryByText(/error/i)
@@ -112,7 +112,7 @@ describe('YouTube search tab component', () => {
   it('Renders only error message when an API error occurs', () => {
     mockSearch.isError = true;
     mockSearch.isLoading = false;
-    render(<YouTubeSearchTab searchQuery='gaming' isValidSearch={true} />)
+    render(<YouTubeSearchTab searchQuery='gaming' />)
 
     // Check that loading UI is not present
     const loading = screen.queryByText(/loading/i)
@@ -123,29 +123,10 @@ describe('YouTube search tab component', () => {
     expect(error).toBeInTheDocument();
   });
 
-  it('Renders only error message when user does not provide a valid search query', () => {
-    mockSearch.isLoading = false;
-    mockSearch.isError = false;
-    mockSearch.isIdle == true;
-    render(<YouTubeSearchTab searchQuery='gaming' isValidSearch={false} />)
-
-    // Check that loading UI is not present
-    const loading = screen.queryByText(/loading/i)
-    expect(loading).not.toBeInTheDocument();
-
-    // Check that API error UI is not present
-    const error = screen.queryByText(/error/i)
-    expect(error).not.toBeInTheDocument();
-
-    // Check for invalid message
-    const invalid = screen.getByText(/invalid/i)
-    expect(invalid).toBeInTheDocument();
-  });
-
   it('Renders data correctly (no loaders/error UI present)', () => {
     mockSearch.isIdle = false;
     mockSearch.data = testData;
-    render(<YouTubeSearchTab searchQuery='gaming' isValidSearch={true} />)
+    render(<YouTubeSearchTab searchQuery='gaming' />)
 
     // Check that loading UI is not present
     const loading = screen.queryByText(/loading/i)
@@ -178,7 +159,7 @@ describe('YouTube search tab component', () => {
       },
       "items": []
     }
-    render(<YouTubeSearchTab searchQuery='gaming' isValidSearch={true} />)
+    render(<YouTubeSearchTab searchQuery='gaming' />)
     const test = screen.getByText(/loading/i)
     expect(test).toBeInTheDocument();
   });

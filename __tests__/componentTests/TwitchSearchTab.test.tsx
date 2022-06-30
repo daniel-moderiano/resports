@@ -72,7 +72,7 @@ jest.mock('../../hooks/useTwitchSearch', () => ({
 describe('Twitch search tab component', () => {
   it('Renders only loading UI while data is loading', () => {
     mockSearch.isLoading = true;
-    render(<TwitchSearchTab searchQuery='gaming' isValidSearch={true} />)
+    render(<TwitchSearchTab searchQuery='gaming' />)
 
     // Check error UI is not present
     const error = screen.queryByText(/error/i)
@@ -86,7 +86,7 @@ describe('Twitch search tab component', () => {
   it('Renders only error message when an API error occurs', () => {
     mockSearch.isError = true;
     mockSearch.isLoading = false;
-    render(<TwitchSearchTab searchQuery='gaming' isValidSearch={true} />)
+    render(<TwitchSearchTab searchQuery='gaming' />)
 
     // Check that loading UI is not present
     const loading = screen.queryByText(/loading/i)
@@ -97,29 +97,10 @@ describe('Twitch search tab component', () => {
     expect(error).toBeInTheDocument();
   });
 
-  it('Renders only error message when user does not provide a valid search query', () => {
-    mockSearch.isLoading = false;
-    mockSearch.isError = false;
-    mockSearch.isIdle == true;
-    render(<TwitchSearchTab searchQuery='gaming' isValidSearch={false} />)
-
-    // Check that loading UI is not present
-    const loading = screen.queryByText(/loading/i)
-    expect(loading).not.toBeInTheDocument();
-
-    // Check that API error UI is not present
-    const error = screen.queryByText(/error/i)
-    expect(error).not.toBeInTheDocument();
-
-    // Check for invalid message
-    const invalid = screen.getByText(/invalid/i)
-    expect(invalid).toBeInTheDocument();
-  });
-
   it('Renders data correctly (no loaders/error UI present)', () => {
     mockSearch.isIdle = false;
     mockSearch.data = testData;
-    render(<TwitchSearchTab searchQuery='gaming' isValidSearch={true} />)
+    render(<TwitchSearchTab searchQuery='gaming' />)
 
     // Check that loading UI is not present
     const loading = screen.queryByText(/loading/i)
@@ -142,7 +123,7 @@ describe('Twitch search tab component', () => {
     mockSearch.isIdle = false;
     // This data does not contain any channel items
     mockSearch.data = [];
-    render(<TwitchSearchTab searchQuery='gaming' isValidSearch={true} />)
+    render(<TwitchSearchTab searchQuery='gaming' />)
     const test = screen.getByText(/loading/i)
     expect(test).toBeInTheDocument();
   });

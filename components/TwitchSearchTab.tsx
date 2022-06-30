@@ -6,29 +6,28 @@ import TwitchChannelResult from './TwitchChannelResult'
 
 interface TwitchSearchTabProps {
   searchQuery: string;
-  isValidSearch: boolean;
 }
 
-const TwitchSearchTab = ({ searchQuery, isValidSearch }: TwitchSearchTabProps) => {
+const TwitchSearchTab = ({ searchQuery }: TwitchSearchTabProps) => {
 
-  const { isLoading, isError, data, error, isIdle } = useTwitchSearch(searchQuery, isValidSearch);
+  const { isLoading, isError, data, error, isIdle } = useTwitchSearch(searchQuery);
 
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
-    if (error) {
-      console.log(error);
-    }
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log(data);
+  //   }
+  //   if (error) {
+  //     console.log(error);
+  //   }
 
-    if (isLoading) {
-      console.log('Twitch loading');
-    }
+  //   if (isLoading) {
+  //     console.log('Twitch loading');
+  //   }
 
-    if (isIdle) {
-      console.log('Awaiting conditions for API call');
-    }
-  }, [error, isIdle, data, isLoading])
+  //   if (isIdle) {
+  //     console.log('Awaiting conditions for API call');
+  //   }
+  // }, [error, isIdle, data, isLoading])
 
   return (
     <div>
