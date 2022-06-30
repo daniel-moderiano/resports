@@ -1,8 +1,6 @@
 import { useTwitchSearch } from '../hooks/useTwitchSearch';
 import TwitchChannelResult from './TwitchChannelResult'
 
-// TODO: handle search that produces no results
-
 interface TwitchSearchTabProps {
   searchQuery: string;
 }

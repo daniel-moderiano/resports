@@ -1,8 +1,6 @@
 import { useYouTubeSearch } from '../hooks/useYoutubeSearch';
 import YouTubeChannelResult from './YouTubeChannelResult';
 
-// TODO: handle search that produces no results
-
 interface YouTubeSearchTabProps {
   searchQuery: string;
 }
