@@ -1,13 +1,24 @@
 import { render, screen } from '@testing-library/react';
 import Search from '../../pages/search';
 import userEvent from '@testing-library/user-event';
+import { useRouter } from 'next/router';
 
-// Globally mock the next router and useRouter hook. We are not concerned about custom searchQueries in these tests, so a single value is set globally. This mock prevents an reference error when the component attempts to read the router.query object from useRouter
+interface UrlQuery {
+  searchQuery?: string;
+}
+
+// Globally mock the next router and useRouter hook. This mock prevents an reference error when the component attempts to read the router.query object from useRouter
 jest.mock("next/router", () => ({
   __esModule: true,
-  useRouter: jest.fn(() => ({ query: { searchQuery: 'test' } })),
+  useRouter: jest.fn(),
 }));
 
+// Use this in individual tests to provide a custom searchQuery for the component/page to handle
+const setSearchQuery = (query: UrlQuery) => {
+  (useRouter as jest.Mock).mockImplementation(() => ({ query }));
+}
+
+// Mock the use..X..Search hooks to avoid errors
 jest.mock('../../hooks/useYoutubeSearch', () => ({
   useYouTubeSearch: () => ({
     isLoading: false,
@@ -30,9 +41,32 @@ jest.mock('../../hooks/useTwitchSearch', () => ({
 
 
 describe('Search results page', () => {
+  describe('Query handling', () => {
+    it('Displays the normal tabbed search page for valid queries', () => {
+      setSearchQuery({ searchQuery: 'test' });
+      render(<Search />)
+      // These buttons will appear by default when a valid query is used
+      const youtubeButton = screen.getByText(/search youtube/i);
+      const twitchButton = screen.getByText(/search twitch/i);
+      expect(youtubeButton).toBeInTheDocument();
+      expect(twitchButton).toBeInTheDocument();
+    });
+
+    it('Displays an invalid query warning when the user delivers an invalid query', () => {
+      setSearchQuery({ searchQuery: '    ' });
+      render(<Search />)
+      // Ensure the default display is hidden
+      const youtubeButton = screen.queryByText(/search youtube/i);
+      const twitchButton = screen.queryByText(/search twitch/i);
+      expect(youtubeButton).not.toBeInTheDocument();
+      expect(twitchButton).not.toBeInTheDocument();
+    });
+  });
+
   describe('Tab switching logic', () => {
     it('Displays tab buttons for both platforms', () => {
-
+      // Set valid search for this (and therefore subsequent) tests
+      setSearchQuery({ searchQuery: 'test' });
       render(<Search />)
       const youtubeButton = screen.getByText(/search youtube/i);
       const twitchButton = screen.getByText(/search twitch/i);

@@ -96,7 +96,7 @@ jest.mock('../../hooks/useYoutubeSearch', () => ({
 
 
 describe('YouTube search tab component', () => {
-  it('Renders ONLY loading UI while data is loading', () => {
+  it('Renders only loading UI while data is loading', () => {
     mockSearch.isLoading = true;
     render(<YouTubeSearchTab searchQuery='gaming' isValidSearch={true} />)
 
@@ -109,7 +109,7 @@ describe('YouTube search tab component', () => {
     expect(loading).toBeInTheDocument();
   });
 
-  it('Renders ONLY error message when an API error occurs', () => {
+  it('Renders only error message when an API error occurs', () => {
     mockSearch.isError = true;
     mockSearch.isLoading = false;
     render(<YouTubeSearchTab searchQuery='gaming' isValidSearch={true} />)
@@ -123,7 +123,7 @@ describe('YouTube search tab component', () => {
     expect(error).toBeInTheDocument();
   });
 
-  it('Renders ONLY error message when user does not provide a valid search query', () => {
+  it('Renders only error message when user does not provide a valid search query', () => {
     mockSearch.isLoading = false;
     mockSearch.isError = false;
     mockSearch.isIdle == true;
