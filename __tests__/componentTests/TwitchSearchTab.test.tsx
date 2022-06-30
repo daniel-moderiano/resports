@@ -124,7 +124,7 @@ describe('Twitch search tab component', () => {
     // This data does not contain any channel items
     mockSearch.data = [];
     render(<TwitchSearchTab searchQuery='gaming' />)
-    const test = screen.getByText(/loading/i)
+    const test = screen.getByText(/no results/i)
     expect(test).toBeInTheDocument();
   });
 });

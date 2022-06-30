@@ -160,7 +160,7 @@ describe('YouTube search tab component', () => {
       "items": []
     }
     render(<YouTubeSearchTab searchQuery='gaming' />)
-    const test = screen.getByText(/loading/i)
+    const test = screen.getByText(/no results/i)
     expect(test).toBeInTheDocument();
   });
 });

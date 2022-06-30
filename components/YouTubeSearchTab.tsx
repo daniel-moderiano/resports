@@ -732,9 +732,16 @@ const YouTubeSearchTab = ({ searchQuery }: YouTubeSearchTabProps) => {
 
       {data && (
         <>
-          {data.items.map((channel) => (
-            <YouTubeChannelResult key={channel.etag} channelData={channel.snippet} />
-          ))}
+          {data.items.length > 0 ? (
+            <>
+              {data.items.map((channel) => (
+                <YouTubeChannelResult key={channel.etag} channelData={channel.snippet} />
+              ))}
+            </>
+
+          ) : (
+            <div>No results found</div>
+          )}
         </>
       )}
       {/* {testData && (

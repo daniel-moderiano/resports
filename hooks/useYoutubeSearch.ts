@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { YouTubeSearchListResponse } from "types/youtubeAPITypes";
 
 // searchType should be a comma separated list of one or more of channels, playlist, and video (e.g. "channel,video")
-// conditions specify any additional criteria that must evaluate to true before the query is executed
+// Conditions specify any additional criteria that must evaluate to true before the query is executed
 export const useYouTubeSearch = (searchQuery: string, searchType: string, conditions?: boolean) => {
   const { gapiClientReady } = useGapiContext();
 
@@ -16,7 +16,7 @@ export const useYouTubeSearch = (searchQuery: string, searchType: string, condit
     enableApi = false;
   }
 
-  const { isLoading, isError, data, error, isIdle } = useQuery(['youtubeSearchResults', searchQuery], async () => {
+  const { isLoading, isError, data, error } = useQuery(['youtubeSearchResults', searchQuery], async () => {
     // GAPI client will throw it's own error if there is a problem with the request, there is no need for a specific try/catch here
     console.log('Calling YouTube API fetch');
 
@@ -42,6 +42,5 @@ export const useYouTubeSearch = (searchQuery: string, searchType: string, condit
     isError,
     data,
     error,
-    isIdle
   }
 }

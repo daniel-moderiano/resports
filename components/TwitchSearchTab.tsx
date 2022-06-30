@@ -18,9 +18,16 @@ const TwitchSearchTab = ({ searchQuery }: TwitchSearchTabProps) => {
 
       {data && (
         <>
-          {data.map((channel) => (
-            <TwitchChannelResult key={channel.id} channelData={channel} />
-          ))}
+          {data.length > 0 ? (
+            <>
+              {data.map((channel) => (
+                <TwitchChannelResult key={channel.id} channelData={channel} />
+              ))}
+            </>
+
+          ) : (
+            <div>No results found</div>
+          )}
         </>
       )}
     </div>
