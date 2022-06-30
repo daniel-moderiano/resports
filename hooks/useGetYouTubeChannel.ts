@@ -1,6 +1,7 @@
 import { useGapiContext } from "../context/GapiContext";
 import { useQuery } from "react-query";
-import { YouTubeSearchListResponse } from "types/youtubeAPITypes";
+import { YouTubeChannelSearchListResponse } from "types/youtubeAPITypes";
+
 
 export const useGetYouTubeChannel = (channelId: string, conditions?: boolean) => {
   const { gapiClientReady } = useGapiContext();
@@ -21,11 +22,10 @@ export const useGetYouTubeChannel = (channelId: string, conditions?: boolean) =>
       }
     });
 
-    // const searchResult = response.result as YouTubeChannelSearchListResponse;
-    // return searchResult.items[0]
+    const searchResult = response.result as YouTubeChannelSearchListResponse;
 
-    // * This ignores pagination at this stage
-    return response.result as YouTubeSearchListResponse;
+    // Safe to return first element of array, as there will only ever be a single index associated with a channel ID.
+    return searchResult.items[0]
   }, {
     // Check for additional conditions before formulating enabled expression. gapiClientReady must always be present, as must enableApi
     enabled: (conditions !== undefined) ? (conditions && gapiClientReady) : gapiClientReady
