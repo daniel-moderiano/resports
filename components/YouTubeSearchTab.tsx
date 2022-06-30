@@ -726,9 +726,10 @@ const YouTubeSearchTab = ({ searchQuery }: YouTubeSearchTabProps) => {
 
   return (
     <div>
-      <h2>YouTube tab</h2>
-      <div>You searched for {searchQuery}</div>
-      {isLoading && <div>YouTube loading...</div>}
+      {isLoading && (<div>Twitch loading...</div>)}
+
+      {isError && (<div>An error has occurred</div>)}
+
       {data && (
         <>
           {data.items.map((channel) => (

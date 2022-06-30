@@ -7,7 +7,6 @@ interface mockYouTubeSearchHook {
   isError: boolean,
   data: YouTubeSearchListResponse | undefined,
   error: unknown,
-  isIdle: boolean
 }
 
 // Provides two example YouTube channel results in the correct API format
@@ -86,7 +85,6 @@ const mockSearch: mockYouTubeSearchHook = {
   isError: false,
   data: undefined,
   error: null,
-  isIdle: false
 }
 
 // This mock will produce whichever custom parameters are specified in the mockSearch object above
@@ -124,7 +122,8 @@ describe('YouTube search tab component', () => {
   });
 
   it('Renders data correctly (no loaders/error UI present)', () => {
-    mockSearch.isIdle = false;
+    mockSearch.isError = false;
+    mockSearch.isLoading = false;
     mockSearch.data = testData;
     render(<YouTubeSearchTab searchQuery='gaming' />)
 
@@ -146,7 +145,8 @@ describe('YouTube search tab component', () => {
   });
 
   it('Renders custom message for searches that return no results', () => {
-    mockSearch.isIdle = false;
+    mockSearch.isError = false;
+    mockSearch.isLoading = false;
     // This data does not contain any channel items
     mockSearch.data = {
       "kind": "youtube#searchListResponse",
