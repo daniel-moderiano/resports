@@ -72,13 +72,13 @@ describe('Search results page', () => {
 
     it('Displays Twitch tab active by default', () => {
       render(<Search />)
-      const twitchTab = screen.getByText(/twitch tab/i);
+      const twitchTab = screen.getByText(/twitch results/i);
       expect(twitchTab).toBeInTheDocument()
     });
 
     it('Hides YouTube tab by default', () => {
       render(<Search />)
-      const youtubeTab = screen.queryByText(/youtube tab/i);
+      const youtubeTab = screen.queryByText(/youtube results/i);
       expect(youtubeTab).not.toBeInTheDocument()
     });
 
@@ -88,7 +88,7 @@ describe('Search results page', () => {
 
       // Switch tabs here
       await userEvent.click(youtubeButton);
-      const youtubeTab = screen.getByText(/youtube tab/i);
+      const youtubeTab = screen.getByText(/youtube results/i);
       expect(youtubeTab).toBeInTheDocument();
     });
   });

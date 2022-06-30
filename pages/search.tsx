@@ -1,28 +1,8 @@
-import TwitchSearchTab from "@/components/TwitchSearchTab";
-import YouTubeSearchTab from "@/components/YouTubeSearchTab";
+import TwitchSearchTab from "../components/TwitchSearchTab";
+import YouTubeSearchTab from "../components/YouTubeSearchTab";
 import { useRouter } from "next/router";
-import { ParsedUrlQuery } from "querystring";
 import { useState } from "react";
-
-// * Both query functions exported for testing purposes
-// Use this to ensure searchQueries provided via the URL are in the correct format for API calls
-export const isValidQuery = (query: ParsedUrlQuery) => {
-  if (typeof query.searchQuery === 'string') {   // covers lack of searchQuery param
-    return query.searchQuery.trim() !== '';   // covers empty/whitespace strings
-  }
-  return false;
-}
-
-// Provide a sanitised string input to the YouTube API hook. Default to empty string which is a 'general search', however empty string will not pass a validation check so the API should not be called regardless
-export const sanitiseQuery = (query: ParsedUrlQuery) => {
-  if (isValidQuery(query)) {
-    // This is a safe type assertion as the valid query check has passed
-    return query.searchQuery as string;
-  } else {
-    return '';
-  }
-}
-
+import { isValidQuery, sanitiseQuery } from "helpers/queryHandling";
 
 const Search = () => {
   const router = useRouter();
@@ -30,7 +10,7 @@ const Search = () => {
 
   const [activeTab, setActiveTab] = useState('twitch')
 
-  // Avoid displaying the default search results page. This alleviates the need to conditionally run the API queries based on ckecking for valid queries, and ensures the sanitiseQuery func works as intended.
+  // Avoid displaying the default search results page. This alleviates the need to conditionally run the API queries based on checking for valid queries.
   if (!isValidQuery(UrlQuery)) {
     return (
       <div>That is an invalid search. Try another.</div>
@@ -53,7 +33,7 @@ const Search = () => {
         )}
         {activeTab === 'youtube' && (
           <section>
-            <h3>Twitch results</h3>
+            <h3>YouTube results</h3>
             <YouTubeSearchTab searchQuery={sanitiseQuery(UrlQuery)} />
           </section>
         )}

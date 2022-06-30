@@ -1,6 +1,6 @@
-import { isValidQuery } from '../pages/search'
+import { sanitiseQuery, isValidQuery } from "../helpers/queryHandling";
 
-describe('Search query handling', () => {
+describe('Checking query validity', () => {
   it('recognises empty search query as invalid', () => {
     expect(isValidQuery({ searchQuery: '' })).toBe(false)
   });
@@ -29,3 +29,14 @@ describe('Search query handling', () => {
     expect(isValidQuery({ searchQuery: 'hello' })).toBe(true)
   });
 })
+
+
+describe('Performing search query sanitisation', () => {
+  it('returns empty string for invalid search queries', () => {
+    expect(sanitiseQuery({ term: 'test' })).toBe('')
+  });
+
+  it('returns the search query when it is valid', () => {
+    expect(sanitiseQuery({ searchQuery: 'test' })).toBe('test')
+  });
+});
