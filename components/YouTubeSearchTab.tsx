@@ -726,11 +726,18 @@ const testData = {
 const YouTubeSearchTab = ({ searchQuery, isValidSearch }: YouTubeSearchTabProps) => {
   const { isLoading, isError, data, error, isIdle } = useYouTubeSearch(searchQuery, 'channel', isValidSearch);
 
+  console.log(data);
+
+
   useEffect(() => {
     if (data) {
       console.log(data);
-
     }
+
+    if (isLoading) {
+      console.log('YouTube loading');
+    }
+
     if (error) {
       console.log(error);
     }
@@ -738,20 +745,27 @@ const YouTubeSearchTab = ({ searchQuery, isValidSearch }: YouTubeSearchTabProps)
     if (isIdle) {
       console.log('Awaiting conditions for API call');
     }
-  }, [error, isIdle, data])
+  }, [error, isIdle, data, isLoading])
 
   return (
     <div>
       <h2>YouTube tab</h2>
       <div>You searched for {searchQuery}</div>
       {isLoading && <div>YouTube loading...</div>}
-      {testData && (
+      {data && (
+        <>
+          {data.items.map((channel) => (
+            <YouTubeChannelResult key={channel.etag} channelData={channel.snippet} />
+          ))}
+        </>
+      )}
+      {/* {testData && (
         <>
           {testData.items.map((channel) => (
             <YouTubeChannelResult key={channel.etag} channelData={channel.snippet} />
           ))}
         </>
-      )}
+      )} */}
     </div>
   )
 }

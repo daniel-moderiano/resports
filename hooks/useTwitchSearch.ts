@@ -4,8 +4,9 @@ import apiClient from "config/twitchApiClient";
 // conditions specify any additional criteria that must evaluate to true before the query is executed
 export const useTwitchSearch = (searchQuery: string, conditions?: boolean) => {
 
-  const { isLoading, isError, data, error, isIdle } = useQuery(['searchResults', searchQuery], async () => {
+  const { isLoading, isError, data, error, isIdle } = useQuery(['twitchSearchResults', searchQuery], async () => {
     // The apiClient from the twurple library has internal error handling; no manual error handling is required here.
+    console.log('Calling Twitch API fetch');
     const response = await apiClient.search.searchChannels(searchQuery);
 
     // * This ignores pagination at this stage

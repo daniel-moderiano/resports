@@ -13,26 +13,30 @@ const TwitchSearchTab = ({ searchQuery, isValidSearch }: TwitchSearchTabProps) =
 
   const { isLoading, isError, data, error, isIdle } = useTwitchSearch(searchQuery, isValidSearch);
 
+  console.log(data);
+
   useEffect(() => {
     if (data) {
       console.log(data);
-
     }
     if (error) {
       console.log(error);
     }
 
+    if (isLoading) {
+      console.log('Twitch loading');
+    }
+
     if (isIdle) {
       console.log('Awaiting conditions for API call');
     }
-  }, [error, isIdle, data])
+  }, [error, isIdle, data, isLoading])
 
   return (
     <div>
       <h2>Twitch Tab</h2>
       <div>You searched for {searchQuery}</div>
       {isLoading && <div>Twitch loading...</div>}
-      {isLoading && <div>YouTube loading...</div>}
       {data && (
         <>
           {data.map((channel) => (
