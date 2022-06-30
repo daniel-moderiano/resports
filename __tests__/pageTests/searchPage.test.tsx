@@ -1,28 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import Search from '../../pages/search';
 import userEvent from '@testing-library/user-event';
-import { useRouter } from 'next/router'
 
-interface UrlQuery {
-  searchQuery?: string;
-}
-
-// Globally mock the next router and useRouter hook. We are not concerned about custom searchQueries in these tests, so a single value is set globally.
-// This mock prevents an reference error when the component attempts to read the router.query object from useRouter
+// Globally mock the next router and useRouter hook. We are not concerned about custom searchQueries in these tests, so a single value is set globally. This mock prevents an reference error when the component attempts to read the router.query object from useRouter
 jest.mock("next/router", () => ({
   __esModule: true,
-  useRouter: jest.fn(),
+  useRouter: jest.fn(() => ({ query: { searchQuery: 'test' } })),
 }));
 
-(useRouter as jest.Mock).mockImplementation(() => ({ query: { searchQuery: 'test' } }));
-
-
-// TODO: Add search tab hook mocks to avoid errors
 jest.mock('../../hooks/useYoutubeSearch', () => ({
   useYouTubeSearch: () => ({
     isLoading: false,
     isError: false,
-    data: null,
+    data: undefined,
     error: false,
     isIdle: false
   }),
@@ -32,7 +22,7 @@ jest.mock('../../hooks/useTwitchSearch', () => ({
   useTwitchSearch: () => ({
     isLoading: false,
     isError: false,
-    data: null,
+    data: undefined,
     error: false,
     isIdle: false
   }),

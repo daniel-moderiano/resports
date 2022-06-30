@@ -13,22 +13,22 @@ const TwitchSearchTab = ({ searchQuery, isValidSearch }: TwitchSearchTabProps) =
 
   const { isLoading, isError, data, error, isIdle } = useTwitchSearch(searchQuery, isValidSearch);
 
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data);
-  //   }
-  //   if (error) {
-  //     console.log(error);
-  //   }
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+    }
+    if (error) {
+      console.log(error);
+    }
 
-  //   if (isLoading) {
-  //     console.log('Twitch loading');
-  //   }
+    if (isLoading) {
+      console.log('Twitch loading');
+    }
 
-  //   if (isIdle) {
-  //     console.log('Awaiting conditions for API call');
-  //   }
-  // }, [error, isIdle, data, isLoading])
+    if (isIdle) {
+      console.log('Awaiting conditions for API call');
+    }
+  }, [error, isIdle, data, isLoading])
 
   return (
     <div>
