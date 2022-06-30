@@ -40,34 +40,11 @@ const exampleChannel = {
         },
         "country": "US"
       },
-      "contentDetails": {
-        "relatedPlaylists": {
-          "likes": "",
-          "uploads": "UU_qVvdPdMIZDEc6zdj06ilA"
-        }
-      },
       "statistics": {
         "viewCount": "567795130",
         "subscriberCount": "1510000",
         "hiddenSubscriberCount": false,
         "videoCount": "570"
-      },
-      "topicDetails": {
-        "topicIds": [
-          "/m/03hf_rm",
-          "/m/0bzvm2",
-          "/m/04q1x3q"
-        ],
-        "topicCategories": [
-          "https://en.wikipedia.org/wiki/Strategy_video_game",
-          "https://en.wikipedia.org/wiki/Video_game_culture",
-          "https://en.wikipedia.org/wiki/Puzzle_video_game"
-        ]
-      },
-      "status": {
-        "privacyStatus": "public",
-        "isLinked": true,
-        "longUploadsStatus": "longUploadsUnspecified"
       },
       "brandingSettings": {
         "channel": {
@@ -80,7 +57,6 @@ const exampleChannel = {
           "bannerExternalUrl": "https://lh3.googleusercontent.com/NXYsqbX3ExtOP8fPJ_ySnaE8vb7ZCYdDdSuOGZYztCu0nVT3cl40VYEwZn56lbJ_CpUouWBlXw"
         }
       },
-      "contentOwnerDetails": {}
     }
   ]
 }

@@ -41,7 +41,7 @@ export interface YouTubeSearchResult {
   snippet: YouTubeSearchResultSnippet;
 }
 
-// Result returned by the Search: list YouTube API method
+// Result returned by the general Search: list YouTube API method
 export interface YouTubeSearchListResponse {
   kind: string;
   etag: string;
@@ -53,4 +53,80 @@ export interface YouTubeSearchListResponse {
     resultsPerPage: number;
   }
   items: YouTubeSearchResult[];
+}
+
+// Channel snippet forming part of the item returned by the Channel: list search method
+interface YouTubeChannelSearchResultSnippet {
+  customUrl: string;
+  thumbnails: {
+    default: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+    medium: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+    high: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+  },
+  defaultLanguage?: string;
+  country: string;
+  localized: {
+    title: string;
+    description: string;
+  }
+}
+
+// Describes an 'item' returned by the Channel: list search method
+interface YouTubeChannelSearchResult {
+  kind: string;
+  etag: string;
+  id: string;
+  snippet: YouTubeChannelSearchResultSnippet[],
+  statistics: {
+    viewCount: string,
+    subscriberCount: string,
+    hiddenSubscriberCount: boolean,
+    videoCount: string;
+  },
+  brandingSettings: {
+    channel: {
+      title: string,
+      description: string,
+      keywords?: string,
+      trackingAnalyticsAccountId?: string,
+      moderateComments?: boolean,
+      unsubscribedTrailer?: string,
+      defaultLanguage?: string,
+      country: string
+    },
+    watch?: {
+      textColor: string;
+      backgroundColor: string;
+      featuredPlaylistId: string;
+    }
+    image?: {
+      bannerExternalUrl: string;
+    }
+  },
+}
+
+
+// Result returned by the Channel search: list YouTube API method
+export interface YouTubeChannelSearchListResponse {
+  kind: string;
+  etag: string;
+  nextPageToken?: string;
+  prevPageToken?: string;
+  pageInfo: {
+    totalResults: number;
+    resultsPerPage: number;
+  }
+  items: YouTubeChannelSearchResult[];
 }
