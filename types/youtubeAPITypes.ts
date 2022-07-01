@@ -57,6 +57,9 @@ export interface YouTubeSearchListResponse {
 
 // Channel snippet forming part of the item returned by the Channel: list search method
 interface YouTubeChannelSearchResultSnippet {
+  title: string;
+  description: string;
+  publishedAt: string;
   customUrl: string;
   thumbnails: {
     default: {
@@ -88,7 +91,7 @@ interface YouTubeChannelSearchResult {
   kind: string;
   etag: string;
   id: string;
-  snippet: YouTubeChannelSearchResultSnippet[],
+  snippet: YouTubeChannelSearchResultSnippet,
   statistics: {
     viewCount: string,
     subscriberCount: string,
