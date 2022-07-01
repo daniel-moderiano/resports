@@ -1,18 +1,22 @@
 import { render, screen } from '@testing-library/react';
 import YouTubeChannel from '../../pages/youtubeChannel/[channelId]';
-import { useRouter } from 'next/router';
+import { YouTubeChannelSearchResult } from 'types/youtubeAPITypes';
+
+interface mockYouTubeChannelSearchHook {
+  isLoading: boolean,
+  isError: boolean,
+  data: YouTubeChannelSearchResult | undefined,
+  error: unknown,
+}
 
 // Globally mock the next router and useRouter hook. This mock prevents an reference error when the component attempts to read the router.query object from useRouter
 jest.mock("next/router", () => ({
   __esModule: true,
-  useRouter: jest.fn(),
+  useRouter: jest.fn(() => ({ query: { channelId: '1234' } })),
 }));
 
-// Use this in individual tests to provide a custom searchQuery for the component/page to handle
-const setSearchQuery = (query: Record<string, unknown>) => {
-  (useRouter as jest.Mock).mockImplementation(() => ({ query }));
-}
 
+// Reflects the exact type of channel data received from the API
 const testData = {
   kind: "youtube#channel",
   etag: "JzVXdSr_8QsaydMEzyytEfeJAEE",
@@ -64,26 +68,78 @@ const testData = {
   },
 }
 
+// Modify these parameters as needed within individual tests
+const mockChannelSearch: mockYouTubeChannelSearchHook = {
+  isLoading: false,
+  isError: false,
+  data: undefined,
+  error: null,
+}
+
 // Provide channel data and other UI states via this mock of the channel search API call
 jest.mock('../../hooks/useGetYouTubeChannel', () => ({
-  useGetYouTubeChannel: () => ({
-    isLoading: false,
-    isError: false,
-    data: undefined,
-    error: false,
-  }),
+  useGetYouTubeChannel: () => (mockChannelSearch),
 }));
 
 
-describe('Channel page', () => {
-  it('renders a heading', () => {
-    setSearchQuery({ channelId: '1234' })
+describe('Channel page layout and elements', () => {
+  it.todo('Shows the channel title')
+  it.todo('Shows the channel data (subscriber count and video count)');
+  it.todo('Shows the channel thumbnail and banner');
+  it.todo("Shows a 'show videos' button");
+});
+
+describe('Channel page UI states', () => {
+  it('Renders data correctly (no loaders/error UI present)', () => {
+    mockChannelSearch.isError = false;
+    mockChannelSearch.isLoading = false;
+    mockChannelSearch.data = testData;
     render(<YouTubeChannel />)
 
-    const heading = screen.getByRole('heading', {
-      name: /channel/i,
-    })
+    // Check that loading UI is not present
+    const loading = screen.queryByText(/loading/i)
+    expect(loading).not.toBeInTheDocument();
 
-    expect(heading).toBeInTheDocument()
-  })
-})
+    // Check that API error UI is not present
+    const error = screen.queryByText(/error/i)
+    expect(error).not.toBeInTheDocument();
+
+    // Check that data has been rendered
+    const searchResults = screen.getAllByRole('img');
+    expect(searchResults).toHaveLength(2);
+  });
+
+  it('Renders only loading UI while data is loading', () => {
+    mockChannelSearch.isError = false;
+    mockChannelSearch.isLoading = true;
+    mockChannelSearch.data = undefined;
+    render(<YouTubeChannel />)
+
+    // Check error UI is not present
+    const error = screen.queryByText(/error/i)
+    expect(error).not.toBeInTheDocument();
+
+    // Check for loading UI
+    const loading = screen.getByText(/loading/i)
+    expect(loading).toBeInTheDocument();
+  });
+
+  it('Renders only error message when an API error occurs', () => {
+    mockChannelSearch.isError = true;
+    mockChannelSearch.isLoading = false;
+    mockChannelSearch.data = undefined;
+    render(<YouTubeChannel />)
+
+    // Check that loading UI is not present
+    const loading = screen.queryByText(/loading/i)
+    expect(loading).not.toBeInTheDocument();
+
+    // Check for error UI
+    const error = screen.getByText(/error/i)
+    expect(error).toBeInTheDocument();
+  });
+
+
+});
+
+

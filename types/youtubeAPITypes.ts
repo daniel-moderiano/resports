@@ -56,7 +56,7 @@ export interface YouTubeSearchListResponse {
 }
 
 // Channel snippet forming part of the item returned by the Channel: list search method
-interface YouTubeChannelSearchResultSnippet {
+export interface YouTubeChannelSearchResultSnippet {
   title: string;
   description: string;
   publishedAt: string;
@@ -87,7 +87,7 @@ interface YouTubeChannelSearchResultSnippet {
 }
 
 // Describes an 'item' returned by the Channel: list search method
-interface YouTubeChannelSearchResult {
+export interface YouTubeChannelSearchResult {
   kind: string;
   etag: string;
   id: string;

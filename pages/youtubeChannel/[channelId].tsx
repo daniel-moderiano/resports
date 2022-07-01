@@ -71,11 +71,11 @@ const YouTubeChannel = () => {
 
   const { isLoading, isError, data, error } = useGetYouTubeChannel('UC_qVvdPdMIZDEc6zdj06ilA');
 
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
-  }, [data])
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log(data);
+  //   }
+  // }, [data])
 
   return (
     <div>
