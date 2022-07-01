@@ -71,22 +71,21 @@ const YouTubeChannel = () => {
 
   const { isLoading, isError, data, error } = useGetYouTubeChannel('UC_qVvdPdMIZDEc6zdj06ilA');
 
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data);
-  //   }
-  // }, [data])
-
   return (
     <div>
-      <h2>YouTubeChannel</h2>
-      <p>{channelId}</p>
+      {isLoading && (<div>Twitch loading...</div>)}
+
+      {isError && (<div>An error has occurred</div>)}
+
       {data && (
         <>
+          <p>{channelId}</p>
           {data.snippet.title}
           {data.snippet.description}
         </>
       )}
+
+
     </div>
   )
 }

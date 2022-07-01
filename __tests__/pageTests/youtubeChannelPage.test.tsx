@@ -105,8 +105,8 @@ describe('Channel page UI states', () => {
     expect(error).not.toBeInTheDocument();
 
     // Check that data has been rendered
-    const searchResults = screen.getAllByRole('img');
-    expect(searchResults).toHaveLength(2);
+    const channelData = screen.getByText(/smash/i);
+    expect(channelData).toBeInTheDocument();
   });
 
   it('Renders only loading UI while data is loading', () => {
