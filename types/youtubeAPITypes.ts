@@ -114,7 +114,7 @@ export interface YouTubeChannelSearchResult {
       backgroundColor: string;
       featuredPlaylistId: string;
     }
-    image?: {
+    image: {
       bannerExternalUrl: string;
     }
   },

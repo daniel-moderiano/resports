@@ -1,6 +1,6 @@
 import { useGetYouTubeChannel } from '../../hooks/useGetYouTubeChannel';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import Image from 'next/image';
 
 // * The Search: list method can be used with a 'channelId' filter to yield all videos for a channel!
 
@@ -78,11 +78,18 @@ const YouTubeChannel = () => {
       {isError && (<div>An error has occurred</div>)}
 
       {data && (
-        <>
-          <p>{channelId}</p>
-          {data.snippet.title}
-          {data.snippet.description}
-        </>
+        <section>
+          <div>
+            <h2>{data.snippet.title}</h2>
+            <p>{data.snippet.description}</p>
+            <Image src={data.snippet.thumbnails.medium.url} alt={`${data.snippet.title} channel thumbnail`} height={100} width={100} layout="fixed" />
+            <Image src={data.brandingSettings.image.bannerExternalUrl} alt={`${data.snippet.title} channel banner`} height={100} width={100} layout="fixed" />
+          </div>
+          <div>
+            <p>{data.statistics.subscriberCount} subscribers</p>
+            <p>{data.statistics.videoCount} videos</p>
+          </div>
+        </section>
       )}
 
 

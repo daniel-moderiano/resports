@@ -83,10 +83,32 @@ jest.mock('../../hooks/useGetYouTubeChannel', () => ({
 
 
 describe('Channel page layout and elements', () => {
-  it.todo('Shows the channel title')
-  it.todo('Shows the channel data (subscriber count and video count)');
-  it.todo('Shows the channel thumbnail and banner');
-  it.todo("Shows a 'show videos' button");
+  it('Shows the channel title', () => {
+    mockChannelSearch.isError = false;
+    mockChannelSearch.isLoading = false;
+    mockChannelSearch.data = testData;
+    render(<YouTubeChannel />)
+
+    const title = screen.getByRole('heading', { name: /Smash/i });
+    expect(title).toBeInTheDocument();
+  });
+
+  it('Shows the channel data (subscriber count and video count)', () => {
+    render(<YouTubeChannel />)
+
+    const subCount = screen.getByText(/1510000 subscribers/i);
+    const videoCount = screen.getByText(/570 videos/i);
+    expect(subCount).toBeInTheDocument();
+    expect(videoCount).toBeInTheDocument();
+  });
+
+  it('Shows the channel thumbnail and banner', () => {
+    render(<YouTubeChannel />)
+
+    // With channel thumbnail and banner, we should see two images in this component
+    const images = screen.getAllByRole('img');
+    expect(images).toHaveLength(2);
+  });
 });
 
 describe('Channel page UI states', () => {
@@ -105,7 +127,7 @@ describe('Channel page UI states', () => {
     expect(error).not.toBeInTheDocument();
 
     // Check that data has been rendered
-    const channelData = screen.getByText(/smash/i);
+    const channelData = screen.getByRole('heading', { name: /Smash/i });
     expect(channelData).toBeInTheDocument();
   });
 
