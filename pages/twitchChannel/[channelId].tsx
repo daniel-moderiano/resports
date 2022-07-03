@@ -22,7 +22,7 @@ const TwitchChannel = () => {
 
       {isError && (<div>An error has occurred</div>)}
 
-      {(data && data.channelData && data.userData) && (
+      {data && (
         <section>
           <div>
             <h2>{data.channelData.displayName}</h2>

@@ -5,8 +5,8 @@ import { HelixChannel, HelixUser } from "@twurple/api/lib";
 // * Twitch Channel ID is the same as a User ID in their ecosystem! We only need one to gather all sorts of data
 
 export interface TwitchChannel {
-  channelData: HelixChannel | null;
-  userData: HelixUser | null;
+  channelData: HelixChannel;
+  userData: HelixUser;
   isLive?: boolean;
 }
 
@@ -18,14 +18,17 @@ export const useGetTwitchChannel = (channelId: string, conditions?: boolean) => 
     const channelResponse = await apiClient.channels.getChannelInfoById(channelId);
     const userResponse = await apiClient.users.getUserById(channelId);
 
-    // Create a custom combination of both responses to produce a more complete set of channel data
-    const combinedData: TwitchChannel = {
-      channelData: channelResponse,
-      userData: userResponse,
-    };
+    // By initially setting this to null, we can ensure that if data is returned by this API call (i.e. data property in a React Query call for example), it WILL contain all the elements below, thereby removing need for checking, say,whether data.userData exists.
+    let combinedData = null;
 
-    // Determine whether the channel is live. A null 'stream' result is returned for offline channels
-    if (userResponse) {
+    // Create a custom combination of both responses to produce a more complete set of channel data
+    if (channelResponse && userResponse) {
+      combinedData = {
+        channelData: channelResponse,
+        userData: userResponse,
+      } as TwitchChannel
+
+      // Determine whether the channel is live. A null 'stream' result is returned for offline channels
       combinedData.isLive = await userResponse.getStream() !== null;
     }
 
