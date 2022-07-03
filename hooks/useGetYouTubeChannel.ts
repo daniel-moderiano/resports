@@ -24,8 +24,12 @@ export const useGetYouTubeChannel = (channelId: string, conditions?: boolean) =>
 
     const searchResult = response.result as YouTubeChannelSearchListResponse;
 
-    // Safe to return first element of array, as there will only ever be a single index associated with a channel ID.
-    return searchResult.items[0]
+    if (searchResult.items) {   // items property undefined in cases of zero results/channel not found
+      // Safe to return first element of array, as there will only ever be a single index associated with a channel ID.
+      return { channelData: searchResult.items[0] }
+    } else {    // Null is used here so we can check for the presence of channelData, and provide a custom error accordingly
+      return { channelData: null }
+    }
   }, {
     // Check for additional conditions before formulating enabled expression. gapiClientReady must always be present, as must enableApi
     enabled: (conditions !== undefined) ? (conditions && gapiClientReady) : gapiClientReady

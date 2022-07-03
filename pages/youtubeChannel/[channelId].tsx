@@ -21,15 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
-  const router = useRouter();
   const { isLoading, isError, data, error } = useGetYouTubeChannel(channelId);
-
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-
-    }
-  }, [data])
 
   return (
     <div>
@@ -38,18 +30,24 @@ const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
       {isError && (<div>An error has occurred</div>)}
 
       {data && (
-        <section>
-          <div>
-            <h2>{data.snippet.title}</h2>
-            <p>{data.snippet.description}</p>
-            <Image src={data.snippet.thumbnails.medium.url} alt={`${data.snippet.title} channel thumbnail`} height={100} width={100} layout="fixed" />
-            <Image src={data.brandingSettings.image.bannerExternalUrl} alt={`${data.snippet.title} channel banner`} height={100} width={100} layout="fixed" />
-          </div>
-          <div>
-            <p>{data.statistics.subscriberCount} subscribers</p>
-            <p>{data.statistics.videoCount} videos</p>
-          </div>
-        </section>
+        <div>
+          {data.channelData ? (
+            <section>
+              <div>
+                <h2>{data.channelData.snippet.title}</h2>
+                <p>{data.channelData.snippet.description}</p>
+                <Image src={data.channelData.snippet.thumbnails.medium.url} alt={`${data.channelData.snippet.title} channel thumbnail`} height={100} width={100} layout="fixed" />
+                <Image src={data.channelData.brandingSettings.image.bannerExternalUrl} alt={`${data.channelData.snippet.title} channel banner`} height={100} width={100} layout="fixed" />
+              </div>
+              <div>
+                <p>{data.channelData.statistics.subscriberCount} subscribers</p>
+                <p>{data.channelData.statistics.videoCount} videos</p>
+              </div>
+            </section>
+          ) : (
+            <p>Channel not found</p>
+          )}
+        </div>
       )}
     </div>
   )

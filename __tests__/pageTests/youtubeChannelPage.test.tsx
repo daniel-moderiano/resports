@@ -5,7 +5,7 @@ import { YouTubeChannelSearchResult } from 'types/youtubeAPITypes';
 interface mockYouTubeChannelSearchHook {
   isLoading: boolean,
   isError: boolean,
-  data: YouTubeChannelSearchResult | undefined,
+  data: { channelData: YouTubeChannelSearchResult | null } | undefined,
   error: unknown,
 }
 
@@ -18,54 +18,56 @@ jest.mock("next/router", () => ({
 
 // Reflects the exact type of channel data received from the API
 const testData = {
-  kind: "youtube#channel",
-  etag: "JzVXdSr_8QsaydMEzyytEfeJAEE",
-  id: "UC_qVvdPdMIZDEc6zdj06ilA",
-  snippet: {
-    title: "Smash",
-    description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe.",
-    customUrl: "smashgaminghere",
-    publishedAt: "2015-08-26T11:12:55Z",
-    thumbnails: {
-      default: {
-        url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s88-c-k-c0x00ffffff-no-rj",
-        width: 88,
-        height: 88
-      },
-      medium: {
-        url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s240-c-k-c0x00ffffff-no-rj",
-        width: 240,
-        height: 240
-      },
-      high: {
-        url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s800-c-k-c0x00ffffff-no-rj",
-        width: 800,
-        height: 800
-      }
-    },
-    localized: {
-      title: "Smash",
-      description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe."
-    },
-    country: "US"
-  },
-  statistics: {
-    viewCount: "567795130",
-    subscriberCount: "1510000",
-    hiddenSubscriberCount: false,
-    videoCount: "570"
-  },
-  brandingSettings: {
-    channel: {
+  channelData: {
+    kind: "youtube#channel",
+    etag: "JzVXdSr_8QsaydMEzyytEfeJAEE",
+    id: "UC_qVvdPdMIZDEc6zdj06ilA",
+    snippet: {
       title: "Smash",
       description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe.",
-      unsubscribedTrailer: "28Yp4ERsiaE",
+      customUrl: "smashgaminghere",
+      publishedAt: "2015-08-26T11:12:55Z",
+      thumbnails: {
+        default: {
+          url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s88-c-k-c0x00ffffff-no-rj",
+          width: 88,
+          height: 88
+        },
+        medium: {
+          url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s240-c-k-c0x00ffffff-no-rj",
+          width: 240,
+          height: 240
+        },
+        high: {
+          url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s800-c-k-c0x00ffffff-no-rj",
+          width: 800,
+          height: 800
+        }
+      },
+      localized: {
+        title: "Smash",
+        description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe."
+      },
       country: "US"
     },
-    image: {
-      bannerExternalUrl: "https://lh3.googleusercontent.com/NXYsqbX3ExtOP8fPJ_ySnaE8vb7ZCYdDdSuOGZYztCu0nVT3cl40VYEwZn56lbJ_CpUouWBlXw"
-    }
-  },
+    statistics: {
+      viewCount: "567795130",
+      subscriberCount: "1510000",
+      hiddenSubscriberCount: false,
+      videoCount: "570"
+    },
+    brandingSettings: {
+      channel: {
+        title: "Smash",
+        description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe.",
+        unsubscribedTrailer: "28Yp4ERsiaE",
+        country: "US"
+      },
+      image: {
+        bannerExternalUrl: "https://lh3.googleusercontent.com/NXYsqbX3ExtOP8fPJ_ySnaE8vb7ZCYdDdSuOGZYztCu0nVT3cl40VYEwZn56lbJ_CpUouWBlXw"
+      }
+    },
+  }
 }
 
 // Modify these parameters as needed within individual tests
@@ -159,6 +161,25 @@ describe('Channel page UI states', () => {
     // Check for error UI
     const error = screen.getByText(/error/i)
     expect(error).toBeInTheDocument();
+  });
+
+  it('Shows a "channel not found" message when no channel data is returned"', () => {
+    mockChannelSearch.isError = true;
+    mockChannelSearch.isLoading = false;
+    mockChannelSearch.data = { channelData: null };
+    render(<YouTubeChannel channelId='1234' />)
+
+    // Check that loading UI is not present
+    const loading = screen.queryByText(/loading/i)
+    expect(loading).not.toBeInTheDocument();
+
+    // Check that error UI is not present
+    const error = screen.getByText(/error/i)
+    expect(error).toBeInTheDocument();
+
+    // Check that 'not found' message is shown
+    const notFound = screen.getByText(/not found/i)
+    expect(notFound).toBeInTheDocument();
   });
 });
 
