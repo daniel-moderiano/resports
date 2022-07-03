@@ -2,7 +2,7 @@ import { useGetYouTubeChannel } from '../../hooks/useGetYouTubeChannel';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useEffect } from 'react';
-import { sanitiseChannelQuery } from 'helpers/queryHandling';
+import { sanitiseChannelQuery } from '../../helpers/queryHandling';
 import { GetServerSideProps } from 'next';
 
 // * The Search: list method can be used with a 'channelId' filter to yield all videos for a channel!

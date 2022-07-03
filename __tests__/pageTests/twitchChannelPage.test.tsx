@@ -74,14 +74,14 @@ describe('Channel page layout and elements', () => {
     mockChannelSearch.isError = false;
     mockChannelSearch.isLoading = false;
     mockChannelSearch.data = testCombinedData;
-    render(<TwitchChannelPage />)
+    render(<TwitchChannelPage channelId='1234' />)
 
     const title = screen.getByRole('heading', { name: /loserfruit/i });
     expect(title).toBeInTheDocument();
   });
 
   it('Shows the channel thumbnail and banner (if banner exists)', () => {
-    render(<TwitchChannelPage />)
+    render(<TwitchChannelPage channelId='1234' />)
 
     // With channel thumbnail and banner, we should see two images in this component
     const images = screen.getAllByRole('img');
@@ -94,7 +94,7 @@ describe('Channel page UI states', () => {
     mockChannelSearch.isError = false;
     mockChannelSearch.isLoading = false;
     mockChannelSearch.data = testCombinedData;
-    render(<TwitchChannelPage />)
+    render(<TwitchChannelPage channelId='1234' />)
 
     // Check that loading UI is not present
     const loading = screen.queryByText(/loading/i)
@@ -113,7 +113,7 @@ describe('Channel page UI states', () => {
     mockChannelSearch.isError = false;
     mockChannelSearch.isLoading = true;
     mockChannelSearch.data = undefined;
-    render(<TwitchChannelPage />)
+    render(<TwitchChannelPage channelId='1234' />)
 
     // Check error UI is not present
     const error = screen.queryByText(/error/i)
@@ -128,7 +128,7 @@ describe('Channel page UI states', () => {
     mockChannelSearch.isError = true;
     mockChannelSearch.isLoading = false;
     mockChannelSearch.data = undefined;
-    render(<TwitchChannelPage />)
+    render(<TwitchChannelPage channelId='1234' />)
 
     // Check that loading UI is not present
     const loading = screen.queryByText(/loading/i)
