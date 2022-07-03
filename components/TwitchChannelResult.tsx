@@ -1,18 +1,13 @@
 import Image from "next/image";
 import { HelixChannelSearchResult } from "@twurple/api/lib/api/helix/search/HelixChannelSearchResult";
 import styles from '../styles/componentStyles/TwitchSearchResult.module.css'
+import Link from "next/link";
 
 interface TwitchChannelResultProps {
   channelData: HelixChannelSearchResult;
 }
 
 const ChannelResult = ({ channelData }: TwitchChannelResultProps) => {
-  const logData = async () => {
-    console.log(channelData);
-    console.log(await channelData.getUser());
-  }
-
-
   return (
     <div className={styles.channel}>
       <div className={styles.imgContainer}>
@@ -24,8 +19,9 @@ const ChannelResult = ({ channelData }: TwitchChannelResultProps) => {
         )}
       </div>
       <div className={styles.channelText}>
-        <h3 className={styles.channelTitle}>{channelData.displayName}</h3>
-        <button onClick={logData}>Log data</button>
+        <Link href={`/twitchChannel/${channelData.id}`}>
+          <a>        <h3 className={styles.channelTitle}>{channelData.displayName}</h3></a>
+        </Link>
         <p className={styles.game}>{channelData.gameName}</p>
       </div>
     </div>

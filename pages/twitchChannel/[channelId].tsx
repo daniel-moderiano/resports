@@ -1,6 +1,5 @@
 import { useGetTwitchChannel } from '../../hooks/useGetTwitchChannel';
 import Image from 'next/image';
-import { useEffect } from 'react';
 import { sanitiseChannelQuery } from '../../helpers/queryHandling';
 import { GetServerSideProps } from 'next';
 
@@ -19,13 +18,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const TwitchChannel = ({ channelId }: TwitchChannelProps) => {
   const { isLoading, isError, data, error } = useGetTwitchChannel(channelId);
-
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-
-    }
-  }, [data])
 
   return (
     <div>

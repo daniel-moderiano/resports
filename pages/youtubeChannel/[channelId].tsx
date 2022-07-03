@@ -1,7 +1,5 @@
 import { useGetYouTubeChannel } from '../../hooks/useGetYouTubeChannel';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useEffect } from 'react';
 import { sanitiseChannelQuery } from '../../helpers/queryHandling';
 import { GetServerSideProps } from 'next';
 
