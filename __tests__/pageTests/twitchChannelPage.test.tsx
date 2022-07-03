@@ -1,11 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import TwitchChannel from '../../pages/twitchChannel/[channelId]';
-import { useRouter } from 'next/router';
+import TwitchChannelPage from '../../pages/twitchChannel/[channelId]';
+import { TwitchChannel } from 'hooks/useGetTwitchChannel';
+import { HelixChannel, HelixUser } from '@twurple/api/lib';
 
-interface mockYouTubeChannelSearchHook {
+interface mockTwitchChannelSearchHook {
   isLoading: boolean,
   isError: boolean,
-  data: YouTubeChannelSearchResult | undefined,
+  data: TwitchChannel | undefined,
   error: unknown,
 }
 
@@ -17,59 +18,45 @@ jest.mock("next/router", () => ({
 
 
 // Reflects the exact type of channel data received from the API
-const testData = {
-  kind: "youtube#channel",
-  etag: "JzVXdSr_8QsaydMEzyytEfeJAEE",
-  id: "UC_qVvdPdMIZDEc6zdj06ilA",
-  snippet: {
-    title: "Smash",
-    description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe.",
-    customUrl: "smashgaminghere",
-    publishedAt: "2015-08-26T11:12:55Z",
-    thumbnails: {
-      default: {
-        url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s88-c-k-c0x00ffffff-no-rj",
-        width: 88,
-        height: 88
-      },
-      medium: {
-        url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s240-c-k-c0x00ffffff-no-rj",
-        width: 240,
-        height: 240
-      },
-      high: {
-        url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s800-c-k-c0x00ffffff-no-rj",
-        width: 800,
-        height: 800
-      }
-    },
-    localized: {
-      title: "Smash",
-      description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe."
-    },
-    country: "US"
-  },
-  statistics: {
-    viewCount: "567795130",
-    subscriberCount: "1510000",
-    hiddenSubscriberCount: false,
-    videoCount: "570"
-  },
-  brandingSettings: {
-    channel: {
-      title: "Smash",
-      description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe.",
-      unsubscribedTrailer: "28Yp4ERsiaE",
-      country: "US"
-    },
-    image: {
-      bannerExternalUrl: "https://lh3.googleusercontent.com/NXYsqbX3ExtOP8fPJ_ySnaE8vb7ZCYdDdSuOGZYztCu0nVT3cl40VYEwZn56lbJ_CpUouWBlXw"
-    }
-  },
+const testChannelData: HelixChannel = {
+  _client: {},
+  // @ts-expect-error exact getBroadcaster implementation not needed in these tests
+  getBroadcaster: jest.fn,
+  // @ts-expect-error exact getGame implementation not needed in these tests
+  getGame: jest.fn,
+  displayName: "Loserfruit",
+  gameId: "509658",
+  gameName: "Just Chatting",
+  id: "41245072",
+  language: "en",
+  name: "loserfruit",
+}
+
+const testUserData: HelixUser = {
+  // @ts-expect-error exact _client implementation not needed in these tests
+  _client: {},
+  cacheKey: '41245072',
+  creationDate: new Date,
+  broadcasterType: 'partner',
+  displayName: "Loserfruit",
+  description: "\"The streamer to watch when no one else is live....\" - Thomas Jefferson",
+  id: "41245072",
+  name: "loserfruit",
+  offlinePlaceholderUrl: "https://static-cdn.jtvnw.net/jtv_user_pictures/6fc3eac808af1932-channel_offline_image-1920x1080.jpeg",
+  profilePictureUrl: "https://static-cdn.jtvnw.net/jtv_user_pictures/fd17325a-7dc2-46c6-8617-e90ec259501c-profile_image-300x300.png",
+  type: "",
+  views: 56617494
+}
+
+// Data is combined in this way by the custom getChannel hook for twitch channel pages
+const testCombinedData = {
+  channelData: testChannelData,
+  userData: testUserData,
+  isLive: false,
 }
 
 // Modify these parameters as needed within individual tests
-const mockChannelSearch: mockYouTubeChannelSearchHook = {
+const mockChannelSearch: mockTwitchChannelSearchHook = {
   isLoading: false,
   isError: false,
   data: undefined,
@@ -77,8 +64,8 @@ const mockChannelSearch: mockYouTubeChannelSearchHook = {
 }
 
 // Provide channel data and other UI states via this mock of the channel search API call
-jest.mock('../../hooks/useGetYouTubeChannel', () => ({
-  useGetYouTubeChannel: () => (mockChannelSearch),
+jest.mock('../../hooks/useGetTwitchChannel', () => ({
+  useGetTwitchChannel: () => (mockChannelSearch),
 }));
 
 
@@ -86,24 +73,15 @@ describe('Channel page layout and elements', () => {
   it('Shows the channel title', () => {
     mockChannelSearch.isError = false;
     mockChannelSearch.isLoading = false;
-    mockChannelSearch.data = testData;
-    render(<YouTubeChannel />)
+    mockChannelSearch.data = testCombinedData;
+    render(<TwitchChannelPage />)
 
-    const title = screen.getByRole('heading', { name: /Smash/i });
+    const title = screen.getByRole('heading', { name: /loserfruit/i });
     expect(title).toBeInTheDocument();
   });
 
-  it('Shows the channel data (subscriber count and video count)', () => {
-    render(<YouTubeChannel />)
-
-    const subCount = screen.getByText(/1510000 subscribers/i);
-    const videoCount = screen.getByText(/570 videos/i);
-    expect(subCount).toBeInTheDocument();
-    expect(videoCount).toBeInTheDocument();
-  });
-
-  it('Shows the channel thumbnail and banner', () => {
-    render(<YouTubeChannel />)
+  it('Shows the channel thumbnail and banner (if banner exists)', () => {
+    render(<TwitchChannelPage />)
 
     // With channel thumbnail and banner, we should see two images in this component
     const images = screen.getAllByRole('img');
@@ -115,8 +93,8 @@ describe('Channel page UI states', () => {
   it('Renders data correctly (no loaders/error UI present)', () => {
     mockChannelSearch.isError = false;
     mockChannelSearch.isLoading = false;
-    mockChannelSearch.data = testData;
-    render(<YouTubeChannel />)
+    mockChannelSearch.data = testCombinedData;
+    render(<TwitchChannelPage />)
 
     // Check that loading UI is not present
     const loading = screen.queryByText(/loading/i)
@@ -127,7 +105,7 @@ describe('Channel page UI states', () => {
     expect(error).not.toBeInTheDocument();
 
     // Check that data has been rendered
-    const channelData = screen.getByRole('heading', { name: /Smash/i });
+    const channelData = screen.getByRole('heading', { name: /loserfruit/i });
     expect(channelData).toBeInTheDocument();
   });
 
@@ -135,7 +113,7 @@ describe('Channel page UI states', () => {
     mockChannelSearch.isError = false;
     mockChannelSearch.isLoading = true;
     mockChannelSearch.data = undefined;
-    render(<YouTubeChannel />)
+    render(<TwitchChannelPage />)
 
     // Check error UI is not present
     const error = screen.queryByText(/error/i)
@@ -150,7 +128,7 @@ describe('Channel page UI states', () => {
     mockChannelSearch.isError = true;
     mockChannelSearch.isLoading = false;
     mockChannelSearch.data = undefined;
-    render(<YouTubeChannel />)
+    render(<TwitchChannelPage />)
 
     // Check that loading UI is not present
     const loading = screen.queryByText(/loading/i)
