@@ -5,7 +5,7 @@ import styles from '../styles/componentStyles/YouTubeSearchResult.module.css'
 interface YouTubeChannelResultProps {
   channelData: YouTubeSearchResultSnippet;
 }
-
+// This component is used to render a search result 'listing' for an individual channel. 
 const YouTubeChannelResult = ({ channelData }: YouTubeChannelResultProps) => {
   return (
     <div className={styles.channel}>

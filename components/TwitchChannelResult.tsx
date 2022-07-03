@@ -7,6 +7,12 @@ interface TwitchChannelResultProps {
 }
 
 const ChannelResult = ({ channelData }: TwitchChannelResultProps) => {
+  const logData = async () => {
+    console.log(channelData);
+    console.log(await channelData.getUser());
+  }
+
+
   return (
     <div className={styles.channel}>
       <div className={styles.imgContainer}>
@@ -19,6 +25,7 @@ const ChannelResult = ({ channelData }: TwitchChannelResultProps) => {
       </div>
       <div className={styles.channelText}>
         <h3 className={styles.channelTitle}>{channelData.displayName}</h3>
+        <button onClick={logData}>Log data</button>
         <p className={styles.game}>{channelData.gameName}</p>
       </div>
     </div>

@@ -160,8 +160,6 @@ describe('Channel page UI states', () => {
     const error = screen.getByText(/error/i)
     expect(error).toBeInTheDocument();
   });
-
-
 });
 
 
