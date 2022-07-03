@@ -2,7 +2,7 @@ import TwitchSearchTab from "../components/TwitchSearchTab";
 import YouTubeSearchTab from "../components/YouTubeSearchTab";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { isValidQuery, sanitiseQuery } from "../helpers/queryHandling";
+import { isValidSearchQuery, sanitiseSearchQuery } from "../helpers/queryHandling";
 
 const Search = () => {
   const router = useRouter();
@@ -11,7 +11,7 @@ const Search = () => {
   const [activeTab, setActiveTab] = useState('twitch')
 
   // Avoid displaying the default search results page. This alleviates the need to conditionally run the API queries based on checking for valid queries.
-  if (!isValidQuery(UrlQuery)) {
+  if (!isValidSearchQuery(UrlQuery)) {
     return (
       <div>That is an invalid search. Try another.</div>
     )
@@ -28,13 +28,13 @@ const Search = () => {
         {activeTab === 'twitch' && (
           <section>
             <h3>Twitch results</h3>
-            <TwitchSearchTab searchQuery={sanitiseQuery(UrlQuery)} />
+            <TwitchSearchTab searchQuery={sanitiseSearchQuery(UrlQuery)} />
           </section>
         )}
         {activeTab === 'youtube' && (
           <section>
             <h3>YouTube results</h3>
-            <YouTubeSearchTab searchQuery={sanitiseQuery(UrlQuery)} />
+            <YouTubeSearchTab searchQuery={sanitiseSearchQuery(UrlQuery)} />
           </section>
         )}
       </div>

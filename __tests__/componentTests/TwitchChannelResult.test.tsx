@@ -74,15 +74,6 @@ describe('Twitch channel result component', () => {
   });
 
   // Unsure if this is to be included
-  it('Includes active subscribe button (if not yet subscribed)', () => {
-    render(<TwitchChannelResult channelData={testData} />)
-    const subscribe = screen.getByRole('button', { name: /subscribe/i });
-    expect(subscribe).toBeInTheDocument()
-  });
-
-  it('Includes "unsubscribe" button (if already subscribed)', () => {
-    render(<TwitchChannelResult channelData={testData} />)
-    const unsubscribe = screen.getByRole('button', { name: /unsubscribe/i });
-    expect(unsubscribe).toBeInTheDocument()
-  });
+  it.todo('Includes active subscribe button (if not yet subscribed)');
+  it.todo('Includes "unsubscribe" button (if already subscribed)');
 })
