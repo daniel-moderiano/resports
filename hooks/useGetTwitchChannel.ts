@@ -12,7 +12,6 @@ export interface TwitchChannel {
 
 // conditions specify any additional criteria that must evaluate to true before the query is executed
 export const useGetTwitchChannel = (channelId: string, conditions?: boolean) => {
-
   const { isLoading, isError, data, error } = useQuery(['twitchChannel', channelId], async () => {
     // The apiClient from the twurple library has internal error handling; no manual error handling is required here.
     const channelResponse = await apiClient.channels.getChannelInfoById(channelId);

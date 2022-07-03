@@ -1,12 +1,24 @@
 import { useGetTwitchChannel } from '../../hooks/useGetTwitchChannel';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useEffect } from 'react';
+import { sanitiseChannelQuery } from 'helpers/queryHandling';
+import { GetServerSideProps } from 'next';
 
-const TwitchChannel = () => {
-  const router = useRouter();
-  const { channelId } = router.query;
-  const { isLoading, isError, data, error } = useGetTwitchChannel('1');
+interface TwitchChannelProps {
+  channelId: string;
+}
+
+// This server side props function ensures the dynamic route param is made available at component render time so that it can be passed safely and directly to the useGetTwitchChannel hook. Using router.query in component causes it to be undefined on initial render.
+/* eslint-disable-next-line */
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const channelId = sanitiseChannelQuery(context.query);
+
+  // Pass data to the page via props
+  return { props: { channelId } }
+}
+
+const TwitchChannel = ({ channelId }: TwitchChannelProps) => {
+  const { isLoading, isError, data, error } = useGetTwitchChannel(channelId);
 
   useEffect(() => {
     if (data) {
