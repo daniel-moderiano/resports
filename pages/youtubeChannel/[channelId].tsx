@@ -1,13 +1,21 @@
 import { useGetYouTubeChannel } from '../../hooks/useGetYouTubeChannel';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 // * The Search: list method can be used with a 'channelId' filter to yield all videos for a channel!
 
 const YouTubeChannel = () => {
   const router = useRouter();
   const { channelId } = router.query;
-  const { isLoading, isError, data, error } = useGetYouTubeChannel('UC_qVvdPdMIZDEc6zdj06ilA');
+  const { isLoading, isError, data, error } = useGetYouTubeChannel('');
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+
+    }
+  }, [data])
 
   return (
     <div>

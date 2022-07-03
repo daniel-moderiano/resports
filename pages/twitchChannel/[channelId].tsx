@@ -1,20 +1,19 @@
 import { useGetTwitchChannel } from '../../hooks/useGetTwitchChannel';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 const TwitchChannel = () => {
   const router = useRouter();
   const { channelId } = router.query;
+  const { isLoading, isError, data, error } = useGetTwitchChannel('1');
 
-  const { isLoading, isError, data, error } = useGetTwitchChannel("145780645");
+  useEffect(() => {
+    if (data) {
+      console.log(data);
 
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data);
-
-  //   }
-  // }, [data])
+    }
+  }, [data])
 
   return (
     <div>
