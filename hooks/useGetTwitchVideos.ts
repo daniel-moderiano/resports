@@ -8,7 +8,7 @@ export const useGetTwitchVideos = (userId: string, conditions?: boolean) => {
     // The apiClient from the twurple library has internal error handling; no manual error handling is required here.
     const response = await apiClient.videos.getVideosByUser(userId);
 
-    console.log(response);
+    console.log(response.data);
 
 
     // * This ignores pagination at this stage
