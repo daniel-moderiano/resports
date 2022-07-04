@@ -43,7 +43,7 @@ const TwitchChannel = ({ channelId }: TwitchChannelProps) => {
 
       <button onClick={() => { setShowVideos((prevState) => !prevState) }}>Toggle videos</button>
 
-      {showVideos && (<TwitchChannelVideos />)}
+      {showVideos && (<TwitchChannelVideos userId={channelId} />)}
     </div>
   )
 }
