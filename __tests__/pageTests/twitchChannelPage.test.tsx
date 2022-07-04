@@ -93,7 +93,7 @@ describe('Channel page layout and elements', () => {
     render(<TwitchChannelPage channelId='1234' />)
 
     // Check the reveal button is shown
-    const btn = screen.getByRole('button', { name: /show videos/i });
+    const btn = screen.getByRole('button', { name: /toggle videos/i });
     expect(btn).toBeInTheDocument();
 
     const videos = screen.queryByRole('heading', { name: /videos/i });
@@ -104,7 +104,7 @@ describe('Channel page layout and elements', () => {
     render(<TwitchChannelPage channelId='1234' />);
 
     // First click button
-    const btn = screen.getByRole('button', { name: /show videos/i });
+    const btn = screen.getByRole('button', { name: /toggle videos/i });
     await userEvent.click(btn);
 
     // Then check for presence of videos section

@@ -2,6 +2,8 @@ import { useGetTwitchChannel } from '../../hooks/useGetTwitchChannel';
 import Image from 'next/image';
 import { sanitiseChannelQuery } from '../../helpers/queryHandling';
 import { GetServerSideProps } from 'next';
+import { useState } from 'react';
+import TwitchChannelVideos from '../../components/TwitchChannelVideos';
 
 interface TwitchChannelProps {
   channelId: string;
@@ -18,6 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const TwitchChannel = ({ channelId }: TwitchChannelProps) => {
   const { isLoading, isError, data, error } = useGetTwitchChannel(channelId);
+  const [showVideos, setShowVideos] = useState(false);
 
   return (
     <div>
@@ -37,6 +40,10 @@ const TwitchChannel = ({ channelId }: TwitchChannelProps) => {
           </div>
         </section>
       )}
+
+      <button onClick={() => { setShowVideos((prevState) => !prevState) }}>Toggle videos</button>
+
+      {showVideos && (<TwitchChannelVideos />)}
     </div>
   )
 }
