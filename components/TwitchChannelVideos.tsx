@@ -13,7 +13,25 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
   return (
     <section>
       <h2>Twitch Channel Videos</h2>
+      {isLoading && (<div>Videos loading...</div>)}
 
+      {isError && (<div>An error has occurred</div>)}
+
+      {data && (
+        <>
+          {data.length > 0 ? (
+            <>
+              {data.map((video) => (
+                // Individual video component here
+                <div key={video.id}>{video.title}</div>
+              ))}
+            </>
+
+          ) : (
+            <div>No videos</div>
+          )}
+        </>
+      )}
     </section>
   )
 }
