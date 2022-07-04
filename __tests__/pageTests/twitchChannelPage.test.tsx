@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import TwitchChannelPage from '../../pages/twitchChannel/[channelId]';
 import { TwitchChannel } from 'hooks/useGetTwitchChannel';
 import { HelixChannel, HelixUser } from '@twurple/api/lib';
+import userEvent from '@testing-library/user-event';
 
 interface mockTwitchChannelSearchHook {
   isLoading: boolean,
@@ -86,6 +87,29 @@ describe('Channel page layout and elements', () => {
     // With channel thumbnail and banner, we should see two images in this component
     const images = screen.getAllByRole('img');
     expect(images).toHaveLength(2);
+  });
+
+  it('Hides the channel videos section by default', () => {
+    render(<TwitchChannelPage channelId='1234' />)
+
+    // Check the reveal button is shown
+    const btn = screen.getByRole('button', { name: /show videos/i });
+    expect(btn).toBeInTheDocument();
+
+    const videos = screen.queryByRole('heading', { name: /videos/i });
+    expect(videos).not.toBeInTheDocument();
+  });
+
+  it('Shows the channel videos section on click of reveal btn', async () => {
+    render(<TwitchChannelPage channelId='1234' />);
+
+    // First click button
+    const btn = screen.getByRole('button', { name: /show videos/i });
+    await userEvent.click(btn);
+
+    // Then check for presence of videos section
+    const videos = screen.getByRole('heading', { name: /videos/i });
+    expect(videos).toBeInTheDocument();
   });
 });
 
