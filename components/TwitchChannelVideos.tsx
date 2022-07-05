@@ -1,5 +1,8 @@
+import { HelixVideoType } from '@twurple/api/lib';
+import { useState } from 'react';
 import { useGetTwitchVideos } from '../hooks/useGetTwitchVideos'
 import TwitchVideoListing from './TwitchVideoListing';
+import * as React from 'react'
 
 interface TwitchChannelVideosProps {
   userId: string;
@@ -9,7 +12,15 @@ interface TwitchChannelVideosProps {
 // * Use the archive video type filter to get past broadcasts!!
 
 const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
-  const { isError, isLoading, data, error } = useGetTwitchVideos(userId);
+
+
+  const [videoType, setVideoType] = React.useState<HelixVideoType | undefined | 'all'>('archive');
+
+  const { isError, isLoading, data, error, refetch } = useGetTwitchVideos(userId, videoType);
+
+  const refetchQuery = () => {
+    setVideoType('all');
+  }
 
   return (
     <section>
@@ -17,6 +28,8 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
       {isLoading && (<div>Videos loading...</div>)}
 
       {isError && (<div>An error has occurred</div>)}
+
+      <button onClick={refetchQuery}>Toggle all vids</button>
 
       {data && (
         <>
