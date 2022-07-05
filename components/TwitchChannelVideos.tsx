@@ -5,10 +5,10 @@ interface TwitchChannelVideosProps {
 }
 
 // Make API call here to fetch videos using channel/user ID
+// * Use the archive video type filter to get past broadcasts!!
 
 const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
-  const { isError, isLoading, data, error } = useGetTwitchVideos(userId)
-
+  const { isError, isLoading, data, error } = useGetTwitchVideos(userId);
 
   return (
     <section>
@@ -23,7 +23,11 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
             <>
               {data.map((video) => (
                 // Individual video component here
-                <div key={video.id}>{video.title}</div>
+                <div key={video.id}>
+                  {video.title}
+
+                  <p>{video.type}</p>
+                </div>
               ))}
             </>
 
