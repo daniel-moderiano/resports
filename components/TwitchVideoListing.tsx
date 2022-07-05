@@ -1,4 +1,5 @@
-import { HelixVideo } from "@twurple/api/lib"
+import { HelixVideo } from "@twurple/api/lib";
+import Image from 'next/image'
 
 interface TwitchVideoListingProps {
   videoData: HelixVideo
@@ -7,9 +8,10 @@ interface TwitchVideoListingProps {
 const TwitchVideoListing = ({ videoData }: TwitchVideoListingProps) => {
   return (
     <div>
-      <h3>{videoData.title}</h3>
+      <h4>{videoData.title}</h4>
       <p>{videoData.description}</p>
       <p>{videoData.duration}</p>
+      <Image src={videoData.getThumbnailUrl(169, 100)} height={100} width={169} layout="fixed" alt="Video thumbnail" />
     </div>
   )
 }
