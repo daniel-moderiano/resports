@@ -1,4 +1,5 @@
 import { useGetTwitchVideos } from '../hooks/useGetTwitchVideos'
+import TwitchVideoListing from './TwitchVideoListing';
 
 interface TwitchChannelVideosProps {
   userId: string;
@@ -22,15 +23,9 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
           {data.length > 0 ? (
             <>
               {data.map((video) => (
-                // Individual video component here
-                <div key={video.id}>
-                  {video.title}
-
-                  <p>{video.type}</p>
-                </div>
+                <TwitchVideoListing key={video.id} videoData={video} />
               ))}
             </>
-
           ) : (
             <div>No videos</div>
           )}
