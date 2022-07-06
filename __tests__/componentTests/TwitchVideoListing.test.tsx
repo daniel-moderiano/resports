@@ -12,17 +12,16 @@ const testData: HelixVideo = {
   publishDate: new Date,
   streamId: "40938585131",
   thumbnailUrl: "https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/99f9e412e6c974e168ba_loserfruit_40938585131_1656826735//thumb/thumb0-%{width}x%{height}.jpg",
-  title: "BEST GAMER EVER?",
+  title: "BEST GAMER EVER? !newvid FORTNITE THEN GETTING THAT FALL GUYS ACHIEVEMENT",
   type: "archive",
   url: "https://www.twitch.tv/videos/1521027333",
   userDisplayName: "Loserfruit",
   userId: "41245072",
   userName: "loserfruit",
   views: 54140,
-  creationDate: new Date,
+  creationDate: new Date(),
   // @ts-expect-error exact getUser implementation not needed in these tests
   getUser: jest.fn,
-
   getThumbnailUrl: jest.fn(() => 'https://exampleimage.com'),
 }
 
@@ -36,16 +35,25 @@ describe('Twitch video listing component', () => {
 
   it('Includes video name with correct overflow handling', () => {
     render(<TwitchVideoListing videoData={testData} />)
-    const name = screen.getByText('Smash');
+    const name = screen.getByText(/BEST GAMER EVER/i);
     expect(name).toBeInTheDocument()
   });
 
-  it('Shows video duration', () => {
+  it('Includes video duration', () => {
     render(<TwitchVideoListing videoData={testData} />)
     const duration = screen.getByText("5:00:00");
     expect(duration).toBeInTheDocument()
   });
 
-  // Unsure if this is to be included
-  it.todo('Correctly displays upload time/date in the "X days ago" format"');
+  it('Includes upload time/date', () => {
+    render(<TwitchVideoListing videoData={testData} />)
+    const duration = screen.getByText("Now");
+    expect(duration).toBeInTheDocument()
+  });
+
+  it('Includes channel name', () => {
+    render(<TwitchVideoListing videoData={testData} />)
+    const channelName = screen.getByText(/loserfruit/i);
+    expect(channelName).toBeInTheDocument()
+  });
 });
