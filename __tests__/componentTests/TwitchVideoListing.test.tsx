@@ -1,0 +1,49 @@
+import { render, screen } from '@testing-library/react';
+import { HelixVideo } from '@twurple/api/lib';
+import TwitchVideoListing from '../../components/TwitchVideoListing';
+
+const testData: HelixVideo = {
+  description: '',
+  duration: "5h0m0s",
+  durationInSeconds: 18000,
+  id: "1521027333",
+  isPublic: true,
+  language: "en",
+  publishDate: new Date,
+  streamId: "40938585131",
+  thumbnailUrl: "https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/99f9e412e6c974e168ba_loserfruit_40938585131_1656826735//thumb/thumb0-%{width}x%{height}.jpg",
+  title: "BEST GAMER EVER?",
+  type: "archive",
+  url: "https://www.twitch.tv/videos/1521027333",
+  userDisplayName: "Loserfruit",
+  userId: "41245072",
+  userName: "loserfruit",
+  views: 54140,
+  creationDate: new Date,
+  // @ts-expect-error exact getUser implementation not needed in these tests
+  getUser: jest.fn,
+}
+
+describe('Twitch video listing component', () => {
+  // This tests for default thumbnail specifically
+  it('Includes video thumbnail', () => {
+    render(<TwitchVideoListing videoData={testData} />)
+    const thumbnail = screen.getByRole('img');
+    expect(thumbnail).toBeInTheDocument();
+  });
+
+  it('Includes video name with correct overflow handling', () => {
+    render(<TwitchVideoListing videoData={testData} />)
+    const name = screen.getByText('Smash');
+    expect(name).toBeInTheDocument()
+  });
+
+  it('Shows video duration in correct format HH:MM:SS', () => {
+    render(<TwitchVideoListing videoData={testData} />)
+    const description = screen.getByText("Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io ...");
+    expect(description).toBeInTheDocument()
+  });
+
+  // Unsure if this is to be included
+  it.todo('Correctly displays upload time/date in the "X days ago" format"');
+});
