@@ -3,13 +3,14 @@ export const convertTwitchVideoDuration = (duration: string) => {
   let convertedDuration = '';
 
   // Splitting at the hours allows use to handle all the conditionals easily from the top-down
+  // It also correctlyhandles input no matter the duration, whereas using a length conditional would vary for 0 mins/secs
   const hoursSplit = duration.split('h');
 
   if (hoursSplit.length === 1) {    // duration is either minutes/seconds or seconds only
     const minutesSplit = duration.split('m');
 
     if (minutesSplit.length > 1) {    // duration is minutes/seconds
-      // Handle the minutes component
+      // Handle the minutes component (add extra zeros for single digit mins)
       convertedDuration += `${minutesSplit[0]}:`;
 
       // Handle the seconds component
@@ -26,13 +27,13 @@ export const convertTwitchVideoDuration = (duration: string) => {
     // Handle hours component
     convertedDuration += `${hoursSplit[0]}:`;
 
-    // Handle minutes component
+    // Handle minutes component (add extra zeros for single digit mins)
     const minutesSplit = hoursSplit[1].split('m');
-    convertedDuration += `${minutesSplit[0]}:`;
+    convertedDuration += minutesSplit[0].length > 1 ? `${minutesSplit[0]}:` : `0${minutesSplit[0]}:`
 
-    // Handle the seconds component
+    // Handle the seconds component  (add extra zeros for single digit secs)
     const secondsSplit = minutesSplit[1].split('s');
-    convertedDuration += secondsSplit[0];
+    convertedDuration += secondsSplit[0].length > 1 ? `${secondsSplit[0]}` : `0${secondsSplit[0]}`
   }
 
   return convertedDuration;

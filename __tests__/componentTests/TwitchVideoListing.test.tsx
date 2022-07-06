@@ -22,6 +22,8 @@ const testData: HelixVideo = {
   creationDate: new Date,
   // @ts-expect-error exact getUser implementation not needed in these tests
   getUser: jest.fn,
+
+  getThumbnailUrl: jest.fn(() => 'https://exampleimage.com'),
 }
 
 describe('Twitch video listing component', () => {
@@ -38,10 +40,10 @@ describe('Twitch video listing component', () => {
     expect(name).toBeInTheDocument()
   });
 
-  it('Shows video duration in correct format HH:MM:SS', () => {
+  it('Shows video duration', () => {
     render(<TwitchVideoListing videoData={testData} />)
-    const description = screen.getByText("Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io ...");
-    expect(description).toBeInTheDocument()
+    const duration = screen.getByText("5:00:00");
+    expect(duration).toBeInTheDocument()
   });
 
   // Unsure if this is to be included
