@@ -33,7 +33,7 @@ describe('Twitch video listing component', () => {
     expect(thumbnail).toBeInTheDocument();
   });
 
-  it('Includes video name with correct overflow handling', () => {
+  it('Includes video name', () => {
     render(<TwitchVideoListing videoData={testData} />)
     const name = screen.getByText(/BEST GAMER EVER/i);
     expect(name).toBeInTheDocument()
@@ -47,7 +47,7 @@ describe('Twitch video listing component', () => {
 
   it('Includes upload time/date', () => {
     render(<TwitchVideoListing videoData={testData} />)
-    const duration = screen.getByText("Now");
+    const duration = screen.getByText("just now");
     expect(duration).toBeInTheDocument()
   });
 
