@@ -1,5 +1,5 @@
 .videoListing {
-  width: 169px;
+  width: 240px;
   display: flex;
   flex-direction: column;
 }
@@ -31,5 +31,23 @@
   border-radius: 2px;
   bottom: 10px;
   left: 4px;
+  font-size: 0.8rem;
+}
+
+.title {
+  margin: 0.2rem 0;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.channel {
+  margin: 0.2rem 0;
+  font-size: 0.8rem;
+}
+
+.link {
+  margin: 0.2rem 0;
   font-size: 0.8rem;
 }
