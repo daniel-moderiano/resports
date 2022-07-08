@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import TwitchChannelPage from '../../pages/twitchChannel/[channelId]';
-import { TwitchChannel } from 'hooks/useGetTwitchChannel';
+import { TwitchChannel } from '../../hooks/useGetTwitchChannel';
 import { HelixChannel, HelixUser } from '@twurple/api/lib';
 import userEvent from '@testing-library/user-event';
 
@@ -68,6 +68,12 @@ const mockChannelSearch: mockTwitchChannelSearchHook = {
 jest.mock('../../hooks/useGetTwitchChannel', () => ({
   useGetTwitchChannel: () => (mockChannelSearch),
 }));
+
+// Provide generalised mock to avoid errors when the TwitchChannelVideos component renders
+jest.mock('../../hooks/useGetTwitchVideos', () => ({
+  useGetTwitchVideos: () => ({}),
+}));
+
 
 
 describe('Channel page layout and elements', () => {
