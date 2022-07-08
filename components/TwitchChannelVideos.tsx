@@ -22,6 +22,10 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
     setVideoType('all');
   }
 
+  const handleOptionSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setVideoType(e.target.value as HelixVideoType | 'all');
+  }
+
   return (
     <section>
       <h2>Twitch Channel Videos</h2>
@@ -32,7 +36,10 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
       <button onClick={refetchQuery}>Toggle all vids</button>
 
       <label htmlFor="videoType">Video type</label>
-      <select name="videoType" id="videoType"></select>
+      <select defaultValue={videoType} onChange={handleOptionSelect} name="videoType" id="videoType">
+        <option value="all" data-testid="allOption">All videos</option>
+        <option value="archive" data-testid="broadcastOption">Broadcasts</option>
+      </select>
 
       {data && (
         <div className={styles.videosList}>

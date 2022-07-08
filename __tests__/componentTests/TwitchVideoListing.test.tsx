@@ -26,7 +26,7 @@ const testData: HelixVideo = {
 }
 
 describe('Twitch video listing component', () => {
-  // This tests for default thumbnail specifically
+  // This tests for an available thumbnail via getThumbnailUrl
   it('Includes video thumbnail', () => {
     render(<TwitchVideoListing videoData={testData} />)
     const thumbnail = screen.getByRole('img');

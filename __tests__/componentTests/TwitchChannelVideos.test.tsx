@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { HelixVideo } from '@twurple/api/lib';
 import TwitchChannelVideos from '../../components/TwitchChannelVideos';
 
@@ -123,7 +124,21 @@ describe('Twitch videos loading/error/data UI states', () => {
     // This data does not contain any channel items
     mockResult.data = [];
     render(<TwitchChannelVideos userId='1234' />)
-    const test = screen.getByText(/no videos/i)
-    expect(test).toBeInTheDocument();
+    const msg = screen.getByText(/no videos/i)
+    expect(msg).toBeInTheDocument();
+  });
+
+  it('Defaults the video type select element to "Broadcasts"', () => {
+    render(<TwitchChannelVideos userId='1234' />)
+    const selectElement: HTMLSelectElement = screen.getByLabelText(/video type/i)
+    expect(selectElement.value).toBe('archive');
+  });
+
+  it('Correctly handles selecting different video type options', async () => {
+    render(<TwitchChannelVideos userId='1234' />)
+    const selectElement: HTMLSelectElement = screen.getByLabelText(/video type/i);
+    const allOption: HTMLOptionElement = screen.getByTestId(/allOption/i);
+    await userEvent.selectOptions(selectElement, allOption)
+    expect(selectElement.value).toBe('all');
   });
 });
