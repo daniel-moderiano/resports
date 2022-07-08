@@ -24,8 +24,8 @@ const TwitchVideoListing = ({ videoData }: TwitchVideoListingProps) => {
       </div>
       <h4 className={styles.title}>{videoData.title}</h4>
       <p className={styles.channel}>{videoData.userDisplayName}</p>
-      <Link href={videoData.url} >
-        <a className={styles.link}>View on Twitch</a>
+      <Link href={videoData.url}>
+        <a rel="noopener" target="_blank" className={styles.link}>View on Twitch</a>
       </Link>
     </div>
   )

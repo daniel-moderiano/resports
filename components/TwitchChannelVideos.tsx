@@ -12,17 +12,11 @@ interface TwitchChannelVideosProps {
 // * Use the archive video type filter to get past broadcasts!!
 
 const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
-
-
   const [videoType, setVideoType] = React.useState<HelixVideoType | undefined | 'all'>('archive');
-
   const { isError, isLoading, data, error } = useGetTwitchVideos(userId, videoType);
 
-  const refetchQuery = () => {
-    setVideoType('all');
-  }
-
   const handleOptionSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // This typecasting is required, as you cannot simply assign the 'string' value type to the videoType state
     setVideoType(e.target.value as HelixVideoType | 'all');
   }
 
@@ -32,8 +26,6 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
       {isLoading && (<div>Videos loading...</div>)}
 
       {isError && (<div>An error has occurred</div>)}
-
-      <button onClick={refetchQuery}>Toggle all vids</button>
 
       <label htmlFor="videoType">Video type</label>
       <select defaultValue={videoType} onChange={handleOptionSelect} name="videoType" id="videoType">
