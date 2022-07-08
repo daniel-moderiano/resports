@@ -31,6 +31,9 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
 
       <button onClick={refetchQuery}>Toggle all vids</button>
 
+      <label htmlFor="videoType">Video type</label>
+      <select name="videoType" id="videoType"></select>
+
       {data && (
         <div className={styles.videosList}>
           {data.length > 0 ? (

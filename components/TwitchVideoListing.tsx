@@ -10,10 +10,15 @@ interface TwitchVideoListingProps {
 }
 
 const TwitchVideoListing = ({ videoData }: TwitchVideoListingProps) => {
+
   return (
     <div className={styles.videoListing}>
       <div className={styles.imageContainer}>
-        <Image src={videoData.getThumbnailUrl(240, 135)} height={135} width={240} layout="fixed" alt="Video thumbnail" />
+        {videoData.getThumbnailUrl(240, 135) ? (
+          <Image src={videoData.getThumbnailUrl(240, 135)} height={135} width={240} layout="fixed" alt="Video thumbnail" />
+        ) : (
+          <Image src="/images/no-thumbnail.png" height={135} width={240} layout="fixed" alt="Video thumbnail" />
+        )}
         <p className={styles.duration}>{convertTwitchVideoDuration(videoData.duration)}</p>
         <p className={styles.createdAt}>{timeAgo.format(videoData.creationDate)}</p>
       </div>

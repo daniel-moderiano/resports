@@ -31,6 +31,7 @@ const testVideos: HelixVideo[] = [
     creationDate: new Date,
     // @ts-expect-error exact getUser implementation not needed in these tests
     getUser: jest.fn,
+    getThumbnailUrl: jest.fn(() => 'https://exampleimage.com'),
   },
   {
     creationDate: new Date,
@@ -52,6 +53,7 @@ const testVideos: HelixVideo[] = [
     views: 36884,
     // @ts-expect-error exact getUser implementation not needed in these tests
     getUser: jest.fn,
+    getThumbnailUrl: jest.fn(() => 'https://exampleimage.com'),
   }
 ]
 
