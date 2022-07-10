@@ -13,7 +13,7 @@ interface TwitchChannelVideosProps {
 
 const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
   const [videoType, setVideoType] = React.useState<HelixVideoType | undefined | 'all'>('archive');
-  const { isError, isLoading, data, error } = useGetTwitchVideos(userId, videoType);
+  const { isError, isLoading, data } = useGetTwitchVideos(userId, videoType);
 
   const handleOptionSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     // This typecasting is required, as you cannot simply assign the 'string' value type to the videoType state
