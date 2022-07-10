@@ -10,7 +10,9 @@ export const filterByDate = () => {
 export const filterByDuration = (videos: HelixVideo[], minimumDurationInSeconds: number,) => {
   const filteredVideos = videos.filter((video) => {
     return video.durationInSeconds > minimumDurationInSeconds;
-  })
+  });
+
+  return filteredVideos;
 };
 
 // Essentially used as a search function with a user provided keyword/search query
