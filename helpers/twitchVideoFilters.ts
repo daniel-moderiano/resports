@@ -7,7 +7,7 @@ export const filterByDate = () => {
 };
 
 // Currently this only takes a minimum duration, and is used to return only those videos longer than the specified duration
-export const filterByDuration = (videos: HelixVideo[], minimumDurationInSeconds: number,) => {
+export const filterByDuration = (videos: HelixVideo[], minimumDurationInSeconds: number) => {
   const filteredVideos = videos.filter((video) => {
     return video.durationInSeconds > minimumDurationInSeconds;
   });
@@ -16,7 +16,11 @@ export const filterByDuration = (videos: HelixVideo[], minimumDurationInSeconds:
 };
 
 // Essentially used as a search function with a user provided keyword/search query
-export const filterByKeyword = () => {
+export const filterByKeyword = (videos: HelixVideo[], keyword: string) => {
+  const filteredVideos = videos.filter((video) => {
+    return video.title.includes(keyword.trim());
+  });
 
+  return filteredVideos;
 };
 
