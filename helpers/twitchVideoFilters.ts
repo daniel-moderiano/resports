@@ -2,8 +2,12 @@
 
 import {HelixVideo} from "@twurple/api/lib";
 
-export const filterByDate = () => {
+export const filterByDate = (videos: HelixVideo[], oldestCreationDate: Date) => {
+  const filteredVideos = videos.filter((video) => {
+    return video.creationDate >= oldestCreationDate;
+  });
 
+  return filteredVideos;
 };
 
 // Currently this only takes a minimum duration, and is used to return only those videos longer than the specified duration
