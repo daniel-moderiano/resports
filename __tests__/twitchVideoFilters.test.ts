@@ -39,7 +39,7 @@ const testVideos: HelixVideo[] = [
   },
   {
     durationInSeconds: 1234,    // 00:20:34
-    creationDate: new Date(2022, 5, 12),
+    creationDate: new Date(2022, 5, 12, 5),
     title: "video six",
     // @ts-expect-error exact getUser implementation not needed in these tests
     getUser: jest.fn,
@@ -130,23 +130,48 @@ describe('Filter videos by title keyword', () => {
 })
 
 describe('Filter videos by date', () => {
-  it('returns all videos newer than the provided date', () => {
-    expect(filterByDate(testVideos, new Date(2021, 1, 1))).toStrictEqual(testVideos);
+  it('returns all videos older than the provided date', () => {
+    // Should NOT return the 12/05/2022 05:00:00 video!
+    expect(filterByDate(testVideos, new Date(2022, 5, 12))).toStrictEqual([
+      {
+        durationInSeconds: 18000,   // 05:00:00
+        creationDate: new Date(2022, 5, 12),
+        title: "video one",
+        getUser: jest.fn,
+      },
+      {
+        durationInSeconds: 8274,    // 02:15:54
+        creationDate: new Date(2022, 4, 12),
+        title: "video two",
+        getUser: jest.fn,
+      },
+      {
+        durationInSeconds: 10,   // 00:00:10
+        creationDate: new Date(2022, 3, 12),
+        title: "video three",
+        getUser: jest.fn,
+      },
+      {
+        durationInSeconds: 23452,
+        creationDate: new Date(2022, 5, 11),
+        title: "video five",
+        getUser: jest.fn,
+      },
+    ]);
   });
 
-  it('returns videos created on the date provided', () => {
-    //  Aim to filter out all those videos less than 4 hours duration
-    expect(filterByDate(testVideos, new Date(2022, 5, 13))).toStrictEqual([
+  it('includes videos on the specified date (if released at 00:00:00)', () => {
+    expect(filterByDate(testVideos, new Date(2022, 3, 12))).toStrictEqual([
       {
-        durationInSeconds: 45006,    // 12:30:06
-        creationDate: new Date(2022, 5, 13),
-        title: "video four",
+        durationInSeconds: 10,   // 00:00:10
+        creationDate: new Date(2022, 3, 12),
+        title: "video three",
         getUser: jest.fn,
       },
     ]);
   });
 
   it('returns empty list when no videos match the criteria', () => {
-    expect(filterByDate(testVideos, new Date(2022, 7, 3))).toStrictEqual([]);
+    expect(filterByDate(testVideos, new Date(2021, 7, 3))).toStrictEqual([]);
   });
 })

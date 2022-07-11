@@ -1,10 +1,10 @@
 // These functions are intended for use in the TwitchChannelVideos component to filter the returned videos data set according to the specifications
-
 import {HelixVideo} from "@twurple/api/lib";
 
-export const filterByDate = (videos: HelixVideo[], oldestCreationDate: Date) => {
+// Able to take any kind of date input. It was decided to include a >= operator as it makes intuitive sense to filter by 'created after this date' to include time later that day ON the date/time selected
+export const filterByDate = (videos: HelixVideo[], dateLimit: Date) => {
   const filteredVideos = videos.filter((video) => {
-    return video.creationDate >= oldestCreationDate;
+    return video.creationDate <= dateLimit;
   });
 
   return filteredVideos;

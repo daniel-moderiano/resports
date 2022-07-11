@@ -2,7 +2,8 @@ import { HelixVideoType } from '@twurple/api/lib';
 import { useGetTwitchVideos } from '../hooks/useGetTwitchVideos'
 import TwitchVideoListing from './TwitchVideoListing';
 import * as React from 'react';
-import styles from '../styles/componentStyles/TwitchChannelVideos.module.css'
+import styles from '../styles/componentStyles/TwitchChannelVideos.module.css';
+import {filterByDate, filterByDuration, filterByKeyword} from "../helpers/twitchVideoFilters";
 
 interface TwitchChannelVideosProps {
   userId: string;
