@@ -21,6 +21,8 @@ const TwitchFilterMenu = ({filters, setFilters, filteredVideos, setFilteredVideo
     }));
   }
 
+  const [showFilters, setShowFilters] = useState(false);
+
   // Unique states are used for each filter within this component
   const [keyword, setKeyword] = useState(filters.keywordFilter ? filters.keywordFilter : '');
   const [minDuration, setMinDuration] = useState(filters.minDurationFilter ? filters.minDurationFilter : 0);
@@ -38,55 +40,59 @@ const TwitchFilterMenu = ({filters, setFilters, filteredVideos, setFilteredVideo
   return (
     <div>
       {/*Expand and collapse the filter menu*/}
-      <button>Filters</button>
+      <button onClick={() => setShowFilters((prevState) => !prevState)}>Filters</button>
 
-      <div>
-        <h4>Upload date</h4>
-        <label htmlFor="date">Uploaded before date</label>
-        <input type="date" id="date" value={date.toLocaleDateString('en-CA')} onChange={(e) =>  setDate(new Date(e.target.valueAsNumber))}/>
-      </div>
-      <div>
-        <h4>Duration</h4>
-        <fieldset>
-          <legend>Select a duration</legend>
+      {showFilters && (
+        <div>
           <div>
-            <input type="radio" id="anyDuration" name="duration" onChange={() => setDuration(0, 180000)} checked={minDuration === 0 && maxDuration === 180000}/>
-            <label htmlFor="anyDuration">Any duration</label>
+            <h4>Upload date</h4>
+            <label htmlFor="date">Uploaded before date</label>
+            <input type="date" id="date" value={date.toLocaleDateString('en-CA')} onChange={(e) =>  setDate(new Date(e.target.valueAsNumber))}/>
           </div>
+          <div>
+            <h4>Duration</h4>
+            <fieldset>
+              <legend>Select a duration</legend>
+              <div>
+                <input type="radio" id="anyDuration" name="duration" onChange={() => setDuration(0, 180000)} checked={minDuration === 0 && maxDuration === 180000}/>
+                <label htmlFor="anyDuration">Any duration</label>
+              </div>
 
-          <div>
-            <input type="radio" id="durationOne" name="duration" onChange={() => setDuration(0, 300)}/>
-            <label htmlFor="durationOne">Under 5 minutes</label>
-          </div>
+              <div>
+                <input type="radio" id="durationOne" name="duration" onChange={() => setDuration(0, 300)}/>
+                <label htmlFor="durationOne">Under 5 minutes</label>
+              </div>
 
-          <div>
-            <input type="radio" id="durationTwo" name="duration" onChange={() => setDuration(300, 3600)} />
-            <label htmlFor="durationTwo">5 - 60 minutes</label>
-          </div>
+              <div>
+                <input type="radio" id="durationTwo" name="duration" onChange={() => setDuration(300, 3600)} />
+                <label htmlFor="durationTwo">5 - 60 minutes</label>
+              </div>
 
-          <div>
-            <input type="radio" id="durationThree" name="duration" onChange={() => setDuration(3600, 14400)} />
-            <label htmlFor="durationThree">1 - 4 hours</label>
-          </div>
+              <div>
+                <input type="radio" id="durationThree" name="duration" onChange={() => setDuration(3600, 14400)} />
+                <label htmlFor="durationThree">1 - 4 hours</label>
+              </div>
 
-          <div>
-            <input type="radio" id="durationFour" name="duration" onChange={() => setDuration(14400, 180000)} />
-            <label htmlFor="durationFour">Over 4 hours</label>
+              <div>
+                <input type="radio" id="durationFour" name="duration" onChange={() => setDuration(14400, 180000)} />
+                <label htmlFor="durationFour">Over 4 hours</label>
+              </div>
+            </fieldset>
           </div>
-        </fieldset>
-      </div>
-      <div>
-        <h4>Keyword Search</h4>
-        <label htmlFor="keyword">Keyword</label>
-        <input type="text" id="keyword" value={keyword} onChange={(e) =>  setKeyword(e.target.value)} />
-      </div>
-      <div>
-        <label htmlFor="videoType">Video type</label>
-        <select defaultValue={filters.videoType} onChange={handleOptionSelect} name="videoType" id="videoType">
-          <option value="all" data-testid="allOption">All videos</option>
-          <option value="archive" data-testid="broadcastOption">Broadcasts</option>
-        </select>
-      </div>
+          <div>
+            <h4>Keyword Search</h4>
+            <label htmlFor="keyword">Keyword</label>
+            <input type="text" id="keyword" value={keyword} onChange={(e) =>  setKeyword(e.target.value)} />
+          </div>
+          <div>
+            <label htmlFor="videoType">Video type</label>
+            <select defaultValue={filters.videoType} onChange={handleOptionSelect} name="videoType" id="videoType">
+              <option value="all" data-testid="allOption">All videos</option>
+              <option value="archive" data-testid="broadcastOption">Broadcasts</option>
+            </select>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

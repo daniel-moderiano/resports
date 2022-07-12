@@ -113,3 +113,34 @@ describe('Video duration filter', () => {
   });
 });
 
+describe('Video filter UI', () => {
+  it('Defaults with filters hidden', () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const filterControls = screen.queryByLabelText(/duration/i);
+    expect(filterControls).not.toBeInTheDocument()
+  });
+
+  it('Opens filter controls on click of filters button', async () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const filtersBtn: HTMLButtonElement = screen.getByRole('button', { name: /filters/i });
+    expect(filtersBtn).toBeInTheDocument();
+
+    // Reveal the filter controls
+    await userEvent.click(filtersBtn);
+    const filterControls = screen.getByLabelText(/duration/i);
+    expect(filterControls).toBeInTheDocument();
+  });
+
+  it('Closes filter controls on second click of filters button', async () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const filtersBtn: HTMLButtonElement = screen.getByRole('button', { name: /filters/i });
+    expect(filtersBtn).toBeInTheDocument();
+
+    // Reveal then hide the filter controls
+    await userEvent.click(filtersBtn);
+    await userEvent.click(filtersBtn);
+
+    const filterControls = screen.queryByLabelText(/duration/i);
+    expect(filterControls).not.toBeInTheDocument();
+  });
+});
