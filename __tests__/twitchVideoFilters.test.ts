@@ -47,12 +47,12 @@ const testVideos: HelixVideo[] = [
 ]
 
 describe('Filter videos by duration', () => {
-  it('returns all videos for zero second duration input', () => {
+  it('returns all videos for a zero second minimum', () => {
     expect(filterByDuration(testVideos, 0)).toStrictEqual(testVideos);
   });
 
   it('returns all videos above specified minimum duration', () => {
-  //  Aim to filter out all those videos less than 4 hours duration
+    //  Aim to filter out all those videos less than 4 hours duration
     expect(filterByDuration(testVideos, 14400)).toStrictEqual([
       {
         durationInSeconds: 18000,   // 05:00:00
@@ -88,6 +88,19 @@ describe('Filter videos by duration', () => {
 
   it('returns an empty array if no videos exist above the minimum specified duration', () => {
     expect(filterByDuration(testVideos, 50000)).toStrictEqual([]);
+  });
+
+  it('returns an empty array if no videos exist below the maximum specified duration', () => {
+    expect(filterByDuration(testVideos, 0, 0)).toStrictEqual([]);
+  });
+
+  it('returns correct videos in duration interval min-max', () => {
+    expect(filterByDuration(testVideos, 10000, 20000)).toStrictEqual([  {
+      durationInSeconds: 18000,   // 05:00:00
+      creationDate: new Date(2022, 5, 12),
+      title: "video one",
+      getUser: jest.fn,
+    }]);
   });
 })
 

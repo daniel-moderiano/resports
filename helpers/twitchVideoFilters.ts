@@ -10,10 +10,10 @@ export const filterByDate = (videos: HelixVideo[], dateLimit: Date) => {
   return filteredVideos;
 };
 
-// Currently this only takes a minimum duration, and is used to return only those videos longer than the specified duration
-export const filterByDuration = (videos: HelixVideo[], minimumDurationInSeconds: number) => {
+// The 0 minimum is self-explanatory; the 180000 maximum is equivalent to 50 hours. This more than covers the max Twitch stream length of 48
+export const filterByDuration = (videos: HelixVideo[], minimumDurationInSeconds = 0, maximumDurationInSeconds = 180000) => {
   const filteredVideos = videos.filter((video) => {
-    return video.durationInSeconds > minimumDurationInSeconds;
+    return (video.durationInSeconds > minimumDurationInSeconds) && (video.durationInSeconds < maximumDurationInSeconds);
   });
 
   return filteredVideos;
