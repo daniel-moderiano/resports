@@ -1,7 +1,5 @@
 import {VideoFilters} from "../components/TwitchChannelVideos";
 import * as React from "react";
-import {HelixVideoType} from "@twurple/api";
-import {HelixVideo} from "@twurple/api/lib";
 import {useState} from "react";
 
 interface TwitchFilterMenuProps {
@@ -10,9 +8,6 @@ interface TwitchFilterMenuProps {
 }
 
 const TwitchFilterMenu = ({filters, setFilters}: TwitchFilterMenuProps) => {
-
-
-
   const [showFilters, setShowFilters] = useState(false);
 
   // Unique states are used for each filter within this component to avoid causing a re-render of the parent component on any filter change
@@ -84,7 +79,7 @@ const TwitchFilterMenu = ({filters, setFilters}: TwitchFilterMenuProps) => {
             <input type="text" id="keyword" value={keyword} onChange={(e) =>  setKeyword(e.target.value)} />
           </div>
 
-          <button>Apply filters</button>
+          <button onClick={applyFilters}>Apply filters</button>
         </div>
       )}
     </div>

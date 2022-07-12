@@ -136,3 +136,20 @@ describe('Video filter UI', () => {
     expect(filterControls).not.toBeInTheDocument();
   });
 });
+
+describe('Applying filters', () => {
+  it('Sets filters when "Apply filters" is clicked', async () => {
+    const mockSetFilters = jest.fn();
+    render(<TwitchFilterMenu filters={filters} setFilters={mockSetFilters} />)
+    const filtersBtn: HTMLButtonElement = screen.getByRole('button', { name: /filters/i });
+    expect(filtersBtn).toBeInTheDocument();
+
+    // Reveal the filter controls
+    await userEvent.click(filtersBtn);
+
+    const applyBtn = screen.getByRole('button', { name: /apply filters/i });
+    await userEvent.click(applyBtn);
+
+    expect(mockSetFilters).toHaveBeenCalled()
+  });
+});
