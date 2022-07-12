@@ -24,4 +24,8 @@ describe('Twitch video duration conversion', () => {
   it('Handles single digit seconds correctly', () => {
     expect(convertTwitchVideoDuration('11h10m0s')).toBe('11:10:00')
   });
+
+  it('Handles single digit seconds correctly (leading zeros)', () => {
+    expect(convertTwitchVideoDuration('11m1s')).toBe('11:01')
+  });
 });

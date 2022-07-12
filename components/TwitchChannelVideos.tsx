@@ -39,6 +39,7 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
   useEffect(() => {
     let tempVideos: HelixVideo[] = [];
     if (data) {
+      console.log(data)
       // Attempting filter without data will throw an error
       tempVideos = data;
       if (filters) {
