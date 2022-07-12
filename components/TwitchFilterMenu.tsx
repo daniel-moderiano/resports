@@ -27,6 +27,14 @@ const TwitchFilterMenu = ({filters, setFilters, filteredVideos, setFilteredVideo
   const [maxDuration, setMaxDuration] = useState(filters.maxDurationFilter ? filters.maxDurationFilter : 180000);
   const [date, setDate] = useState(filters.dateFilter ? filters.dateFilter : new Date());
 
+  // Convenience function used when a radio button is clicked. It allows easy min/max setting in one function call
+  const setDuration = (minDuration: number, maxDuration: number) => {
+    setMinDuration(minDuration);
+    setMaxDuration(maxDuration)
+  }
+
+  console.log(minDuration, maxDuration)
+
   return (
     <div>
       {/*Expand and collapse the filter menu*/}
@@ -39,11 +47,34 @@ const TwitchFilterMenu = ({filters, setFilters, filteredVideos, setFilteredVideo
       </div>
       <div>
         <h4>Duration</h4>
-        <label htmlFor="minDuration">Min duration</label>
-        <input type="number" id="minDuration" value={minDuration} onChange={(e) =>  setMinDuration(parseInt(e.target.value))}/>
+        <fieldset>
+          <legend>Select a duration</legend>
 
-        <label htmlFor="maxDuration">Max duration</label>
-        <input type="number" id="maxDuration" value={maxDuration} onChange={(e) =>  setMaxDuration(parseInt(e.target.value))}/>
+          <div>
+            <input type="radio" id="anyDuration" name="duration" onChange={() => setDuration(0, 180000)} checked={minDuration === 0 && maxDuration === 180000}/>
+            <label htmlFor="anyDuration">Any duration</label>
+          </div>
+
+          <div>
+            <input type="radio" id="durationOne" name="duration" onChange={() => setDuration(0, 300)}/>
+            <label htmlFor="durationOne">Under 5 minutes</label>
+          </div>
+
+          <div>
+            <input type="radio" id="durationTwo" name="duration" onChange={() => setDuration(300, 3600)} />
+            <label htmlFor="durationTwo">5 - 60 minutes</label>
+          </div>
+
+          <div>
+            <input type="radio" id="durationThree" name="duration" onChange={() => setDuration(3600, 14400)} />
+            <label htmlFor="durationThree">1 - 4 hours</label>
+          </div>
+
+          <div>
+            <input type="radio" id="durationFour" name="duration" onChange={() => setDuration(14400, 180000)} />
+            <label htmlFor="durationFour">Over 4 hours</label>
+          </div>
+        </fieldset>
       </div>
       <div>
         <h4>Keyword Search</h4>

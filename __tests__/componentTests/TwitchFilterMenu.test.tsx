@@ -70,35 +70,37 @@ describe('Video date filter', () => {
 describe('Video duration filter', () => {
   it('Gives the user preset duration options', () => {
     render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const anyDuration = screen.getByLabelText(/any duration/i);
     const durationOne = screen.getByLabelText(/under 5 minutes/i);
     const durationTwo = screen.getByLabelText(/5 - 60 minutes/i);
     const durationThree = screen.getByLabelText(/1 - 4 hours/i);
-    const durationFour = screen.getByLabelText(/over 6 hours/i);
+    const durationFour = screen.getByLabelText(/over 4 hours/i);
+    expect(anyDuration).toBeInTheDocument();
     expect(durationOne).toBeInTheDocument();
     expect(durationTwo).toBeInTheDocument();
     expect(durationThree).toBeInTheDocument();
     expect(durationFour).toBeInTheDocument();
   });
 
+  it('initialises min and max durations to "Any"', () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const anyDuration: HTMLInputElement = screen.getByLabelText(/any duration/i);
+    expect(anyDuration.checked).toBe(true);
+  })
+
   it('Allows the user to select a single duration filter at a time', async () => {
     render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const anyDuration: HTMLInputElement = screen.getByLabelText(/any duration/i);
     const durationOne: HTMLInputElement = screen.getByLabelText(/under 5 minutes/i);
     const durationTwo: HTMLInputElement = screen.getByLabelText(/5 - 60 minutes/i);
     const durationThree: HTMLInputElement = screen.getByLabelText(/1 - 4 hours/i);
-    const durationFour: HTMLInputElement = screen.getByLabelText(/over 6 hours/i);
+    const durationFour: HTMLInputElement = screen.getByLabelText(/over 4 hours/i);
     await userEvent.click(durationTwo)
+    expect(anyDuration.checked).toBe(false);
     expect(durationOne.checked).toBe(false);
     expect(durationTwo.checked).toBe(true);
     expect(durationThree.checked).toBe(false);
     expect(durationFour.checked).toBe(false);
   });
-
-  it('initialises min and max durations to "Any"', () => {
-    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
-    const maxDuration: HTMLInputElement = screen.getByLabelText(/max/i);
-    const minDuration: HTMLInputElement = screen.getByLabelText(/min/i);
-    expect(maxDuration.value).toBe(0);
-    expect(maxDuration.value).toBe(180000);
-  })
 });
 
