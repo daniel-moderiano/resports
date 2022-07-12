@@ -11,23 +11,17 @@ interface TwitchFilterMenuProps {
   setFilteredVideos: React.Dispatch<React.SetStateAction<HelixVideo[] | null | undefined>>;
 }
 
-const TwitchFilterMenu = ({filters, setFilters, filteredVideos, setFilteredVideos}: TwitchFilterMenuProps) => {
+const TwitchFilterMenu = ({filters, setFilters}: TwitchFilterMenuProps) => {
 
-  const handleOptionSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // This typecasting is required, as you cannot simply assign the 'string' value type to the videoType state
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      videoType: e.target.value as HelixVideoType | 'all'
-    }));
-  }
+
 
   const [showFilters, setShowFilters] = useState(false);
 
-  // Unique states are used for each filter within this component
-  const [keyword, setKeyword] = useState(filters.keywordFilter ? filters.keywordFilter : '');
-  const [minDuration, setMinDuration] = useState(filters.minDurationFilter ? filters.minDurationFilter : 0);
-  const [maxDuration, setMaxDuration] = useState(filters.maxDurationFilter ? filters.maxDurationFilter : 180000);
-  const [date, setDate] = useState(filters.dateFilter ? filters.dateFilter : new Date());
+  // Unique states are used for each filter within this component to avoid causing a re-render of the parent component on any filter change
+  const [keyword, setKeyword] = useState('');
+  const [minDuration, setMinDuration] = useState(0);
+  const [maxDuration, setMaxDuration] = useState(180000);
+  const [date, setDate] = useState(new Date());
 
   // Convenience function used when a radio button is clicked. It allows easy min/max setting in one function call
   const setDuration = (minDuration: number, maxDuration: number) => {
@@ -35,7 +29,15 @@ const TwitchFilterMenu = ({filters, setFilters, filteredVideos, setFilteredVideo
     setMaxDuration(maxDuration)
   }
 
-  console.log(minDuration, maxDuration)
+  const applyFilters = () => {
+    setFilters({
+      keywordFilter: keyword,
+      minDurationFilter: minDuration,
+      maxDurationFilter: maxDuration,
+      dateFilter: date,
+      videoType
+    })
+  }
 
   return (
     <div>
@@ -84,13 +86,8 @@ const TwitchFilterMenu = ({filters, setFilters, filteredVideos, setFilteredVideo
             <label htmlFor="keyword">Keyword</label>
             <input type="text" id="keyword" value={keyword} onChange={(e) =>  setKeyword(e.target.value)} />
           </div>
-          <div>
-            <label htmlFor="videoType">Video type</label>
-            <select defaultValue={filters.videoType} onChange={handleOptionSelect} name="videoType" id="videoType">
-              <option value="all" data-testid="allOption">All videos</option>
-              <option value="archive" data-testid="broadcastOption">Broadcasts</option>
-            </select>
-          </div>
+
+          <button>Apply filters</button>
         </div>
       )}
     </div>

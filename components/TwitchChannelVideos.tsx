@@ -16,7 +16,7 @@ export interface VideoFilters {
   minDurationFilter: number | null;
   maxDurationFilter: number | null;
   keywordFilter: string | null;
-  videoType: HelixVideoType | undefined | 'all';
+
 }
 
 // Make API call here to fetch videos using channel/user ID
@@ -28,13 +28,20 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
     minDurationFilter: null,
     maxDurationFilter: null,
     keywordFilter: null,
-    videoType: 'archive'
   });
 
-  const [hideVideos, setHideVideos] = useState(true);
+  const handleOptionSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // This typecasting is required, as you cannot simply assign the 'string' value type to the videoType state
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      videoType: e.target.value as HelixVideoType | 'all'
+    }));
+  }
 
+  const [videoType, setVideoType] = useState<HelixVideoType | undefined | 'all'>('archive');
+  const [hideVideos, setHideVideos] = useState(true);
   const [filteredVideos, setFilteredVideos] = React.useState<HelixVideo[] | undefined | null>(null);
-  const { isError, isLoading, data } = useGetTwitchVideos(userId, filters.videoType);
+  const { isError, isLoading, data } = useGetTwitchVideos(userId, videoType);
 
   return (
     <section>
@@ -53,7 +60,13 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
       {/*Ensure an option exists to clear all filters*/}
       <button onClick={() => setFilteredVideos(data ? data : null)}>Clear filters</button>
 
-
+      <div>
+        <label htmlFor="videoType">Video type</label>
+        <select defaultValue={videoType} onChange={handleOptionSelect} name="videoType" id="videoType">
+          <option value="all" data-testid="allOption">All videos</option>
+          <option value="archive" data-testid="broadcastOption">Broadcasts</option>
+        </select>
+      </div>
 
       <div className={styles.container}>
         {hideVideos && <div className={styles.overlay} data-testid="overlay">
@@ -61,7 +74,6 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
         </div>}
         {data && (
           <div className={styles.videosList}>
-
             {data.length > 0 ? (
               <>
                 {data.map((video) => (

@@ -9,7 +9,6 @@ const filters: VideoFilters = {
   minDurationFilter: null,
   maxDurationFilter: null,
   keywordFilter: null,
-  videoType: 'archive'
 }
 
 const testVideos: HelixVideo[] = [
@@ -29,21 +28,7 @@ const testVideos: HelixVideo[] = [
   }
 ]
 
-describe('Video type filter', () => {
-  it('Defaults the video type select element to "Broadcasts"', () => {
-    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
-    const selectElement: HTMLSelectElement = screen.getByLabelText(/video type/i)
-    expect(selectElement.value).toBe('archive');
-  });
 
-  it('Correctly handles selecting different video type options', async () => {
-    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
-    const selectElement: HTMLSelectElement = screen.getByLabelText(/video type/i);
-    const allOption: HTMLOptionElement = screen.getByTestId(/allOption/i);
-    await userEvent.selectOptions(selectElement, allOption)
-    expect(selectElement.value).toBe('all');
-  });
-});
 
 describe('Video keyword filter', () => {
   it('Defaults with empty search box', () => {
