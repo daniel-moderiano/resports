@@ -46,11 +46,10 @@ describe('Video type filter', () => {
 });
 
 describe('Video keyword filter', () => {
-  it('Defaults with empty search box with placeholder', () => {
+  it('Defaults with empty search box', () => {
     render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
     const keywordInput: HTMLInputElement = screen.getByLabelText(/keyword/i)
     expect(keywordInput.value).toBe('');
-    expect(keywordInput.placeholder).toBe('Filter by keyword');
   });
 
   it('Correctly updates UI when user types input', async () => {
@@ -63,7 +62,7 @@ describe('Video keyword filter', () => {
 });
 
 describe('Video date filter', () => {
-  it.todo('Defaults to "Any" initial value"');
+  it.todo('Defaults to current date');
   it.todo('Updates date picker UI on user date input');
 });
 

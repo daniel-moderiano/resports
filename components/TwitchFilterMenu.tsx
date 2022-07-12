@@ -49,7 +49,6 @@ const TwitchFilterMenu = ({filters, setFilters, filteredVideos, setFilteredVideo
         <h4>Duration</h4>
         <fieldset>
           <legend>Select a duration</legend>
-
           <div>
             <input type="radio" id="anyDuration" name="duration" onChange={() => setDuration(0, 180000)} checked={minDuration === 0 && maxDuration === 180000}/>
             <label htmlFor="anyDuration">Any duration</label>
@@ -79,7 +78,7 @@ const TwitchFilterMenu = ({filters, setFilters, filteredVideos, setFilteredVideo
       <div>
         <h4>Keyword Search</h4>
         <label htmlFor="keyword">Keyword</label>
-        <input type="text" id="keyword" value={keyword} onChange={(e) =>  setKeyword(e.target.value)}/>
+        <input type="text" id="keyword" value={keyword} onChange={(e) =>  setKeyword(e.target.value)} />
       </div>
       <div>
         <label htmlFor="videoType">Video type</label>

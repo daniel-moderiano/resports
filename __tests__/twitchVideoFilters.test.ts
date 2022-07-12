@@ -44,6 +44,13 @@ const testVideos: HelixVideo[] = [
     // @ts-expect-error exact getUser implementation not needed in these tests
     getUser: jest.fn,
   },
+  {
+    durationInSeconds: 1000,    // 00:20:34
+    creationDate: new Date(),
+    title: "video seven",
+    // @ts-expect-error exact getUser implementation not needed in these tests
+    getUser: jest.fn,
+  },
 ]
 
 describe('Filter videos by duration', () => {
@@ -186,5 +193,9 @@ describe('Filter videos by date', () => {
 
   it('returns empty list when no videos match the criteria', () => {
     expect(filterByDate(testVideos, new Date(2021, 7, 3))).toStrictEqual([]);
+  });
+
+  it('returns all videos when the date filter is set to current date/time', () => {
+    expect(filterByDate(testVideos, new Date())).toStrictEqual(testVideos);
   });
 })
