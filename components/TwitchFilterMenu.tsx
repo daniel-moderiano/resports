@@ -3,11 +3,10 @@ import * as React from "react";
 import {useState} from "react";
 
 interface TwitchFilterMenuProps {
-  filters: VideoFilters;
-  setFilters: React.Dispatch<React.SetStateAction<VideoFilters>>;
+  setFilters: React.Dispatch<React.SetStateAction<VideoFilters | null>>;
 }
 
-const TwitchFilterMenu = ({filters, setFilters}: TwitchFilterMenuProps) => {
+const TwitchFilterMenu = ({setFilters}: TwitchFilterMenuProps) => {
   const [showFilters, setShowFilters] = useState(false);
 
   // Unique states are used for each filter within this component to avoid causing a re-render of the parent component on any filter change

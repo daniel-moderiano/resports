@@ -3,19 +3,19 @@ import { useGetTwitchVideos } from '../hooks/useGetTwitchVideos'
 import TwitchVideoListing from './TwitchVideoListing';
 import * as React from 'react';
 import styles from '../styles/componentStyles/TwitchChannelVideos.module.css';
-import {filterByDate, filterByDuration, filterByKeyword} from "../helpers/twitchVideoFilters";
 import TwitchFilterMenu from "@/components/TwitchFilterMenu";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {filterByDate, filterByDuration, filterByKeyword} from "../helpers/twitchVideoFilters";
 
 interface TwitchChannelVideosProps {
   userId: string;
 }
 
 export interface VideoFilters {
-  dateFilter: Date | null;
-  minDurationFilter: number | null;
-  maxDurationFilter: number | null;
-  keywordFilter: string | null;
+  dateFilter: Date;
+  minDurationFilter: number;
+  maxDurationFilter: number;
+  keywordFilter: string;
 
 }
 
@@ -23,25 +23,38 @@ export interface VideoFilters {
 // * Use the archive video type filter to get past broadcasts!!
 
 const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
-  const [filters, setFilters] = React.useState<VideoFilters>({
-    dateFilter: null,
-    minDurationFilter: null,
-    maxDurationFilter: null,
-    keywordFilter: null,
-  });
+  const [filters, setFilters] = React.useState<VideoFilters | null>(null);
 
   const handleOptionSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     // This typecasting is required, as you cannot simply assign the 'string' value type to the videoType state
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      videoType: e.target.value as HelixVideoType | 'all'
-    }));
+    setVideoType(e.target.value as HelixVideoType | 'all');
   }
 
   const [videoType, setVideoType] = useState<HelixVideoType | undefined | 'all'>('archive');
   const [hideVideos, setHideVideos] = useState(true);
   const [filteredVideos, setFilteredVideos] = React.useState<HelixVideo[] | undefined | null>(null);
   const { isError, isLoading, data } = useGetTwitchVideos(userId, videoType);
+
+  // This effect is used to control video data whenever filters are applied (either new filters or changed filters)
+  useEffect(() => {
+    let tempVideos: HelixVideo[] = [];
+    if (data) {
+      // Attempting filter without data will throw an error
+      tempVideos = data;
+      if (filters) {
+        tempVideos = filterByDuration(tempVideos, filters.minDurationFilter, filters.maxDurationFilter);
+        tempVideos = filterByDate(tempVideos, filters.dateFilter);
+        tempVideos = filterByKeyword(tempVideos, filters.keywordFilter);
+
+        //  At this stage the tempVideos variable will contain the fully filtered data set. IT is ready to assign
+        setFilteredVideos(tempVideos)
+      } else {
+        // Must have a fallback to set filtered videos to available data or else videos will never render
+        setFilteredVideos(data)
+      }
+    }
+  }, [data, filters]);
+
 
   return (
     <section>
@@ -51,10 +64,7 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
       {isError && (<div>An error has occurred</div>)}
 
       <TwitchFilterMenu
-        filters={filters}
         setFilters={setFilters}
-        filteredVideos={filteredVideos}
-        setFilteredVideos={setFilteredVideos}
       />
 
       {/*Ensure an option exists to clear all filters*/}
@@ -72,11 +82,11 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
         {hideVideos && <div className={styles.overlay} data-testid="overlay">
           <button onClick={() => setHideVideos(false)}>Reveal videos</button>
         </div>}
-        {data && (
+        {filteredVideos && (
           <div className={styles.videosList}>
-            {data.length > 0 ? (
+            {filteredVideos.length > 0 ? (
               <>
-                {data.map((video) => (
+                {filteredVideos.map((video) => (
                   <TwitchVideoListing key={video.id} videoData={video} />
                 ))}
               </>
