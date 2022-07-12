@@ -28,7 +28,7 @@ const testVideos: HelixVideo[] = [
   }
 ]
 
-describe('Twitch videos loading/error/data UI states', () => {
+describe('Video type filter', () => {
   it('Defaults the video type select element to "Broadcasts"', () => {
     render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
     const selectElement: HTMLSelectElement = screen.getByLabelText(/video type/i)
@@ -43,3 +43,53 @@ describe('Twitch videos loading/error/data UI states', () => {
     expect(selectElement.value).toBe('all');
   });
 });
+
+describe('Video keyword filter', () => {
+  it('Defaults with empty search box with placeholder', () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const keywordInput: HTMLInputElement = screen.getByLabelText(/keyword/i)
+    expect(keywordInput.value).toBe('');
+    expect(keywordInput.placeholder).toBe('Filter by keyword');
+  });
+
+  it('Correctly updates UI when user types input', async () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const keywordInput: HTMLInputElement = screen.getByLabelText(/keyword/i)
+
+    await userEvent.type(keywordInput, 'test')
+    expect(keywordInput.value).toBe('test');
+  });
+});
+
+describe('Video date filter', () => {
+  it.todo('Defaults to "Any" initial value"');
+  it.todo('Updates date picker UI on user date input');
+});
+
+describe('Video duration filter', () => {
+  it('Gives the user preset duration options', () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const durationOne = screen.getByLabelText(/under 5 minutes/i);
+    const durationTwo = screen.getByLabelText(/5 - 60 minutes/i);
+    const durationThree = screen.getByLabelText(/1 - 4 hours/i);
+    const durationFour = screen.getByLabelText(/over 6 hours/i);
+    expect(durationOne).toBeInTheDocument();
+    expect(durationTwo).toBeInTheDocument();
+    expect(durationThree).toBeInTheDocument();
+    expect(durationFour).toBeInTheDocument();
+  });
+
+  it('Allows the user to select a single duration filter at a time', async () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const durationOne: HTMLInputElement = screen.getByLabelText(/under 5 minutes/i);
+    const durationTwo: HTMLInputElement = screen.getByLabelText(/5 - 60 minutes/i);
+    const durationThree: HTMLInputElement = screen.getByLabelText(/1 - 4 hours/i);
+    const durationFour: HTMLInputElement = screen.getByLabelText(/over 6 hours/i);
+    await userEvent.click(durationTwo)
+    expect(durationOne.checked).toBe(false);
+    expect(durationTwo.checked).toBe(true);
+    expect(durationThree.checked).toBe(false);
+    expect(durationFour.checked).toBe(false);
+  });
+});
+
