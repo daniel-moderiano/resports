@@ -5,6 +5,7 @@ import * as React from 'react';
 import styles from '../styles/componentStyles/TwitchChannelVideos.module.css';
 import {filterByDate, filterByDuration, filterByKeyword} from "../helpers/twitchVideoFilters";
 import TwitchFilterMenu from "@/components/TwitchFilterMenu";
+import {useState} from "react";
 
 interface TwitchChannelVideosProps {
   userId: string;
@@ -30,6 +31,8 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
     videoType: 'archive'
   });
 
+  const [hideVideos, setHideVideos] = useState(true);
+
   const [filteredVideos, setFilteredVideos] = React.useState<HelixVideo[] | undefined | null>(null);
   const { isError, isLoading, data } = useGetTwitchVideos(userId, filters.videoType);
 
@@ -50,19 +53,29 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
       {/*Ensure an option exists to clear all filters*/}
       <button onClick={() => setFilteredVideos(data ? data : null)}>Clear filters</button>
 
-      {data && (
-        <div className={styles.videosList}>
-          {data.length > 0 ? (
-            <>
-              {data.map((video) => (
-                <TwitchVideoListing key={video.id} videoData={video} />
-              ))}
-            </>
-          ) : (
-            <div>No videos</div>
-          )}
-        </div>
-      )}
+
+
+      <div className={styles.container}>
+        {hideVideos && <div className={styles.overlay} data-testid="overlay">
+          <button onClick={() => setHideVideos(false)}>Reveal videos</button>
+        </div>}
+        {data && (
+          <div className={styles.videosList}>
+
+            {data.length > 0 ? (
+              <>
+                {data.map((video) => (
+                  <TwitchVideoListing key={video.id} videoData={video} />
+                ))}
+              </>
+            ) : (
+              <div>No videos</div>
+            )}
+          </div>
+        )}
+      </div>
+
+
     </section>
   )
 }
