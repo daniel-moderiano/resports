@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TwitchFilterMenu from "@/components/TwitchFilterMenu";
 import {VideoFilters} from "@/components/TwitchChannelVideos";
@@ -62,8 +62,18 @@ describe('Video keyword filter', () => {
 });
 
 describe('Video date filter', () => {
-  it.todo('Defaults to current date');
-  it.todo('Updates date picker UI on user date input');
+  it('Defaults to current date', () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const datePicker: HTMLInputElement = screen.getByLabelText(/date/i);
+    expect(datePicker.value).toBe(new Date().toLocaleDateString('en-CA'));
+  });
+
+  it('Updates date picker UI on user date input', () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const datePicker: HTMLInputElement = screen.getByLabelText(/date/i);
+    fireEvent.change(datePicker, { target: { value: "2022-11-11" } });
+    expect(datePicker.value).toBe("2022-11-11");
+  });
 });
 
 describe('Video duration filter', () => {
