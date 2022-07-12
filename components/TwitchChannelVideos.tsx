@@ -4,12 +4,13 @@ import TwitchVideoListing from './TwitchVideoListing';
 import * as React from 'react';
 import styles from '../styles/componentStyles/TwitchChannelVideos.module.css';
 import {filterByDate, filterByDuration, filterByKeyword} from "../helpers/twitchVideoFilters";
+import TwitchFilterMenu from "@/components/TwitchFilterMenu";
 
 interface TwitchChannelVideosProps {
   userId: string;
 }
 
-interface VideoFilters {
+export interface VideoFilters {
   dateFilter: Date | null;
   durationFilter: number | null;
   keywordFilter: string | null;
@@ -30,13 +31,6 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
   const { isError, isLoading, data } = useGetTwitchVideos(userId, filters.videoType);
   const [filteredVideos, setFilteredVideos] = React.useState<HelixVideo[] | undefined | null>(null);
 
-  const handleOptionSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // This typecasting is required, as you cannot simply assign the 'string' value type to the videoType state
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-        videoType: e.target.value as HelixVideoType | 'all'
-    }));
-  }
 
   return (
     <section>
@@ -45,11 +39,7 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
 
       {isError && (<div>An error has occurred</div>)}
 
-      <label htmlFor="videoType">Video type</label>
-      <select defaultValue={filters.videoType} onChange={handleOptionSelect} name="videoType" id="videoType">
-        <option value="all" data-testid="allOption">All videos</option>
-        <option value="archive" data-testid="broadcastOption">Broadcasts</option>
-      </select>
+      <TwitchFilterMenu filters={filters} setFilters={setFilters}/>
 
       {/*Ensure an option exists to clear all filters*/}
       <button onClick={() => setFilteredVideos(data ? data : null)}>Clear filters</button>
