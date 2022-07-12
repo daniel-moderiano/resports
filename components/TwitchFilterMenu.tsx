@@ -1,13 +1,16 @@
 import {VideoFilters} from "../components/TwitchChannelVideos";
 import * as React from "react";
 import {HelixVideoType} from "@twurple/api";
+import {HelixVideo} from "@twurple/api/lib";
 
 interface TwitchFilterMenuProps {
-  filters: VideoFilters
-  setFilters: React.Dispatch<React.SetStateAction<VideoFilters>>
+  filters: VideoFilters;
+  setFilters: React.Dispatch<React.SetStateAction<VideoFilters>>;
+  filteredVideos: HelixVideo[] | undefined | null;
+  setFilteredVideos: React.Dispatch<React.SetStateAction<HelixVideo[] | null | undefined>>;
 }
 
-const TwitchFilterMenu = ({filters, setFilters}: TwitchFilterMenuProps) => {
+const TwitchFilterMenu = ({filters, setFilters, filteredVideos, setFilteredVideos}: TwitchFilterMenuProps) => {
 
   const handleOptionSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     // This typecasting is required, as you cannot simply assign the 'string' value type to the videoType state

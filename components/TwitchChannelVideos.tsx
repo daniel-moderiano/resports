@@ -28,9 +28,8 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
     videoType: 'archive'
   });
 
-  const { isError, isLoading, data } = useGetTwitchVideos(userId, filters.videoType);
   const [filteredVideos, setFilteredVideos] = React.useState<HelixVideo[] | undefined | null>(null);
-
+  const { isError, isLoading, data } = useGetTwitchVideos(userId, filters.videoType);
 
   return (
     <section>
@@ -39,7 +38,12 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
 
       {isError && (<div>An error has occurred</div>)}
 
-      <TwitchFilterMenu filters={filters} setFilters={setFilters}/>
+      <TwitchFilterMenu
+        filters={filters}
+        setFilters={setFilters}
+        filteredVideos={filteredVideos}
+        setFilteredVideos={setFilteredVideos}
+      />
 
       {/*Ensure an option exists to clear all filters*/}
       <button onClick={() => setFilteredVideos(data ? data : null)}>Clear filters</button>
