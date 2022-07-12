@@ -12,7 +12,8 @@ interface TwitchChannelVideosProps {
 
 export interface VideoFilters {
   dateFilter: Date | null;
-  durationFilter: number | null;
+  minDurationFilter: number | null;
+  maxDurationFilter: number | null;
   keywordFilter: string | null;
   videoType: HelixVideoType | undefined | 'all';
 }
@@ -23,7 +24,8 @@ export interface VideoFilters {
 const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
   const [filters, setFilters] = React.useState<VideoFilters>({
     dateFilter: null,
-    durationFilter: null,
+    minDurationFilter: null,
+    maxDurationFilter: null,
     keywordFilter: null,
     videoType: 'archive'
   });

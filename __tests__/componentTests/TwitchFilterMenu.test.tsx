@@ -6,7 +6,8 @@ import {HelixVideo} from "@twurple/api";
 
 const filters: VideoFilters = {
   dateFilter: null,
-  durationFilter: null,
+  minDurationFilter: null,
+  maxDurationFilter: null,
   keywordFilter: null,
   videoType: 'archive'
 }
@@ -91,5 +92,13 @@ describe('Video duration filter', () => {
     expect(durationThree.checked).toBe(false);
     expect(durationFour.checked).toBe(false);
   });
+
+  it('initialises min and max durations to "Any"', () => {
+    render(<TwitchFilterMenu filters={filters} filteredVideos={testVideos} setFilteredVideos={jest.fn} setFilters={jest.fn} />)
+    const maxDuration: HTMLInputElement = screen.getByLabelText(/max/i);
+    const minDuration: HTMLInputElement = screen.getByLabelText(/min/i);
+    expect(maxDuration.value).toBe(0);
+    expect(maxDuration.value).toBe(180000);
+  })
 });
 
