@@ -19,10 +19,10 @@ export const filterByDuration = (videos: HelixVideo[], minimumDurationInSeconds 
   return filteredVideos;
 };
 
-// Essentially used as a search function with a user provided keyword/search query
+// Essentially used as a search function with a user provided keyword/search query. All strings must be case-matched before comparison occurs to avoid a case-sensitive search
 export const filterByKeyword = (videos: HelixVideo[], keyword: string) => {
   const filteredVideos = videos.filter((video) => {
-    return video.title.includes(keyword.trim());
+    return video.title.toLowerCase().includes(keyword.trim().toLowerCase());
   });
 
   return filteredVideos;

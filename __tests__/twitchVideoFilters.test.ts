@@ -40,7 +40,7 @@ const testVideos: HelixVideo[] = [
   {
     durationInSeconds: 1234,    // 00:20:34
     creationDate: new Date(2022, 5, 12, 5),
-    title: "video six",
+    title: "Video six",
     // @ts-expect-error exact getUser implementation not needed in these tests
     getUser: jest.fn,
   },
@@ -112,7 +112,7 @@ describe('Filter videos by duration', () => {
 })
 
 describe('Filter videos by title keyword', () => {
-  it('returns all videos for a single common letter filter', () => {
+  it('returns all videos for a single common letter filter (case insensitive)', () => {
     expect(filterByKeyword(testVideos, 'v')).toStrictEqual(testVideos);
   });
 
