@@ -7,8 +7,6 @@ import {useState} from "react";
 interface TwitchFilterMenuProps {
   filters: VideoFilters;
   setFilters: React.Dispatch<React.SetStateAction<VideoFilters>>;
-  filteredVideos: HelixVideo[] | undefined | null;
-  setFilteredVideos: React.Dispatch<React.SetStateAction<HelixVideo[] | null | undefined>>;
 }
 
 const TwitchFilterMenu = ({filters, setFilters}: TwitchFilterMenuProps) => {
@@ -35,7 +33,6 @@ const TwitchFilterMenu = ({filters, setFilters}: TwitchFilterMenuProps) => {
       minDurationFilter: minDuration,
       maxDurationFilter: maxDuration,
       dateFilter: date,
-      videoType
     })
   }
 
