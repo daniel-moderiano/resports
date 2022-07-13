@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const TwitchChannel = ({ channelId }: TwitchChannelProps) => {
   const { isLoading, isError, data, error } = useGetTwitchChannel(channelId);
-  const [showVideos, setShowVideos] = useState(false);
+
 
   return (
     <div>
@@ -41,9 +41,8 @@ const TwitchChannel = ({ channelId }: TwitchChannelProps) => {
         </section>
       )}
 
-      <button onClick={() => { setShowVideos((prevState) => !prevState) }}>Toggle videos</button>
-
-      {showVideos && (<TwitchChannelVideos userId={channelId} />)}
+      {/*These will immediately be loaded, but will be obscured by an overlay within the component*/}
+      <TwitchChannelVideos userId={channelId} />
     </div>
   )
 }

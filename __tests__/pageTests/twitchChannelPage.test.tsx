@@ -94,29 +94,6 @@ describe('Channel page layout and elements', () => {
     const images = screen.getAllByRole('img');
     expect(images).toHaveLength(2);
   });
-
-  it('Hides the channel videos section by default', () => {
-    render(<TwitchChannelPage channelId='1234' />)
-
-    // Check the reveal button is shown
-    const btn = screen.getByRole('button', { name: /toggle videos/i });
-    expect(btn).toBeInTheDocument();
-
-    const videos = screen.queryByRole('heading', { name: /videos/i });
-    expect(videos).not.toBeInTheDocument();
-  });
-
-  it('Shows the channel videos section on click of reveal btn', async () => {
-    render(<TwitchChannelPage channelId='1234' />);
-
-    // First click button
-    const btn = screen.getByRole('button', { name: /toggle videos/i });
-    await userEvent.click(btn);
-
-    // Then check for presence of videos section
-    const videos = screen.getByRole('heading', { name: /videos/i });
-    expect(videos).toBeInTheDocument();
-  });
 });
 
 describe('Channel page UI states', () => {

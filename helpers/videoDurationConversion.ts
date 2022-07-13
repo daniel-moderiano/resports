@@ -15,7 +15,7 @@ export const convertTwitchVideoDuration = (duration: string) => {
 
       // Handle the seconds component
       const secondsSplit = minutesSplit[1].split('s');
-      convertedDuration += secondsSplit[0];
+      convertedDuration += secondsSplit[0].length > 1 ? `${secondsSplit[0]}` : `0${secondsSplit[0]}`
     } else {    // duration is seconds only
       // Handle seconds component
       convertedDuration += `0:${duration.split('s')[0]}`;
