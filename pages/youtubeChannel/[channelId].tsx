@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { sanitiseChannelQuery } from '../../helpers/queryHandling';
 import { GetServerSideProps } from 'next';
 import {useEffect} from "react";
+import YouTubeChannelVideos from "@/components/YouTubeChannelVideos";
 
 // * The Search: list method can be used with a 'channelId' filter to yield all videos for a channel!
 
@@ -110,6 +111,9 @@ const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
           )}
         </div>
       )}
+
+      {/*These will immediately be loaded, but will be obscured by an overlay within the component*/}
+      <YouTubeChannelVideos channelId={channelId} />
     </div>
   )
 }

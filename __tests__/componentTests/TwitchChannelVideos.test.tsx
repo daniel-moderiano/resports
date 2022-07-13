@@ -152,20 +152,6 @@ describe('Twitch videos loading/error/data UI states', () => {
     const msg = screen.getByText(/no videos/i)
     expect(msg).toBeInTheDocument();
   });
-
-  it('Defaults the video type select element to "Broadcasts"', () => {
-    render(<TwitchChannelVideos userId='1234' />)
-    const selectElement: HTMLSelectElement = screen.getByLabelText(/video type/i)
-    expect(selectElement.value).toBe('archive');
-  });
-
-  it('Correctly handles selecting different video type options', async () => {
-    render(<TwitchChannelVideos userId='1234' />)
-    const selectElement: HTMLSelectElement = screen.getByLabelText(/video type/i);
-    const allOption: HTMLOptionElement = screen.getByTestId(/allOption/i);
-    await userEvent.selectOptions(selectElement, allOption)
-    expect(selectElement.value).toBe('all');
-  });
 });
 
 describe('Video type filter', () => {
