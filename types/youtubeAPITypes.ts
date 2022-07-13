@@ -118,8 +118,14 @@ export interface YouTubeChannelSearchResult {
       bannerExternalUrl: string;
     }
   },
+  contentDetails: {
+    relatedPlaylists: {
+      likes?: string,
+      favorites?: string,
+      uploads: string
+    }
+  },
 }
-
 
 // Result returned by the Channel search: list YouTube API method
 export interface YouTubeChannelSearchListResponse {
@@ -132,4 +138,69 @@ export interface YouTubeChannelSearchListResponse {
     resultsPerPage: number;
   }
   items: YouTubeChannelSearchResult[];
+}
+
+// PlaylistItem snippet forming part of the PlaylistItem search result
+export interface YouTubePlaylistItemResultSnippet {
+  publishedAt: string;
+  channelId: string;
+  title: string;
+  description: string;
+  thumbnails: {
+    default: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+    medium: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+    high: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+  },
+  channelTitle: string;
+  videoOwnerChannelTitle: string;
+  videoOwnerChannelId: string;
+  liveBroadcastContent: string;
+  publishTime?: string;
+
+    playlistId: string;
+    position: number;
+    resourceId: {
+      kind: string;
+      videoId: string;
+  }
+}
+
+// Describes a 'playlistItem' returned by the PlaylistItem: list API method
+export interface YouTubePlaylistItemResult {
+  kind: string;
+  etag: string;
+  id: string;
+  contentDetails: {
+    videoId: string;
+    videoPublishedAt: string;
+    startAt?: string;
+    endAt?: string;
+    note?: string;
+  },
+  snippet: YouTubePlaylistItemResultSnippet;
+}
+
+// Result returned by the PlaylistItem: list YouTube API method
+export interface YouTubePlaylistItemListResponse {
+  kind: string;
+  etag: string;
+  nextPageToken?: string;
+  prevPageToken?: string;
+  pageInfo: {
+    totalResults: number;
+    resultsPerPage: number;
+  }
+  items: YouTubePlaylistItemResult[];
 }

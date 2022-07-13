@@ -14,7 +14,7 @@ interface YouTubeChannelProps {
 const codLeagueData = {
   "channelData": {
     "kind": "youtube#channel",
-    "etag": "-I0iJkH8yA7EplKwzJQO8GKBENE",
+    "etag": "8BLSIOr6__UmS4fz3_UtPnp8t20",
     "id": "UCbLIqv9Puhyp9_ZjVtfOy7w",
     "snippet": {
       "title": "Call of Duty League",
@@ -43,6 +43,12 @@ const codLeagueData = {
         "description": "The official YouTube channel of the Call of Duty League"
       },
       "country": "US"
+    },
+    "contentDetails": {
+      "relatedPlaylists": {
+        "likes": "",
+        "uploads": "UUbLIqv9Puhyp9_ZjVtfOy7w"
+      }
     },
     "statistics": {
       "viewCount": "329688440",
@@ -78,13 +84,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
   const { isLoading, isError, data, error } = useGetYouTubeChannel(channelId);
 
-  useEffect(() => {
-    if (data) {
-      console.log(data)
-    }
-  }, [data]);
-
-
   return (
     <div>
       {isLoading && (<div>YouTube loading...</div>)}
@@ -94,26 +93,29 @@ const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
       {data && (
         <div>
           {data.channelData ? (
-            <section>
+            <div>
+              <section>
+                <div>
+                  <h2>{data.channelData.snippet.title}</h2>
+                  <p>{data.channelData.snippet.description}</p>
+                  <Image src={data.channelData.snippet.thumbnails.medium.url} alt={`${data.channelData.snippet.title} channel thumbnail`} height={100} width={100} layout="fixed" />
+                  <Image src={data.channelData.brandingSettings.image.bannerExternalUrl} alt={`${data.channelData.snippet.title} channel banner`} height={100} width={100} layout="fixed" />
+                </div>
+                <div>
+                  <p>{data.channelData.statistics.subscriberCount} subscribers</p>
+                  <p>{data.channelData.statistics.videoCount} videos</p>
+                </div>
+              </section>
               <div>
-                <h2>{data.channelData.snippet.title}</h2>
-                <p>{data.channelData.snippet.description}</p>
-                <Image src={data.channelData.snippet.thumbnails.medium.url} alt={`${data.channelData.snippet.title} channel thumbnail`} height={100} width={100} layout="fixed" />
-                <Image src={data.channelData.brandingSettings.image.bannerExternalUrl} alt={`${data.channelData.snippet.title} channel banner`} height={100} width={100} layout="fixed" />
+                {/*These will immediately be loaded, but will be obscured by an overlay within the component*/}
+                <YouTubeChannelVideos uploadsId={data.channelData.contentDetails.relatedPlaylists.uploads} />
               </div>
-              <div>
-                <p>{data.channelData.statistics.subscriberCount} subscribers</p>
-                <p>{data.channelData.statistics.videoCount} videos</p>
-              </div>
-            </section>
+            </div>
           ) : (
             <p>Channel not found</p>
           )}
         </div>
       )}
-
-      {/*These will immediately be loaded, but will be obscured by an overlay within the component*/}
-      <YouTubeChannelVideos channelId={channelId} />
     </div>
   )
 }

@@ -724,7 +724,7 @@ const YouTubeSearchTab = ({ searchQuery }: YouTubeSearchTabProps) => {
 
   return (
     <div>
-      {isLoading && (<div>Twitch loading...</div>)}
+      {isLoading && (<div>YouTube loading...</div>)}
 
       {isError && (<div>An error has occurred</div>)}
 
