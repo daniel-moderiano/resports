@@ -204,3 +204,90 @@ export interface YouTubePlaylistItemListResponse {
   }
   items: YouTubePlaylistItemResult[];
 }
+
+// Video item snippet forming part of the video: list API result
+export interface YouTubeVideoResultSnippet {
+  publishedAt: string;
+  channelId: string;
+  title: string;
+  description: string;
+  thumbnails: {
+    default: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+    medium: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+    high: {
+      url: string,
+      width?: number;
+      height?: number;
+    };
+  };
+  channelTitle: string;
+  tags: string[];
+  categoryId: string;
+  liveBroadcastContent: string;
+  defaultAudioLanguage: string;
+  localized?: {
+    title: string;
+    description: string;
+  };
+}
+
+// Describes a video object returned by the Videos: list API method
+export interface YouTubeVideoResult {
+  kind: string;
+  etag: string;
+  id: string;
+  snippet: YouTubeVideoResultSnippet
+  contentDetails: {
+    duration: string;
+    dimension: string;
+    definition: string;
+    caption: string;
+    licensedContent: boolean;
+    regionRestriction?: {
+      allowed?: [
+        string
+      ];
+      blocked?: [
+        string
+      ];
+    };
+    contentRating: {
+      [key: string]: string;
+    };
+    projection: string;
+    hasCustomThumbnail?: boolean;
+  },
+  statistics: {
+    viewCount: string;
+    likeCount: string;
+    favoriteCount: string;
+    commentCount: string;
+    dislikeCount?: string;
+  };
+  player: {
+    embedHtml: string;
+    embedHeight?: number;
+    embedWidth?: number;
+  };
+}
+
+// Result returned by the Videos: list YouTube API method
+export interface YouTubeVideoListResponse {
+  kind: string;
+  etag: string;
+  nextPageToken?: string;
+  prevPageToken?: string;
+  pageInfo: {
+    totalResults: number;
+    resultsPerPage: number;
+  }
+  items: YouTubeVideoResult[];
+}

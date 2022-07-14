@@ -1,6 +1,10 @@
 import { useGapiContext } from "../context/GapiContext";
 import { useQuery } from "react-query";
-import {YouTubePlaylistItemListResponse, YouTubeSearchListResponse} from "types/youtubeAPITypes";
+import {
+  YouTubePlaylistItemListResponse,
+  YouTubeSearchListResponse,
+  YouTubeVideoListResponse
+} from "types/youtubeAPITypes";
 
 // Conditions specify any additional criteria that must evaluate to true before the query is executed
 export const useGetYouTubeVideos = (uploadsPlaylistId: string, conditions?: boolean) => {
@@ -38,13 +42,13 @@ export const useGetYouTubeVideos = (uploadsPlaylistId: string, conditions?: bool
     const videosResponse = await gapi.client.request({
       'path': 'https://www.googleapis.com/youtube/v3/videos',
       params: {
-        part: 'contentDetails,id,liveStreamingDetails,player,snippet,statistics,status',    // the information returned
+        part: 'contentDetails,id,liveStreamingDetails,player,snippet,statistics',    // the information returned
         id: videoIds,   // returns only videos by the specified channel (max 500)
         maxResults: 50    // max number of results per page (50 max)
       }
     });
 
-    return videosResponse;
+    return videosResponse.result as YouTubeVideoListResponse;
 
   }, {
     // Check for additional conditions before formulating enabled expression. gapiClientReady must always be present, as must enableApi
