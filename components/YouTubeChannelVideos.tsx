@@ -1,6 +1,10 @@
 import YouTubeChannelResult from "@/components/YouTubeChannelResult";
 import {useGetYouTubeVideos} from "../hooks/useGetYouTubeVideos";
 import {useEffect} from "react";
+import styles from "@/styles/componentStyles/TwitchChannelVideos.module.css";
+import TwitchVideoListing from "@/components/TwitchVideoListing";
+import * as React from "react";
+import YouTubeVideoListing from "@/components/YouTubeVideoListing";
 
 interface YouTubeChannelVideosProps {
   uploadsId: string;
@@ -21,6 +25,14 @@ const YouTubeChannelVideos = ({uploadsId}: YouTubeChannelVideosProps) => {
       {isLoading && (<div>YouTube loading...</div>)}
 
       {isError && (<div>An error has occurred</div>)}
+
+      {data && (
+        <>
+          {data.items.map((video) => (
+            <YouTubeVideoListing key={video.id} videoData={video}/>
+          ))}
+        </>
+      )}
 
     </div>
   )

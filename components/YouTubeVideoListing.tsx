@@ -1,5 +1,11 @@
+import {YouTubeVideoResult} from "../types/youtubeAPITypes";
 
-const YouTubeVideoListing = () => {
+interface YouTubeVideoListingProps {
+  videoData: YouTubeVideoResult
+}
+
+
+const YouTubeVideoListing = ({videoData}: YouTubeVideoListingProps) => {
   return (
     <div>
 
