@@ -289,7 +289,7 @@ describe('YouTube videos loading/error/data UI states', () => {
     expect(error).not.toBeInTheDocument();
 
     // Check that data has been rendered
-    const videos = screen.getByText(/New York Major IV/i);
+    const videos = screen.getByText(/@Florida Mutineers vs @Boston Breach /i);
     expect(videos).toBeInTheDocument();
   });
 

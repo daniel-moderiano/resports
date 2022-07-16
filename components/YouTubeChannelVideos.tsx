@@ -1,9 +1,8 @@
 import {useGetYouTubeVideos} from "../hooks/useGetYouTubeVideos";
 import * as React from "react";
 import YouTubeVideoListing from "@/components/YouTubeVideoListing";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import styles from "@/styles/componentStyles/YouTubeChannelVideos.module.css";
-import TwitchVideoListing from "@/components/TwitchVideoListing";
 
 interface YouTubeChannelVideosProps {
   uploadsId: string;
@@ -11,15 +10,7 @@ interface YouTubeChannelVideosProps {
 
 const YouTubeChannelVideos = ({uploadsId}: YouTubeChannelVideosProps) => {
   const { isLoading, isError, data } = useGetYouTubeVideos(uploadsId);
-
   const [hideVideos, setHideVideos] = useState(true);
-
-  useEffect(() => {
-    if (data) {
-      console.log(data)
-    }
-  }, [data]);
-
 
   return (
     <div>YouTube Channel Videos
