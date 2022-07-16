@@ -1,4 +1,4 @@
-import { convertTwitchVideoDuration } from "../helpers/videoDurationConversion";
+import {convertTwitchVideoDuration, convertYouTubeVideoDuration} from "../helpers/videoDurationConversion";
 
 describe('Twitch video duration conversion', () => {
   it('Converts seconds-only input', () => {
@@ -32,30 +32,30 @@ describe('Twitch video duration conversion', () => {
 
 describe('YouTube video duration conversion', () => {
   it('Converts seconds-only input', () => {
-    expect(convertTwitchVideoDuration('P44S')).toBe('0:44')
+    expect(convertYouTubeVideoDuration('P44S')).toBe('0:44')
   });
 
   it('Converts minutes/seconds-only input', () => {
-    expect(convertTwitchVideoDuration('P3M21S')).toBe('3:21')
+    expect(convertYouTubeVideoDuration('P3M21S')).toBe('3:21')
   });
 
   it('Converts full hours/minutes/seconds input', () => {
-    expect(convertTwitchVideoDuration('P11H10M12S')).toBe('11:10:12')
+    expect(convertYouTubeVideoDuration('P11H10M12S')).toBe('11:10:12')
   });
 
   it('Handles single digit hours correctly', () => {
-    expect(convertTwitchVideoDuration('P5H10M10S')).toBe('5:10:10')
+    expect(convertYouTubeVideoDuration('P5H10M10S')).toBe('5:10:10')
   });
 
   it('Handles single digit minutes correctly', () => {
-    expect(convertTwitchVideoDuration('P10H5M12S')).toBe('10:05:12')
+    expect(convertYouTubeVideoDuration('P10H5M12S')).toBe('10:05:12')
   });
 
   it('Handles single digit seconds correctly', () => {
-    expect(convertTwitchVideoDuration('P11H10M0S')).toBe('11:10:00')
+    expect(convertYouTubeVideoDuration('P11H10M0S')).toBe('11:10:00')
   });
 
   it('Handles single digit seconds correctly (leading zeros)', () => {
-    expect(convertTwitchVideoDuration('P11M1S')).toBe('11:01')
+    expect(convertYouTubeVideoDuration('P11M1S')).toBe('11:01')
   });
 });
