@@ -27,11 +27,9 @@ export const isValidChannelQuery = (query: ParsedUrlQuery) => {
   return false;
 };
 
-// Sanitises query params for the Tiwtch and YouTube channel pages. It is safe to provide an empty string fallback, as this will throw an error accordingly
+// Sanitises query params for the Twitch and YouTube channel pages. It is safe to provide an empty string fallback, as this will throw an error accordingly
 export const sanitiseChannelQuery = (query: ParsedUrlQuery) => {
   if (isValidChannelQuery(query)) {
-    console.log('Valid query');
-
     // This is a safe type assertion as the valid query check has passed
     return query.channelId as string;
   } else {

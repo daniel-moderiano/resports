@@ -720,11 +720,11 @@ const testData = {
 }
 
 const YouTubeSearchTab = ({ searchQuery }: YouTubeSearchTabProps) => {
-  const { isLoading, isError, data, error } = useYouTubeSearch(searchQuery, 'channel');
+  const { isLoading, isError, data } = useYouTubeSearch(searchQuery, 'channel');
 
   return (
     <div>
-      {isLoading && (<div>Twitch loading...</div>)}
+      {isLoading && (<div>YouTube loading...</div>)}
 
       {isError && (<div>An error has occurred</div>)}
 

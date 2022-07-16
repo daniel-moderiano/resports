@@ -17,6 +17,7 @@ export const useGetYouTubeChannel = (channelId: string, conditions?: boolean) =>
           "snippet",
           "brandingSettings",
           "statistics",
+          "contentDetails"
         ],
         id: channelId   // filter/search by channelId
       }

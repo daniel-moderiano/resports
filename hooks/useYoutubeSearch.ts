@@ -9,15 +9,15 @@ export const useYouTubeSearch = (searchQuery: string, searchType: string, condit
 
   let enableApi = false;
 
-  // ! Default this API call to NEVER occur in development unless manually set here. This API call cost 100 units of quota, so if you burn through 100 calls, every youtube API feature is locked for 24 hours.
-  if (process.env.NODE_ENV === 'development') {
+  // ! Default this API call to NEVER occur in development unless manually set here. This API call cost 100 units of quota, so if you burn through 100 calls, every YouTube API feature is locked for 24 hours.
+  if (process.env.NODE_ENV === 'production') {
     enableApi = true;
   } else {
     enableApi = false;
   }
 
   const { isLoading, isError, data, error } = useQuery(['youtubeSearchResults', searchQuery], async () => {
-    // GAPI client will throw it's own error if there is a problem with the request, there is no need for a specific try/catch here
+    // GAPI client will throw its own error if there is a problem with the request, there is no need for a specific try/catch here
     console.log('Calling YouTube API fetch');
 
     const response = await gapi.client.request({

@@ -2,8 +2,7 @@ import { useGetYouTubeChannel } from '../../hooks/useGetYouTubeChannel';
 import Image from 'next/image';
 import { sanitiseChannelQuery } from '../../helpers/queryHandling';
 import { GetServerSideProps } from 'next';
-
-// * The Search: list method can be used with a 'channelId' filter to yield all videos for a channel!
+import YouTubeChannelVideos from "@/components/YouTubeChannelVideos";
 
 interface YouTubeChannelProps {
   channelId: string;
@@ -19,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
-  const { isLoading, isError, data, error } = useGetYouTubeChannel(channelId);
+  const { isLoading, isError, data } = useGetYouTubeChannel(channelId);
 
   return (
     <div>
@@ -30,18 +29,24 @@ const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
       {data && (
         <div>
           {data.channelData ? (
-            <section>
+            <div>
+              <section>
+                <div>
+                  <h2>{data.channelData.snippet.title}</h2>
+                  <p>{data.channelData.snippet.description}</p>
+                  <Image src={data.channelData.snippet.thumbnails.medium.url} alt={`${data.channelData.snippet.title} channel thumbnail`} height={100} width={100} layout="fixed" />
+                  <Image src={data.channelData.brandingSettings.image.bannerExternalUrl} alt={`${data.channelData.snippet.title} channel banner`} height={100} width={100} layout="fixed" />
+                </div>
+                <div>
+                  <p>{data.channelData.statistics.subscriberCount} subscribers</p>
+                  <p>{data.channelData.statistics.videoCount} videos</p>
+                </div>
+              </section>
               <div>
-                <h2>{data.channelData.snippet.title}</h2>
-                <p>{data.channelData.snippet.description}</p>
-                <Image src={data.channelData.snippet.thumbnails.medium.url} alt={`${data.channelData.snippet.title} channel thumbnail`} height={100} width={100} layout="fixed" />
-                <Image src={data.channelData.brandingSettings.image.bannerExternalUrl} alt={`${data.channelData.snippet.title} channel banner`} height={100} width={100} layout="fixed" />
+                {/*These will immediately be loaded, but will be obscured by an overlay within the component*/}
+                <YouTubeChannelVideos uploadsId={data.channelData.contentDetails.relatedPlaylists.uploads} />
               </div>
-              <div>
-                <p>{data.channelData.statistics.subscriberCount} subscribers</p>
-                <p>{data.channelData.statistics.videoCount} videos</p>
-              </div>
-            </section>
+            </div>
           ) : (
             <p>Channel not found</p>
           )}
@@ -52,3 +57,4 @@ const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
 }
 
 export default YouTubeChannel
+
