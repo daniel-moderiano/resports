@@ -7,7 +7,7 @@ const testData: YouTubeVideoResult = {
     "etag": "tK4WuaJokHI2p0BnFBbvSBzAht0",
     "id": "0ktOUBGxCEw",
     "snippet": {
-      "publishedAt": new Date().toLocaleDateString('en-CA'),
+      "publishedAt": new Date().toLocaleString(),
       "channelId": "UCbLIqv9Puhyp9_ZjVtfOy7w",
       "title": "@Florida Mutineers  vs @Boston Breach   | New York Major IV | Day 1",
       "description": "Welcome to the New York Major! Who do you have taking the win? Catch all the action this weekend from July 14-17.\n\nLink your Activision Account to earn Viewership Rewards during live Call of Duty League Broadcasts — https://www.youtube.com/account_sharing    \nKeep up with the Call of Duty League schedule — https://www.callofdutyleague.com/en-us/schedule?utm_source=cdlweb&utm_medium=navigationbar&utm_campaign=general \nFollow Us on Twitter: https://twitter.com/CODLeague  \n\n2022 CDL Rosters:\n\nAtlanta FaZe\n— Simp, aBeZy, Cellium, Arcitys\nBoston Breach\n— Methodz, TJHaly, Nero, Capsidal \nOpTic Texas \n— Scump, Dashy, Shotzzy, Prolute\nNew York Subliners \n— Crimsix, Hydra, Paulehx, Kismet\nMinnesota Røkkr \n— Priestahh, Attach, Standy, Havok\nSeattle Surge \n— Accuracy, Mack, Pred, Sib\nLA Thieves\n— Drazah, Kenny, Octane, Envoy\nLondon Royal Ravens\n— Afro, Zer0, Nastie, Harry\nToronto Ultra\n— Insight, Cammy, Bance, CleanX\nLos Angeles Guerrillas\n— SlasheR, Spart, Asim, Huke\nFlorida Mutineers (F3F3)\n— Skyz, Owakening, Vivid, Davpadie\nParis Legion\n— Temp, John, Jimbo, GRVTY\n\n#CDL2022 #MajorIV",
@@ -106,7 +106,7 @@ describe('YouTube video listing component', () => {
 
   it('Includes video duration', () => {
     render(<YouTubeVideoListing videoData={testData} />)
-    const duration = screen.getByText("1:49:00");
+    const duration = screen.getByText("1:49:49");
     expect(duration).toBeInTheDocument()
   });
 

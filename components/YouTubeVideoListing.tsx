@@ -3,6 +3,7 @@ import styles from "@/styles/componentStyles/YouTubeVideoListing.module.css";
 import Image from "next/image";
 import {convertYouTubeVideoDuration} from "../helpers/videoDurationConversion";
 import Link from "next/link";
+import {timeAgo} from "../config/timeAgoFormatter";
 
 interface YouTubeVideoListingProps {
   videoData: YouTubeVideoResult
@@ -18,7 +19,7 @@ const YouTubeVideoListing = ({videoData}: YouTubeVideoListingProps) => {
           <Image src="/images/no-thumbnail.png" height={135} width={240} layout="fixed" alt="Video thumbnail" />
         )}
         <p className={styles.duration}>{convertYouTubeVideoDuration(videoData.contentDetails.duration)}</p>
-        {/*<p className={styles.createdAt}>{timeAgo.format(videoData.creationDate)}</p>*/}
+        <p className={styles.createdAt}>{timeAgo.format(new Date(videoData.snippet.publishedAt))}</p>
       </div>
       <h4 className={styles.title}>{videoData.snippet.title}</h4>
       <p className={styles.channel}>{videoData.snippet.channelTitle}</p>
