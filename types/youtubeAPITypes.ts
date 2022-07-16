@@ -222,17 +222,28 @@ export interface YouTubeVideoResultSnippet {
       width?: number;
       height?: number;
     };
+    standard?: {
+      url: string,
+      width?: number;
+      height?: number;
+    },
     high: {
       url: string,
       width?: number;
       height?: number;
     };
+    maxres?: {
+      url: string,
+      width?: number;
+      height?: number;
+    }
   };
   channelTitle: string;
   tags: string[];
   categoryId: string;
   liveBroadcastContent: string;
   defaultAudioLanguage: string;
+  defaultLanguage: string;
   localized?: {
     title: string;
     description: string;
