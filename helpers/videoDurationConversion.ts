@@ -44,8 +44,9 @@ export const convertTwitchVideoDuration = (duration: string) => {
 export const convertYouTubeVideoDuration = (duration: string) => {
   let convertedDuration = '';
 
-  // Removes the 'P' from ISO duration as this is not necessary for UI or further adjustments
-  duration = duration.split('P')[1]
+  // Removes the 'PT' from ISO duration as this is not necessary for UI or further adjustments
+  // Because the max YouTube VOD is 12 hours, we do not have to factor any designators between 'P' and 'T'
+  duration = duration.split('PT')[1]
 
   const hoursSplit = duration.split('H');
 
