@@ -5,11 +5,11 @@ import { YouTubeChannelSearchResult } from 'types/youtubeAPITypes';
 interface mockYouTubeChannelSearchHook {
   isLoading: boolean,
   isError: boolean,
-  data: { channelData: YouTubeChannelSearchResult | null } | undefined,
+  data: {channelData: YouTubeChannelSearchResult} | {channelData: null} | undefined
   error: unknown,
 }
 
-// Globally mock the next router and useRouter hook. This mock prevents an reference error when the component attempts to read the router.query object from useRouter
+// Globally mock the next router and useRouter hook. This mock prevents a reference error when the component attempts to read the router.query object from useRouter
 jest.mock("next/router", () => ({
   __esModule: true,
   useRouter: jest.fn(() => ({ query: { channelId: '1234' } })),
@@ -18,55 +18,63 @@ jest.mock("next/router", () => ({
 
 // Reflects the exact type of channel data received from the API
 const testData = {
-  channelData: {
-    kind: "youtube#channel",
-    etag: "JzVXdSr_8QsaydMEzyytEfeJAEE",
-    id: "UC_qVvdPdMIZDEc6zdj06ilA",
-    snippet: {
-      title: "Smash",
-      description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe.",
-      customUrl: "smashgaminghere",
-      publishedAt: "2015-08-26T11:12:55Z",
-      thumbnails: {
-        default: {
-          url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s88-c-k-c0x00ffffff-no-rj",
-          width: 88,
-          height: 88
+  "channelData": {
+    "kind": "youtube#channel",
+    "etag": "8BLSIOr6__UmS4fz3_UtPnp8t20",
+    "id": "UCbLIqv9Puhyp9_ZjVtfOy7w",
+    "snippet": {
+      "title": "Call of Duty League",
+      "description": "The official YouTube channel of the Call of Duty League",
+      "customUrl": "codleague",
+      "publishedAt": "2012-12-20T21:06:20Z",
+      "thumbnails": {
+        "default": {
+          "url": "https://yt3.ggpht.com/ZIOjlEtmCQvCKb_q4NHJeky4x-GPCibjYhom3DRe--We3rIbpwVkvXYelJHu0TnTqfGlB4mEJw=s88-c-k-c0x00ffffff-no-rj",
+          "width": 88,
+          "height": 88
         },
-        medium: {
-          url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s240-c-k-c0x00ffffff-no-rj",
-          width: 240,
-          height: 240
+        "medium": {
+          "url": "https://yt3.ggpht.com/ZIOjlEtmCQvCKb_q4NHJeky4x-GPCibjYhom3DRe--We3rIbpwVkvXYelJHu0TnTqfGlB4mEJw=s240-c-k-c0x00ffffff-no-rj",
+          "width": 240,
+          "height": 240
         },
-        high: {
-          url: "https://yt3.ggpht.com/ytc/AKedOLT_seyyy6UoovylO6PfSQ9WYy3WLh9CF_g4KlgZvw=s800-c-k-c0x00ffffff-no-rj",
-          width: 800,
-          height: 800
+        "high": {
+          "url": "https://yt3.ggpht.com/ZIOjlEtmCQvCKb_q4NHJeky4x-GPCibjYhom3DRe--We3rIbpwVkvXYelJHu0TnTqfGlB4mEJw=s800-c-k-c0x00ffffff-no-rj",
+          "width": 800,
+          "height": 800
         }
       },
-      localized: {
-        title: "Smash",
-        description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe."
+      "localized": {
+        "title": "Call of Duty League",
+        "description": "The official YouTube channel of the Call of Duty League"
       },
-      country: "US"
+      "country": "US"
     },
-    statistics: {
-      viewCount: "567795130",
-      subscriberCount: "1510000",
-      hiddenSubscriberCount: false,
-      videoCount: "570"
-    },
-    brandingSettings: {
-      channel: {
-        title: "Smash",
-        description: "Hi , I'm Smash. I upload funny .io games. Most of them are funny moments and trolling. Most of the time I upload Agar.io, Slither.io and Wormate.io Funny Moments.\nI hope you guys will like them. Please support with like and subscribe.",
-        unsubscribedTrailer: "28Yp4ERsiaE",
-        country: "US"
-      },
-      image: {
-        bannerExternalUrl: "https://lh3.googleusercontent.com/NXYsqbX3ExtOP8fPJ_ySnaE8vb7ZCYdDdSuOGZYztCu0nVT3cl40VYEwZn56lbJ_CpUouWBlXw"
+    "contentDetails": {
+      "relatedPlaylists": {
+        "likes": "",
+        "uploads": "UUbLIqv9Puhyp9_ZjVtfOy7w"
       }
     },
+    "statistics": {
+      "viewCount": "329688440",
+      "subscriberCount": "1600000",
+      "hiddenSubscriberCount": false,
+      "videoCount": "9431"
+    },
+    "brandingSettings": {
+      "channel": {
+        "title": "Call of Duty League",
+        "description": "The official YouTube channel of the Call of Duty League",
+        "keywords": "\"call of duty\" \"cod league\" codleague \"call of duty league\" esports cdl \"call of duty world league\" cwl \"cod pros\" \"competitive call of duty\" \"pro call of duty\" \"black ops cold war\" \"call of duty cold war\" \"cod esports\"",
+        "trackingAnalyticsAccountId": "UA-50249600-135",
+        "unsubscribedTrailer": "XpKyxQtr0Vc",
+        "country": "US"
+      },
+      "image": {
+        "bannerExternalUrl": "https://yt3.ggpht.com/1Eh4TseBolUAevE0tq-FJMtPJgh2QTT-UwwBSVKaLwSO5UmvA8XiQHw7dHQOenDgmB-E1x4l"
+      }
+    }
   }
 }
 
@@ -83,6 +91,11 @@ jest.mock('../../hooks/useGetYouTubeChannel', () => ({
   useGetYouTubeChannel: () => (mockChannelSearch),
 }));
 
+// Provide generalised mock to avoid errors when the YouTubeChannelVideos component renders
+jest.mock('../../hooks/useGetYouTubeVideos', () => ({
+  useGetYouTubeVideos: () => ({}),
+}));
+
 
 describe('Channel page layout and elements', () => {
   it('Shows the channel title', () => {
@@ -91,15 +104,15 @@ describe('Channel page layout and elements', () => {
     mockChannelSearch.data = testData;
     render(<YouTubeChannel channelId='1234' />)
 
-    const title = screen.getByRole('heading', { name: /Smash/i });
+    const title = screen.getByRole('heading', { name: /Call of Duty/i });
     expect(title).toBeInTheDocument();
   });
 
   it('Shows the channel data (subscriber count and video count)', () => {
     render(<YouTubeChannel channelId='1234' />)
 
-    const subCount = screen.getByText(/1510000 subscribers/i);
-    const videoCount = screen.getByText(/570 videos/i);
+    const subCount = screen.getByText(/1600000 subscribers/i);
+    const videoCount = screen.getByText(/9431 videos/i);
     expect(subCount).toBeInTheDocument();
     expect(videoCount).toBeInTheDocument();
   });
@@ -129,7 +142,7 @@ describe('Channel page UI states', () => {
     expect(error).not.toBeInTheDocument();
 
     // Check that data has been rendered
-    const channelData = screen.getByRole('heading', { name: /Smash/i });
+    const channelData = screen.getByRole('heading', { name: /Call of Duty League/i });
     expect(channelData).toBeInTheDocument();
   });
 
