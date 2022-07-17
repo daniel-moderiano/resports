@@ -4,7 +4,7 @@ import TwitchVideoListing from './TwitchVideoListing';
 import * as React from 'react';
 import styles from '../styles/componentStyles/TwitchChannelVideos.module.css';
 import {useEffect, useState} from "react";
-import {filterByDate, filterByDuration, filterByKeyword} from "../helpers/twitchVideoFilters";
+import {filterByDateTwitch, filterByDurationTwitch, filterByKeywordTwitch} from "../helpers/twitchVideoFilters";
 import VideosFilterMenu from "@/components/VideosFilterMenu";
 
 interface TwitchChannelVideosProps {
@@ -41,9 +41,9 @@ const TwitchChannelVideos = ({ userId }: TwitchChannelVideosProps) => {
       // Attempting filter without data will throw an error
       tempVideos = data;
       if (filters) {
-        tempVideos = filterByDuration(tempVideos, filters.minDurationFilter, filters.maxDurationFilter);
-        tempVideos = filterByDate(tempVideos, filters.dateFilter);
-        tempVideos = filterByKeyword(tempVideos, filters.keywordFilter);
+        tempVideos = filterByDurationTwitch(tempVideos, filters.minDurationFilter, filters.maxDurationFilter);
+        tempVideos = filterByDateTwitch(tempVideos, filters.dateFilter);
+        tempVideos = filterByKeywordTwitch(tempVideos, filters.keywordFilter);
 
         //  At this stage the tempVideos variable will contain the fully filtered data set. IT is ready to assign
         setFilteredVideos(tempVideos)
