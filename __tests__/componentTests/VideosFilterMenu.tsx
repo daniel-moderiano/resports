@@ -1,10 +1,10 @@
 import {fireEvent, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import TwitchFilterMenu from "@/components/TwitchFilterMenu";
+import VideosFilterMenu from "@/components/VideosFilterMenu";
 
 // Use this before any testing involving the filter controls because they will be initially hidden by default
 const setup = async () => {
-  render(<TwitchFilterMenu setFilters={jest.fn} />)
+  render(<VideosFilterMenu setFilters={jest.fn} />)
   const filtersBtn: HTMLButtonElement = screen.getByRole('button', { name: /filters/i });
   expect(filtersBtn).toBeInTheDocument();
   // Reveal the filter controls
@@ -81,13 +81,13 @@ describe('Video duration filter', () => {
 
 describe('Video filter UI', () => {
   it('Defaults with filters hidden', () => {
-    render(<TwitchFilterMenu setFilters={jest.fn} />)
+    render(<VideosFilterMenu setFilters={jest.fn} />)
     const filterControls = screen.queryByLabelText(/duration/i);
     expect(filterControls).not.toBeInTheDocument()
   });
 
   it('Opens filter controls on click of filters button', async () => {
-    render(<TwitchFilterMenu setFilters={jest.fn} />)
+    render(<VideosFilterMenu setFilters={jest.fn} />)
     const filtersBtn: HTMLButtonElement = screen.getByRole('button', { name: /filters/i });
     expect(filtersBtn).toBeInTheDocument();
 
@@ -98,7 +98,7 @@ describe('Video filter UI', () => {
   });
 
   it('Closes filter controls on second click of filters button', async () => {
-    render(<TwitchFilterMenu setFilters={jest.fn} />)
+    render(<VideosFilterMenu setFilters={jest.fn} />)
     const filtersBtn: HTMLButtonElement = screen.getByRole('button', { name: /filters/i });
     expect(filtersBtn).toBeInTheDocument();
 
@@ -114,7 +114,7 @@ describe('Video filter UI', () => {
 describe('Applying filters', () => {
   it('Sets filters when "Apply filters" is clicked', async () => {
     const mockSetFilters = jest.fn();
-    render(<TwitchFilterMenu setFilters={mockSetFilters} />)
+    render(<VideosFilterMenu setFilters={mockSetFilters} />)
     const filtersBtn: HTMLButtonElement = screen.getByRole('button', { name: /filters/i });
     expect(filtersBtn).toBeInTheDocument();
 
