@@ -1,4 +1,8 @@
-import {convertTwitchVideoDuration, convertYouTubeVideoDuration} from "../helpers/videoDurationConversion";
+import {
+  convertISOToSeconds,
+  convertTwitchVideoDuration,
+  convertYouTubeVideoDuration
+} from "../helpers/videoDurationConversion";
 
 describe('Twitch video duration conversion', () => {
   it('Converts seconds-only input', () => {
@@ -57,5 +61,35 @@ describe('YouTube video duration conversion', () => {
 
   it('Handles single digit seconds correctly (leading zeros)', () => {
     expect(convertYouTubeVideoDuration('PT11M1S')).toBe('11:01')
+  });
+});
+
+describe('ISO to seconds duration conversion', () => {
+  it('Converts seconds-only input', () => {
+    expect(convertISOToSeconds('PT44S')).toBe(44)
+  });
+
+  it('Converts minutes/seconds-only input', () => {
+    expect(convertISOToSeconds('PT3M21S')).toBe(201)
+  });
+
+  it('Converts full hours/minutes/seconds input', () => {
+    expect(convertISOToSeconds('PT11H10M12S')).toBe(40212)
+  });
+
+  it('Handles single digit hours correctly', () => {
+    expect(convertISOToSeconds('PT5H10M10S')).toBe(18610)
+  });
+
+  it('Handles single digit minutes correctly', () => {
+    expect(convertISOToSeconds('PT10H5M12S')).toBe(36312)
+  });
+
+  it('Handles single digit seconds correctly', () => {
+    expect(convertISOToSeconds('PT11H10M0S')).toBe(40200)
+  });
+
+  it('Handles single digit seconds correctly (leading zeros)', () => {
+    expect(convertISOToSeconds('PT11M1S')).toBe(661)
   });
 });

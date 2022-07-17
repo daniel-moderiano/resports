@@ -74,3 +74,9 @@ export const convertYouTubeVideoDuration = (duration: string) => {
 
   return convertedDuration;
 };
+
+
+// This function is used to convert an ISO 8601 duration into a single integer number of seconds. This is required to make ISO durations comparable arithmetically for duration filtering (for the YouTube filters)
+export const convertISOToSeconds = (ISODuration: string) => {
+  return 0;
+}
