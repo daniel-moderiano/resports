@@ -77,6 +77,46 @@ export const convertYouTubeVideoDuration = (duration: string) => {
 
 
 // This function is used to convert an ISO 8601 duration into a single integer number of seconds. This is required to make ISO durations comparable arithmetically for duration filtering (for the YouTube filters)
-export const convertISOToSeconds = (ISODuration: string) => {
-  return 0;
+export const convertISOToSeconds = (duration: string) => {
+  let cumulativeSeconds = 0;
+
+  // Removes the 'PT' from ISO duration as this is not necessary for UI or further adjustments
+  // Because the max YouTube VOD is 12 hours, we do not have to factor any designators between 'P' and 'T'
+  duration = duration.split('PT')[1];
+
+  // Splitting at the hours allows use to handle all the conditionals easily from the top-down
+  // It also correctly handles input no matter the duration, whereas using a length conditional would vary for 0 mins/secs
+  const hoursSplit = duration.split('H');
+
+  if (hoursSplit.length === 1) {    // duration is either minutes/seconds or seconds only
+    const minutesSplit = duration.split('M');
+
+    if (minutesSplit.length > 1) {    // duration is minutes/seconds
+      // Handle the minutes component (convert to seconds and sum to cumulative total)
+      cumulativeSeconds += (parseInt(minutesSplit[0]) * 60);
+
+      // Handle the seconds component
+      const secondsSplit = minutesSplit[1].split('S');
+      cumulativeSeconds += parseInt(secondsSplit[0])
+    } else {    // duration is seconds only
+      // Handle seconds component
+      cumulativeSeconds += parseInt(duration.split('s')[0])
+    }
+  }
+
+  // duration is > 1 hour (i.e. contains hours/minutes/seconds components)
+  if (hoursSplit.length > 1) {
+    // Handle hours component
+    cumulativeSeconds += (parseInt(hoursSplit[0]) * 60 * 60);
+
+    // Handle minutes component
+    const minutesSplit = hoursSplit[1].split('M');
+    cumulativeSeconds += (parseInt(minutesSplit[0]) * 60);
+
+    // Handle the seconds component  (add extra zeros for single digit secs)
+    const secondsSplit = minutesSplit[1].split('S');
+    cumulativeSeconds += parseInt(secondsSplit[0]);
+  }
+
+  return cumulativeSeconds;
 }
