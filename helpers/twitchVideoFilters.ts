@@ -2,7 +2,7 @@
 import {HelixVideo} from "@twurple/api/lib";
 
 // Able to take any kind of date input. It was decided to include a >= operator as it makes intuitive sense to filter by 'created after this date' to include time later that day ON the date/time selected
-export const filterByDate = (videos: HelixVideo[], dateLimit: Date) => {
+export const filterByDateTwitch = (videos: HelixVideo[], dateLimit: Date) => {
   const filteredVideos = videos.filter((video) => {
     return video.creationDate <= dateLimit;
   });
@@ -11,7 +11,7 @@ export const filterByDate = (videos: HelixVideo[], dateLimit: Date) => {
 };
 
 // The 0 minimum is self-explanatory; the 180000 maximum is equivalent to 50 hours. This more than covers the max Twitch stream length of 48
-export const filterByDuration = (videos: HelixVideo[], minimumDurationInSeconds = 0, maximumDurationInSeconds = 180000) => {
+export const filterByDurationTwitch = (videos: HelixVideo[], minimumDurationInSeconds = 0, maximumDurationInSeconds = 180000) => {
   const filteredVideos = videos.filter((video) => {
     return (video.durationInSeconds > minimumDurationInSeconds) && (video.durationInSeconds < maximumDurationInSeconds);
   });
@@ -20,7 +20,7 @@ export const filterByDuration = (videos: HelixVideo[], minimumDurationInSeconds 
 };
 
 // Essentially used as a search function with a user provided keyword/search query. All strings must be case-matched before comparison occurs to avoid a case-sensitive search
-export const filterByKeyword = (videos: HelixVideo[], keyword: string) => {
+export const filterByKeywordTwitch = (videos: HelixVideo[], keyword: string) => {
   const filteredVideos = videos.filter((video) => {
     return video.title.toLowerCase().includes(keyword.trim().toLowerCase());
   });

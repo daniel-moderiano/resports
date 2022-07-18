@@ -1,12 +1,11 @@
-import {VideoFilters} from "../components/TwitchChannelVideos";
-import * as React from "react";
-import {useState} from "react";
+import React, {useState} from 'react';
+import {VideoFilters} from "@/components/TwitchChannelVideos";
 
-interface TwitchFilterMenuProps {
+interface YouTubeFilterMenuProps {
   setFilters: React.Dispatch<React.SetStateAction<VideoFilters | null>>;
 }
 
-const TwitchFilterMenu = ({setFilters}: TwitchFilterMenuProps) => {
+const VideosFilterMenu = ({setFilters}: YouTubeFilterMenuProps) => {
   const [showFilters, setShowFilters] = useState(false);
 
   // Unique states are used for each filter within this component to avoid causing a re-render of the parent component on any filter change
@@ -85,4 +84,4 @@ const TwitchFilterMenu = ({setFilters}: TwitchFilterMenuProps) => {
   );
 };
 
-export default TwitchFilterMenu;
+export default VideosFilterMenu;

@@ -1,4 +1,4 @@
-import {filterByDuration, filterByKeyword, filterByDate} from "../helpers/twitchVideoFilters";
+import {filterByDurationTwitch, filterByKeywordTwitch, filterByDateTwitch} from "../helpers/twitchVideoFilters";
 import {HelixVideo} from "@twurple/api";
 
 const testVideos: HelixVideo[] = [
@@ -55,12 +55,12 @@ const testVideos: HelixVideo[] = [
 
 describe('Filter videos by duration', () => {
   it('returns all videos for a zero second minimum', () => {
-    expect(filterByDuration(testVideos, 0)).toStrictEqual(testVideos);
+    expect(filterByDurationTwitch(testVideos, 0)).toStrictEqual(testVideos);
   });
 
   it('returns all videos above specified minimum duration', () => {
     //  Aim to filter out all those videos less than 4 hours duration
-    expect(filterByDuration(testVideos, 14400)).toStrictEqual([
+    expect(filterByDurationTwitch(testVideos, 14400)).toStrictEqual([
       {
         durationInSeconds: 18000,   // 05:00:00
         creationDate: new Date(2022, 5, 12),
@@ -83,7 +83,7 @@ describe('Filter videos by duration', () => {
   });
 
   it('does not return video with duration equal to the minimum specified', () => {
-    expect(filterByDuration(testVideos, 23452)).toStrictEqual([
+    expect(filterByDurationTwitch(testVideos, 23452)).toStrictEqual([
       {
         durationInSeconds: 45006,    // 12:30:06
         creationDate: new Date(2022, 5, 13),
@@ -94,15 +94,15 @@ describe('Filter videos by duration', () => {
   });
 
   it('returns an empty array if no videos exist above the minimum specified duration', () => {
-    expect(filterByDuration(testVideos, 50000)).toStrictEqual([]);
+    expect(filterByDurationTwitch(testVideos, 50000)).toStrictEqual([]);
   });
 
   it('returns an empty array if no videos exist below the maximum specified duration', () => {
-    expect(filterByDuration(testVideos, 0, 0)).toStrictEqual([]);
+    expect(filterByDurationTwitch(testVideos, 0, 0)).toStrictEqual([]);
   });
 
   it('returns correct videos in duration interval min-max', () => {
-    expect(filterByDuration(testVideos, 10000, 20000)).toStrictEqual([  {
+    expect(filterByDurationTwitch(testVideos, 10000, 20000)).toStrictEqual([  {
       durationInSeconds: 18000,   // 05:00:00
       creationDate: new Date(2022, 5, 12),
       title: "video one",
@@ -113,16 +113,16 @@ describe('Filter videos by duration', () => {
 
 describe('Filter videos by title keyword', () => {
   it('returns all videos for a single common letter filter (case insensitive)', () => {
-    expect(filterByKeyword(testVideos, 'v')).toStrictEqual(testVideos);
+    expect(filterByKeywordTwitch(testVideos, 'v')).toStrictEqual(testVideos);
   });
 
   it('returns all videos when the keyword is any amount of whitespace', () => {
-    expect(filterByKeyword(testVideos, '   ')).toStrictEqual(testVideos);
+    expect(filterByKeywordTwitch(testVideos, '   ')).toStrictEqual(testVideos);
   });
 
   it('returns the appropriate videos given a single keyword search', () => {
     //  Aim to filter out all those videos less than 4 hours duration
-    expect(filterByKeyword(testVideos, 'one')).toStrictEqual([
+    expect(filterByKeywordTwitch(testVideos, 'one')).toStrictEqual([
       {
         durationInSeconds: 18000,   // 05:00:00
         creationDate: new Date(2022, 5, 12),
@@ -134,7 +134,7 @@ describe('Filter videos by title keyword', () => {
 
   it('returns the appropriate videos given a multiple keyword search', () => {
     //  Aim to filter out all those videos less than 4 hours duration
-    expect(filterByKeyword(testVideos, 'video two')).toStrictEqual([
+    expect(filterByKeywordTwitch(testVideos, 'video two')).toStrictEqual([
       {
         durationInSeconds: 8274,    // 02:15:54
         creationDate: new Date(2022, 4, 12),
@@ -145,14 +145,14 @@ describe('Filter videos by title keyword', () => {
   });
 
   it('returns an empty array if no videos match the search keyword', () => {
-    expect(filterByKeyword(testVideos, 'ten')).toStrictEqual([]);
+    expect(filterByKeywordTwitch(testVideos, 'ten')).toStrictEqual([]);
   });
 })
 
 describe('Filter videos by date', () => {
   it('returns all videos older than the provided date', () => {
     // Should NOT return the 12/05/2022 05:00:00 video!
-    expect(filterByDate(testVideos, new Date(2022, 5, 12))).toStrictEqual([
+    expect(filterByDateTwitch(testVideos, new Date(2022, 5, 12))).toStrictEqual([
       {
         durationInSeconds: 18000,   // 05:00:00
         creationDate: new Date(2022, 5, 12),
@@ -181,7 +181,7 @@ describe('Filter videos by date', () => {
   });
 
   it('includes videos on the specified date (if released at 00:00:00)', () => {
-    expect(filterByDate(testVideos, new Date(2022, 3, 12))).toStrictEqual([
+    expect(filterByDateTwitch(testVideos, new Date(2022, 3, 12))).toStrictEqual([
       {
         durationInSeconds: 10,   // 00:00:10
         creationDate: new Date(2022, 3, 12),
@@ -192,10 +192,10 @@ describe('Filter videos by date', () => {
   });
 
   it('returns empty list when no videos match the criteria', () => {
-    expect(filterByDate(testVideos, new Date(2021, 7, 3))).toStrictEqual([]);
+    expect(filterByDateTwitch(testVideos, new Date(2021, 7, 3))).toStrictEqual([]);
   });
 
   it('returns all videos when the date filter is set to current date/time', () => {
-    expect(filterByDate(testVideos, new Date())).toStrictEqual(testVideos);
+    expect(filterByDateTwitch(testVideos, new Date())).toStrictEqual(testVideos);
   });
 })
