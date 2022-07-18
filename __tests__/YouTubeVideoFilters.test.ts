@@ -411,7 +411,7 @@ describe('Filter videos by duration', () => {
 
 describe('Filter videos by title keyword', () => {
   it('returns all videos for a single common letter filter (case insensitive)', () => {
-    expect(filterByKeywordYouTube(testVideos, 'v')).toStrictEqual(testVideos);
+    expect(filterByKeywordYouTube(testVideos, 'e')).toStrictEqual(testVideos);
   });
 
   it('returns all videos when the keyword is any amount of whitespace', () => {
@@ -420,30 +420,146 @@ describe('Filter videos by title keyword', () => {
 
   it('returns the appropriate videos given a single keyword search', () => {
     //  Aim to filter out all those videos less than 4 hours duration
-    expect(filterByKeywordYouTube(testVideos, 'one')).toStrictEqual([
+    expect(filterByKeywordYouTube(testVideos, 'mongodb')).toStrictEqual([
       {
-        durationInSeconds: 18000,   // 05:00:00
-        creationDate: new Date(2022, 5, 12),
-        title: "video one",
-        getUser: jest.fn,
+        "kind": "youtube#video",
+        "etag": "i0OysdqEwSKDTO3RGrIdW0sXGU4",
+        "id": "2QQGWYe7IDU",
+        "snippet": {
+          "publishedAt": "2022-01-24T14:00:01Z",
+          "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
+          "title": "MongoDB Crash Course 2022",
+          "description": "In this video, I will introduce you to MongoDB Atlas, the multi-cloud application data platform from MongoDB, and walk you through how to set up and connect to the database, loading sample data and performing CRUD operations. \n\nThis video will provide you with a basic understanding and way to get started with MongoDB Atlas, but you will learn that there are a variety of other features and ways to interact with your data available, providing you the flexibility to interact in the way that best suits your needs. \n\n▶ Register for MongoDB Atlas: https://www.mongodb.com/cloud/atlas/register?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB Cheat Sheet: https://gist.github.com/codeSTACKr/53fd03c7f75d40d07797b8e4e47d78ec\n\n▶ Check out this tutorial to see the 5 different ways to deploy a free database with MongoDB Atlas: https://www.mongodb.com/developer/article/5-different-ways-deploy-free-database-mongodb-atlas/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ Join the MongoDB community:  https://www.mongodb.com/community/forums/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB YouTube Channel: https://www.youtube.com/c/MongoDBofficial\n\n—------------------------------------------------\n\nPresented By:\n▶ Senior Developer Advocate at MongoDB - Jesse Hall aka codeSTACKr: https://youtube.com/codeSTACKr\n▶ @codeSTACKr: https://twitter.com/codeSTACKr",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/2QQGWYe7IDU/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/2QQGWYe7IDU/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/2QQGWYe7IDU/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            }
+          },
+          "channelTitle": "Traversy Media",
+          "tags": [
+            "mongodb",
+            "mongo",
+            "mongodb crash course",
+            "nosql",
+            "document database",
+            "non-relational database",
+            "mongodb atlas"
+          ],
+          "categoryId": "28",
+          "liveBroadcastContent": "none",
+          "localized": {
+            "title": "MongoDB Crash Course 2022",
+            "description": "In this video, I will introduce you to MongoDB Atlas, the multi-cloud application data platform from MongoDB, and walk you through how to set up and connect to the database, loading sample data and performing CRUD operations. \n\nThis video will provide you with a basic understanding and way to get started with MongoDB Atlas, but you will learn that there are a variety of other features and ways to interact with your data available, providing you the flexibility to interact in the way that best suits your needs. \n\n▶ Register for MongoDB Atlas: https://www.mongodb.com/cloud/atlas/register?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB Cheat Sheet: https://gist.github.com/codeSTACKr/53fd03c7f75d40d07797b8e4e47d78ec\n\n▶ Check out this tutorial to see the 5 different ways to deploy a free database with MongoDB Atlas: https://www.mongodb.com/developer/article/5-different-ways-deploy-free-database-mongodb-atlas/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ Join the MongoDB community:  https://www.mongodb.com/community/forums/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB YouTube Channel: https://www.youtube.com/c/MongoDBofficial\n\n—------------------------------------------------\n\nPresented By:\n▶ Senior Developer Advocate at MongoDB - Jesse Hall aka codeSTACKr: https://youtube.com/codeSTACKr\n▶ @codeSTACKr: https://twitter.com/codeSTACKr"
+          },
+          "defaultAudioLanguage": "en"
+        },
+        "contentDetails": {
+          "duration": "PT27M22S",
+          "dimension": "2d",
+          "definition": "hd",
+          "caption": "false",
+          "licensedContent": true,
+          "contentRating": {},
+          "projection": "rectangular"
+        },
+        "statistics": {
+          "viewCount": "97597",
+          "likeCount": "3721",
+          "favoriteCount": "0",
+          "commentCount": "118"
+        },
+        "player": {
+          "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/2QQGWYe7IDU\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+        }
       },
     ]);
   });
 
   it('returns the appropriate videos given a multiple keyword search', () => {
     //  Aim to filter out all those videos less than 4 hours duration
-    expect(filterByKeywordYouTube(testVideos, 'video two')).toStrictEqual([
+    expect(filterByKeywordYouTube(testVideos, 'graphql crash course')).toStrictEqual([
       {
-        durationInSeconds: 8274,    // 02:15:54
-        creationDate: new Date(2022, 4, 12),
-        title: "video two",
-        getUser: jest.fn,
+        "kind": "youtube#video",
+        "etag": "GjY6y6VAgMamOEFwVxQKZROcobw",
+        "id": "BcLNfwF04Kw",
+        "snippet": {
+          "publishedAt": "2022-06-06T13:00:10Z",
+          "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
+          "title": "GraphQL Crash Course With Full Stack MERN Project",
+          "description": "⭐ Join Masterschool & pay nothing until you're hired!\nhttps://goto.masterschool.com/brad2022\n\nIn this video, we will build a full-stack project management system with GraphQL, Express, MongoDB, React, and Apollo.\n\n💻 Code:\nhttps://github.com/bradtraversy/project-mgmt-graphql\n\n💻 Query & Mutation Gist:\nhttps://gist.github.com/bradtraversy/fc527bc9a4659ab8de8e8066f3498723\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n\n0:00 - Intro\n1:47 - MasterSchool Sponsor\n2:31 - GraphQL Crash Course Slides\n12:08 - Create Express Server\n17:52 - Start GraphQL\n20:40 - Start Schema\n23:04 - Client Type & Queries\n28:02 - Making Queries With GraphiQL\n32:33 - Project Type & Queries\n35:27 - Project & Client Relationship\n37:23 - Creating a MongoDB Database\n41:36 - Database Connection\n44:59 - Mongoose Models\n48:50 - Fetch Data From MongoDB\n53:02 - Client Mutations\n1:02:50 - Project Mutations\n1:17:30 - Start On The Client\n1:25:30 - Setting Up Apollo\n1:27:57 - Fetch & Display Clients\n1:40:02 - Delete Client Mutation\n1:45:04 - Apollo Cache\n1:50:18 - Create Client Mutation\n2:05:18 - Fetch & Display Projects\n2:14:32 - React Router & Pages Setup\n2:23:47 - Query Single Project\n2:30:53 - Client Info Component\n2:24:00 - Add Project Modal\n2:42:00 - Get Clients For Select\n2:48:50 - Add Project Mutation\n2:54:52 - Delete Project\n3:01:50 - Edit Project Form\n3:07:29 - Update Project Mutation\n3:10:50 - Cascade Project Delete\n3:13:58 - Wrap Up",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/BcLNfwF04Kw/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/BcLNfwF04Kw/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/BcLNfwF04Kw/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            }
+          },
+          "channelTitle": "Traversy Media",
+          "tags": [
+            "graphql",
+            "express",
+            "node.js",
+            "react",
+            "apollo",
+            "apollo graphql",
+            "mongodb",
+            "graphql express",
+            "express.js"
+          ],
+          "categoryId": "28",
+          "liveBroadcastContent": "none",
+          "localized": {
+            "title": "GraphQL Crash Course With Full Stack MERN Project",
+            "description": "⭐ Join Masterschool & pay nothing until you're hired!\nhttps://goto.masterschool.com/brad2022\n\nIn this video, we will build a full-stack project management system with GraphQL, Express, MongoDB, React, and Apollo.\n\n💻 Code:\nhttps://github.com/bradtraversy/project-mgmt-graphql\n\n💻 Query & Mutation Gist:\nhttps://gist.github.com/bradtraversy/fc527bc9a4659ab8de8e8066f3498723\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n\n0:00 - Intro\n1:47 - MasterSchool Sponsor\n2:31 - GraphQL Crash Course Slides\n12:08 - Create Express Server\n17:52 - Start GraphQL\n20:40 - Start Schema\n23:04 - Client Type & Queries\n28:02 - Making Queries With GraphiQL\n32:33 - Project Type & Queries\n35:27 - Project & Client Relationship\n37:23 - Creating a MongoDB Database\n41:36 - Database Connection\n44:59 - Mongoose Models\n48:50 - Fetch Data From MongoDB\n53:02 - Client Mutations\n1:02:50 - Project Mutations\n1:17:30 - Start On The Client\n1:25:30 - Setting Up Apollo\n1:27:57 - Fetch & Display Clients\n1:40:02 - Delete Client Mutation\n1:45:04 - Apollo Cache\n1:50:18 - Create Client Mutation\n2:05:18 - Fetch & Display Projects\n2:14:32 - React Router & Pages Setup\n2:23:47 - Query Single Project\n2:30:53 - Client Info Component\n2:24:00 - Add Project Modal\n2:42:00 - Get Clients For Select\n2:48:50 - Add Project Mutation\n2:54:52 - Delete Project\n3:01:50 - Edit Project Form\n3:07:29 - Update Project Mutation\n3:10:50 - Cascade Project Delete\n3:13:58 - Wrap Up"
+          },
+          "defaultAudioLanguage": "en"
+        },
+        "contentDetails": {
+          "duration": "PT3H14M39S",
+          "dimension": "2d",
+          "definition": "hd",
+          "caption": "false",
+          "licensedContent": true,
+          "contentRating": {},
+          "projection": "rectangular"
+        },
+        "statistics": {
+          "viewCount": "114896",
+          "likeCount": "4648",
+          "favoriteCount": "0",
+          "commentCount": "309"
+        },
+        "player": {
+          "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/BcLNfwF04Kw\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+        }
       },
     ]);
   });
 
   it('returns an empty array if no videos match the search keyword', () => {
-    expect(filterByKeywordYouTube(testVideos, 'ten')).toStrictEqual([]);
+    expect(filterByKeywordYouTube(testVideos, 'grand finals')).toStrictEqual([]);
   });
 })
 
