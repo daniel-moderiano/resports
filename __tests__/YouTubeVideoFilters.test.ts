@@ -66,67 +66,6 @@ const testVideos: YouTubeVideoResult[] = [
   },
   {
     "kind": "youtube#video",
-    "etag": "wZjqwvqwsqghq9E99gcc0GiaXUc",
-    "id": "Hci9Bb4_fkA",
-    "snippet": {
-      "publishedAt": "2022-07-12T15:29:46Z",
-      "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
-      "title": "JavaScript Under The Hood [4] - Memory Storage",
-      "description": "In this video, we'll look at how and where primitive values and reference data (objects) are stored.\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n0:00 - Intro\n0:59 - Memory Management & Garbage Collection\n2:34 - Primitive vs Reference Types\n4:19 - Stack vs Heap (Diagram)\n6:47 - Stack vs Heap (Code)\n9:41 - Devtools Memory Tab",
-      "thumbnails": {
-        "default": {
-          "url": "https://i.ytimg.com/vi/Hci9Bb4_fkA/default.jpg",
-          "width": 120,
-          "height": 90
-        },
-        "medium": {
-          "url": "https://i.ytimg.com/vi/Hci9Bb4_fkA/mqdefault.jpg",
-          "width": 320,
-          "height": 180
-        },
-        "high": {
-          "url": "https://i.ytimg.com/vi/Hci9Bb4_fkA/hqdefault.jpg",
-          "width": 480,
-          "height": 360
-        }
-      },
-      "channelTitle": "Traversy Media",
-      "tags": [
-        "javascript",
-        "javascript memory",
-        "javascript data types",
-        "memory stack and heap",
-        "stack vs heap"
-      ],
-      "categoryId": "28",
-      "liveBroadcastContent": "none",
-      "localized": {
-        "title": "JavaScript Under The Hood [4] - Memory Storage",
-        "description": "In this video, we'll look at how and where primitive values and reference data (objects) are stored.\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n0:00 - Intro\n0:59 - Memory Management & Garbage Collection\n2:34 - Primitive vs Reference Types\n4:19 - Stack vs Heap (Diagram)\n6:47 - Stack vs Heap (Code)\n9:41 - Devtools Memory Tab"
-      },
-      "defaultAudioLanguage": "en"
-    },
-    "contentDetails": {
-      "duration": "PT12M58S",
-      "dimension": "2d",
-      "definition": "hd",
-      "caption": "false",
-      "licensedContent": true,
-      "contentRating": {},
-      "projection": "rectangular"
-    },
-    "statistics": {
-      "viewCount": "7664",
-      "likeCount": "593",
-      "favoriteCount": "0",
-      "commentCount": "28"
-    },
-    "player": {
-      "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/Hci9Bb4_fkA\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
-    }
-  },
-  {
-    "kind": "youtube#video",
     "etag": "GjY6y6VAgMamOEFwVxQKZROcobw",
     "id": "BcLNfwF04Kw",
     "snippet": {
@@ -315,68 +254,6 @@ const testVideos: YouTubeVideoResult[] = [
       "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/2QQGWYe7IDU\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
     }
   },
-  {
-    "kind": "youtube#video",
-    "etag": "ryxJnYE4Ccx35KyMOK-EmCCTYvg",
-    "id": "JkeyKeK3V24",
-    "snippet": {
-      "publishedAt": "2021-08-05T15:52:41Z",
-      "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
-      "title": "Build 5 Projects With HTML, CSS & JavaScript",
-      "description": "Sharpen your JavaScript, CSS, DOM skills by building 5 projects in one video\n\nFull Course :\nhttps://www.udemy.com/course/50-projects-50-days/?referralCode=684EE5F9DE1745B6428B\n$12.99 Coupon Code: MONTH2021 (Replace with current month)\n\nGitHub Repo:\nhttps://github.com/bradtraversy/50projects50days\n\nTimestamps:\n0:00 - Intro\n2:23 - Project 1 - Blurry Loading\n15:31 - Project 2 - Vertical Slider\n41:23 - Project 3 - Random Choice Picker\n1:01:44 - Project 4 - Live User Filter\n1:28:50 - Project 5 - Content Placeholder",
-      "thumbnails": {
-        "default": {
-          "url": "https://i.ytimg.com/vi/JkeyKeK3V24/default.jpg",
-          "width": 120,
-          "height": 90
-        },
-        "medium": {
-          "url": "https://i.ytimg.com/vi/JkeyKeK3V24/mqdefault.jpg",
-          "width": 320,
-          "height": 180
-        },
-        "high": {
-          "url": "https://i.ytimg.com/vi/JkeyKeK3V24/hqdefault.jpg",
-          "width": 480,
-          "height": 360
-        }
-      },
-      "channelTitle": "Traversy Media",
-      "tags": [
-        "html",
-        "html css",
-        "css",
-        "javascript",
-        "learn javascript",
-        "vanilla javascript"
-      ],
-      "categoryId": "28",
-      "liveBroadcastContent": "none",
-      "localized": {
-        "title": "Build 5 Projects With HTML, CSS & JavaScript",
-        "description": "Sharpen your JavaScript, CSS, DOM skills by building 5 projects in one video\n\nFull Course :\nhttps://www.udemy.com/course/50-projects-50-days/?referralCode=684EE5F9DE1745B6428B\n$12.99 Coupon Code: MONTH2021 (Replace with current month)\n\nGitHub Repo:\nhttps://github.com/bradtraversy/50projects50days\n\nTimestamps:\n0:00 - Intro\n2:23 - Project 1 - Blurry Loading\n15:31 - Project 2 - Vertical Slider\n41:23 - Project 3 - Random Choice Picker\n1:01:44 - Project 4 - Live User Filter\n1:28:50 - Project 5 - Content Placeholder"
-      },
-      "defaultAudioLanguage": "en"
-    },
-    "contentDetails": {
-      "duration": "PT1H51M",
-      "dimension": "2d",
-      "definition": "hd",
-      "caption": "false",
-      "licensedContent": true,
-      "contentRating": {},
-      "projection": "rectangular"
-    },
-    "statistics": {
-      "viewCount": "364540",
-      "likeCount": "10520",
-      "favoriteCount": "0",
-      "commentCount": "299"
-    },
-    "player": {
-      "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/JkeyKeK3V24\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
-    }
-  },
 ]
 
 describe('Filter videos by duration', () => {
@@ -386,37 +263,77 @@ describe('Filter videos by duration', () => {
 
   it('returns all videos above specified minimum duration', () => {
     //  Aim to filter out all those videos less than 4 hours duration
-    expect(filterByDurationYouTube(testVideos, 14400)).toStrictEqual([
+    expect(filterByDurationYouTube(testVideos, 6000)).toStrictEqual([
       {
-        durationInSeconds: 18000,   // 05:00:00
-        creationDate: new Date(2022, 5, 12),
-        title: "video one",
-        getUser: jest.fn,
-      },
-      {
-        durationInSeconds: 45006,    // 12:30:06
-        creationDate: new Date(2022, 5, 13),
-        title: "video four",
-        getUser: jest.fn,
-      },
-      {
-        durationInSeconds: 23452,   // 06:30:52
-        creationDate: new Date(2022, 5, 11),
-        title: "video five",
-        getUser: jest.fn,
+        "kind": "youtube#video",
+        "etag": "GjY6y6VAgMamOEFwVxQKZROcobw",
+        "id": "BcLNfwF04Kw",
+        "snippet": {
+          "publishedAt": "2022-06-06T13:00:10Z",
+          "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
+          "title": "GraphQL Crash Course With Full Stack MERN Project",
+          "description": "⭐ Join Masterschool & pay nothing until you're hired!\nhttps://goto.masterschool.com/brad2022\n\nIn this video, we will build a full-stack project management system with GraphQL, Express, MongoDB, React, and Apollo.\n\n💻 Code:\nhttps://github.com/bradtraversy/project-mgmt-graphql\n\n💻 Query & Mutation Gist:\nhttps://gist.github.com/bradtraversy/fc527bc9a4659ab8de8e8066f3498723\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n\n0:00 - Intro\n1:47 - MasterSchool Sponsor\n2:31 - GraphQL Crash Course Slides\n12:08 - Create Express Server\n17:52 - Start GraphQL\n20:40 - Start Schema\n23:04 - Client Type & Queries\n28:02 - Making Queries With GraphiQL\n32:33 - Project Type & Queries\n35:27 - Project & Client Relationship\n37:23 - Creating a MongoDB Database\n41:36 - Database Connection\n44:59 - Mongoose Models\n48:50 - Fetch Data From MongoDB\n53:02 - Client Mutations\n1:02:50 - Project Mutations\n1:17:30 - Start On The Client\n1:25:30 - Setting Up Apollo\n1:27:57 - Fetch & Display Clients\n1:40:02 - Delete Client Mutation\n1:45:04 - Apollo Cache\n1:50:18 - Create Client Mutation\n2:05:18 - Fetch & Display Projects\n2:14:32 - React Router & Pages Setup\n2:23:47 - Query Single Project\n2:30:53 - Client Info Component\n2:24:00 - Add Project Modal\n2:42:00 - Get Clients For Select\n2:48:50 - Add Project Mutation\n2:54:52 - Delete Project\n3:01:50 - Edit Project Form\n3:07:29 - Update Project Mutation\n3:10:50 - Cascade Project Delete\n3:13:58 - Wrap Up",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/BcLNfwF04Kw/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/BcLNfwF04Kw/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/BcLNfwF04Kw/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            }
+          },
+          "channelTitle": "Traversy Media",
+          "tags": [
+            "graphql",
+            "express",
+            "node.js",
+            "react",
+            "apollo",
+            "apollo graphql",
+            "mongodb",
+            "graphql express",
+            "express.js"
+          ],
+          "categoryId": "28",
+          "liveBroadcastContent": "none",
+          "localized": {
+            "title": "GraphQL Crash Course With Full Stack MERN Project",
+            "description": "⭐ Join Masterschool & pay nothing until you're hired!\nhttps://goto.masterschool.com/brad2022\n\nIn this video, we will build a full-stack project management system with GraphQL, Express, MongoDB, React, and Apollo.\n\n💻 Code:\nhttps://github.com/bradtraversy/project-mgmt-graphql\n\n💻 Query & Mutation Gist:\nhttps://gist.github.com/bradtraversy/fc527bc9a4659ab8de8e8066f3498723\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n\n0:00 - Intro\n1:47 - MasterSchool Sponsor\n2:31 - GraphQL Crash Course Slides\n12:08 - Create Express Server\n17:52 - Start GraphQL\n20:40 - Start Schema\n23:04 - Client Type & Queries\n28:02 - Making Queries With GraphiQL\n32:33 - Project Type & Queries\n35:27 - Project & Client Relationship\n37:23 - Creating a MongoDB Database\n41:36 - Database Connection\n44:59 - Mongoose Models\n48:50 - Fetch Data From MongoDB\n53:02 - Client Mutations\n1:02:50 - Project Mutations\n1:17:30 - Start On The Client\n1:25:30 - Setting Up Apollo\n1:27:57 - Fetch & Display Clients\n1:40:02 - Delete Client Mutation\n1:45:04 - Apollo Cache\n1:50:18 - Create Client Mutation\n2:05:18 - Fetch & Display Projects\n2:14:32 - React Router & Pages Setup\n2:23:47 - Query Single Project\n2:30:53 - Client Info Component\n2:24:00 - Add Project Modal\n2:42:00 - Get Clients For Select\n2:48:50 - Add Project Mutation\n2:54:52 - Delete Project\n3:01:50 - Edit Project Form\n3:07:29 - Update Project Mutation\n3:10:50 - Cascade Project Delete\n3:13:58 - Wrap Up"
+          },
+          "defaultAudioLanguage": "en"
+        },
+        "contentDetails": {
+          "duration": "PT3H14M39S",
+          "dimension": "2d",
+          "definition": "hd",
+          "caption": "false",
+          "licensedContent": true,
+          "contentRating": {},
+          "projection": "rectangular"
+        },
+        "statistics": {
+          "viewCount": "114896",
+          "likeCount": "4648",
+          "favoriteCount": "0",
+          "commentCount": "309"
+        },
+        "player": {
+          "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/BcLNfwF04Kw\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+        }
       },
     ]);
   });
 
   it('does not return video with duration equal to the minimum specified', () => {
-    expect(filterByDurationYouTube(testVideos, 23452)).toStrictEqual([
-      {
-        durationInSeconds: 45006,    // 12:30:06
-        creationDate: new Date(2022, 5, 13),
-        title: "video four",
-        getUser: jest.fn,
-      },
-    ]);
+    expect(filterByDurationYouTube(testVideos, 750, 760)).toStrictEqual([]);
   });
 
   it('returns an empty array if no videos exist above the minimum specified duration', () => {
@@ -428,12 +345,67 @@ describe('Filter videos by duration', () => {
   });
 
   it('returns correct videos in duration interval min-max', () => {
-    expect(filterByDurationYouTube(testVideos, 10000, 20000)).toStrictEqual([  {
-      durationInSeconds: 18000,   // 05:00:00
-      creationDate: new Date(2022, 5, 12),
-      title: "video one",
-      getUser: jest.fn,
-    }]);
+    expect(filterByDurationYouTube(testVideos, 740, 760)).toStrictEqual([  {
+      "kind": "youtube#video",
+      "etag": "eUcSXOPwJTu6USe5ObyvKCLAhX0",
+      "id": "oc6faXVc54E",
+      "snippet": {
+        "publishedAt": "2022-07-12T15:39:48Z",
+        "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
+        "title": "JavaScript Under The Hood [5] - JavaScript Engine Overview",
+        "description": "In this final video of the series, we will talk about JS engines and look at how JavaScript code is turned into machine code that runs on the CPU.\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n0:00 - Intro\n0:42 - What is a JS Engine?\n1:31 - Specific Browser Engines\n3:30 - Compiled vs Interpreted Languages\n6:11 - JS Engine Process Overview\n7:25 - Abstract Syntax Tree (AST)\n10:01 - Interpreter & Bytecode\n10:58 - JIT Compilation",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/oc6faXVc54E/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/oc6faXVc54E/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/oc6faXVc54E/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Traversy Media",
+        "tags": [
+          "javascript",
+          "javascript engine",
+          "javascript v8 engine",
+          "node.js v8",
+          "spidermonkey engine"
+        ],
+        "categoryId": "28",
+        "liveBroadcastContent": "none",
+        "localized": {
+          "title": "JavaScript Under The Hood [5] - JavaScript Engine Overview",
+          "description": "In this final video of the series, we will talk about JS engines and look at how JavaScript code is turned into machine code that runs on the CPU.\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n0:00 - Intro\n0:42 - What is a JS Engine?\n1:31 - Specific Browser Engines\n3:30 - Compiled vs Interpreted Languages\n6:11 - JS Engine Process Overview\n7:25 - Abstract Syntax Tree (AST)\n10:01 - Interpreter & Bytecode\n10:58 - JIT Compilation"
+        },
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT12M30S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false",
+        "licensedContent": true,
+        "contentRating": {},
+        "projection": "rectangular"
+      },
+      "statistics": {
+        "viewCount": "10191",
+        "likeCount": "684",
+        "favoriteCount": "0",
+        "commentCount": "53"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/oc6faXVc54E\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+      }
+    },]);
   });
 })
 
