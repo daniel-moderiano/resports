@@ -1,4 +1,3 @@
-
 import {YouTubeVideoResult} from "../types/youtubeAPITypes";
 import {filterByDateYouTube, filterByDurationYouTube, filterByKeywordYouTube} from "../helpers/YouTubeVideoFilters";
 
@@ -565,42 +564,199 @@ describe('Filter videos by title keyword', () => {
 
 describe('Filter videos by date', () => {
   it('returns all videos older than the provided date', () => {
-    // Should NOT return the 12/05/2022 05:00:00 video!
-    expect(filterByDateYouTube(testVideos, new Date(2022, 5, 12))).toStrictEqual([
+    expect(filterByDateYouTube(testVideos, new Date(2022, 5, 1))).toStrictEqual([
       {
-        durationInSeconds: 18000,   // 05:00:00
-        creationDate: new Date(2022, 5, 12),
-        title: "video one",
-        getUser: jest.fn,
+        "kind": "youtube#video",
+        "etag": "Xt04CLSDVNxy1rhILv7fqzN65pU",
+        "id": "vxqBm6_0vyk",
+        "snippet": {
+          "publishedAt": "2022-05-30T13:00:28Z",
+          "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
+          "title": "Python In The Browser! PyScript First Look",
+          "description": "In this video, we will look at the brand new PyScript framework, which uses Web Assembly and Pyodide to write Python and use Python Packages right in our HTML. And no, it will NOT replace JavaScript.\n\n🐍 PyScript Website & Examples:\nhttps://pyscript.net\nhttps://github.com/pyscript/pyscript/tree/main/examples\n\n📘Check out my 300 page Web Dev Guide:\nhttps://traversy.gumroad.com/l/web-dev-guide\n\n💻 All Courses\nhttps://traversymedia.com\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n0:00 - Intro\n1:45 - How it works\n4:18 - Getting Started\n5:17 - Disable formatOnSave\n6:06 - Writing Python in HTML\n6:37 - Mixing JavaScript\n7:02 - Targeting DOM elements\n8:15 - REPL\n8:54 - Math module\n9:18 - Env & 3rd party packages\n11:10 - Using a separate .py file\n13:16 - Handling events\n14:45 - Shuffle array\n16:04 - Using Element()\n18:00 - Using multiple files\n20:22 - Wrap up",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/vxqBm6_0vyk/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/vxqBm6_0vyk/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/vxqBm6_0vyk/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            }
+          },
+          "channelTitle": "Traversy Media",
+          "tags": [
+            "pyscript",
+            "python",
+            "py script",
+            "wasm",
+            "pyodide",
+            "python javascript"
+          ],
+          "categoryId": "28",
+          "liveBroadcastContent": "none",
+          "localized": {
+            "title": "Python In The Browser! PyScript First Look",
+            "description": "In this video, we will look at the brand new PyScript framework, which uses Web Assembly and Pyodide to write Python and use Python Packages right in our HTML. And no, it will NOT replace JavaScript.\n\n🐍 PyScript Website & Examples:\nhttps://pyscript.net\nhttps://github.com/pyscript/pyscript/tree/main/examples\n\n📘Check out my 300 page Web Dev Guide:\nhttps://traversy.gumroad.com/l/web-dev-guide\n\n💻 All Courses\nhttps://traversymedia.com\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n0:00 - Intro\n1:45 - How it works\n4:18 - Getting Started\n5:17 - Disable formatOnSave\n6:06 - Writing Python in HTML\n6:37 - Mixing JavaScript\n7:02 - Targeting DOM elements\n8:15 - REPL\n8:54 - Math module\n9:18 - Env & 3rd party packages\n11:10 - Using a separate .py file\n13:16 - Handling events\n14:45 - Shuffle array\n16:04 - Using Element()\n18:00 - Using multiple files\n20:22 - Wrap up"
+          },
+          "defaultAudioLanguage": "en"
+        },
+        "contentDetails": {
+          "duration": "PT21M34S",
+          "dimension": "2d",
+          "definition": "hd",
+          "caption": "false",
+          "licensedContent": true,
+          "contentRating": {},
+          "projection": "rectangular"
+        },
+        "statistics": {
+          "viewCount": "133775",
+          "likeCount": "4124",
+          "favoriteCount": "0",
+          "commentCount": "279"
+        },
+        "player": {
+          "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/vxqBm6_0vyk\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+        }
       },
       {
-        durationInSeconds: 8274,    // 02:15:54
-        creationDate: new Date(2022, 4, 12),
-        title: "video two",
-        getUser: jest.fn,
-      },
-      {
-        durationInSeconds: 10,   // 00:00:10
-        creationDate: new Date(2022, 3, 12),
-        title: "video three",
-        getUser: jest.fn,
-      },
-      {
-        durationInSeconds: 23452,
-        creationDate: new Date(2022, 5, 11),
-        title: "video five",
-        getUser: jest.fn,
+        "kind": "youtube#video",
+        "etag": "i0OysdqEwSKDTO3RGrIdW0sXGU4",
+        "id": "2QQGWYe7IDU",
+        "snippet": {
+          "publishedAt": "2022-01-24T14:00:01Z",
+          "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
+          "title": "MongoDB Crash Course 2022",
+          "description": "In this video, I will introduce you to MongoDB Atlas, the multi-cloud application data platform from MongoDB, and walk you through how to set up and connect to the database, loading sample data and performing CRUD operations. \n\nThis video will provide you with a basic understanding and way to get started with MongoDB Atlas, but you will learn that there are a variety of other features and ways to interact with your data available, providing you the flexibility to interact in the way that best suits your needs. \n\n▶ Register for MongoDB Atlas: https://www.mongodb.com/cloud/atlas/register?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB Cheat Sheet: https://gist.github.com/codeSTACKr/53fd03c7f75d40d07797b8e4e47d78ec\n\n▶ Check out this tutorial to see the 5 different ways to deploy a free database with MongoDB Atlas: https://www.mongodb.com/developer/article/5-different-ways-deploy-free-database-mongodb-atlas/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ Join the MongoDB community:  https://www.mongodb.com/community/forums/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB YouTube Channel: https://www.youtube.com/c/MongoDBofficial\n\n—------------------------------------------------\n\nPresented By:\n▶ Senior Developer Advocate at MongoDB - Jesse Hall aka codeSTACKr: https://youtube.com/codeSTACKr\n▶ @codeSTACKr: https://twitter.com/codeSTACKr",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/2QQGWYe7IDU/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/2QQGWYe7IDU/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/2QQGWYe7IDU/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            }
+          },
+          "channelTitle": "Traversy Media",
+          "tags": [
+            "mongodb",
+            "mongo",
+            "mongodb crash course",
+            "nosql",
+            "document database",
+            "non-relational database",
+            "mongodb atlas"
+          ],
+          "categoryId": "28",
+          "liveBroadcastContent": "none",
+          "localized": {
+            "title": "MongoDB Crash Course 2022",
+            "description": "In this video, I will introduce you to MongoDB Atlas, the multi-cloud application data platform from MongoDB, and walk you through how to set up and connect to the database, loading sample data and performing CRUD operations. \n\nThis video will provide you with a basic understanding and way to get started with MongoDB Atlas, but you will learn that there are a variety of other features and ways to interact with your data available, providing you the flexibility to interact in the way that best suits your needs. \n\n▶ Register for MongoDB Atlas: https://www.mongodb.com/cloud/atlas/register?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB Cheat Sheet: https://gist.github.com/codeSTACKr/53fd03c7f75d40d07797b8e4e47d78ec\n\n▶ Check out this tutorial to see the 5 different ways to deploy a free database with MongoDB Atlas: https://www.mongodb.com/developer/article/5-different-ways-deploy-free-database-mongodb-atlas/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ Join the MongoDB community:  https://www.mongodb.com/community/forums/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB YouTube Channel: https://www.youtube.com/c/MongoDBofficial\n\n—------------------------------------------------\n\nPresented By:\n▶ Senior Developer Advocate at MongoDB - Jesse Hall aka codeSTACKr: https://youtube.com/codeSTACKr\n▶ @codeSTACKr: https://twitter.com/codeSTACKr"
+          },
+          "defaultAudioLanguage": "en"
+        },
+        "contentDetails": {
+          "duration": "PT27M22S",
+          "dimension": "2d",
+          "definition": "hd",
+          "caption": "false",
+          "licensedContent": true,
+          "contentRating": {},
+          "projection": "rectangular"
+        },
+        "statistics": {
+          "viewCount": "97597",
+          "likeCount": "3721",
+          "favoriteCount": "0",
+          "commentCount": "118"
+        },
+        "player": {
+          "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/2QQGWYe7IDU\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+        }
       },
     ]);
   });
 
-  it('includes videos on the specified date (if released at 00:00:00)', () => {
-    expect(filterByDateYouTube(testVideos, new Date(2022, 3, 12))).toStrictEqual([
+  it('does not include video on the specified date (unless released at 00:00:00)', () =>  {
+    expect(filterByDateYouTube(testVideos, new Date("2022-01-24T14:00:01Z"))).toStrictEqual([
       {
-        durationInSeconds: 10,   // 00:00:10
-        creationDate: new Date(2022, 3, 12),
-        title: "video three",
-        getUser: jest.fn,
+        "kind": "youtube#video",
+        "etag": "i0OysdqEwSKDTO3RGrIdW0sXGU4",
+        "id": "2QQGWYe7IDU",
+        "snippet": {
+          "publishedAt": "2022-01-24T14:00:01Z",
+          "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
+          "title": "MongoDB Crash Course 2022",
+          "description": "In this video, I will introduce you to MongoDB Atlas, the multi-cloud application data platform from MongoDB, and walk you through how to set up and connect to the database, loading sample data and performing CRUD operations. \n\nThis video will provide you with a basic understanding and way to get started with MongoDB Atlas, but you will learn that there are a variety of other features and ways to interact with your data available, providing you the flexibility to interact in the way that best suits your needs. \n\n▶ Register for MongoDB Atlas: https://www.mongodb.com/cloud/atlas/register?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB Cheat Sheet: https://gist.github.com/codeSTACKr/53fd03c7f75d40d07797b8e4e47d78ec\n\n▶ Check out this tutorial to see the 5 different ways to deploy a free database with MongoDB Atlas: https://www.mongodb.com/developer/article/5-different-ways-deploy-free-database-mongodb-atlas/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ Join the MongoDB community:  https://www.mongodb.com/community/forums/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB YouTube Channel: https://www.youtube.com/c/MongoDBofficial\n\n—------------------------------------------------\n\nPresented By:\n▶ Senior Developer Advocate at MongoDB - Jesse Hall aka codeSTACKr: https://youtube.com/codeSTACKr\n▶ @codeSTACKr: https://twitter.com/codeSTACKr",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/2QQGWYe7IDU/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/2QQGWYe7IDU/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/2QQGWYe7IDU/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            }
+          },
+          "channelTitle": "Traversy Media",
+          "tags": [
+            "mongodb",
+            "mongo",
+            "mongodb crash course",
+            "nosql",
+            "document database",
+            "non-relational database",
+            "mongodb atlas"
+          ],
+          "categoryId": "28",
+          "liveBroadcastContent": "none",
+          "localized": {
+            "title": "MongoDB Crash Course 2022",
+            "description": "In this video, I will introduce you to MongoDB Atlas, the multi-cloud application data platform from MongoDB, and walk you through how to set up and connect to the database, loading sample data and performing CRUD operations. \n\nThis video will provide you with a basic understanding and way to get started with MongoDB Atlas, but you will learn that there are a variety of other features and ways to interact with your data available, providing you the flexibility to interact in the way that best suits your needs. \n\n▶ Register for MongoDB Atlas: https://www.mongodb.com/cloud/atlas/register?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB Cheat Sheet: https://gist.github.com/codeSTACKr/53fd03c7f75d40d07797b8e4e47d78ec\n\n▶ Check out this tutorial to see the 5 different ways to deploy a free database with MongoDB Atlas: https://www.mongodb.com/developer/article/5-different-ways-deploy-free-database-mongodb-atlas/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ Join the MongoDB community:  https://www.mongodb.com/community/forums/?utm_campaign=traversy_media&utm_source=youtube&utm_medium=influencers&utm_term=atlas\n\n▶ MongoDB YouTube Channel: https://www.youtube.com/c/MongoDBofficial\n\n—------------------------------------------------\n\nPresented By:\n▶ Senior Developer Advocate at MongoDB - Jesse Hall aka codeSTACKr: https://youtube.com/codeSTACKr\n▶ @codeSTACKr: https://twitter.com/codeSTACKr"
+          },
+          "defaultAudioLanguage": "en"
+        },
+        "contentDetails": {
+          "duration": "PT27M22S",
+          "dimension": "2d",
+          "definition": "hd",
+          "caption": "false",
+          "licensedContent": true,
+          "contentRating": {},
+          "projection": "rectangular"
+        },
+        "statistics": {
+          "viewCount": "97597",
+          "likeCount": "3721",
+          "favoriteCount": "0",
+          "commentCount": "118"
+        },
+        "player": {
+          "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/2QQGWYe7IDU\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+        }
       },
     ]);
   });
