@@ -239,11 +239,11 @@ export interface YouTubeVideoResultSnippet {
     }
   };
   channelTitle: string;
-  tags: string[];
+  tags?: string[];
   categoryId: string;
   liveBroadcastContent: string;
-  defaultAudioLanguage: string;
-  defaultLanguage: string;
+  defaultAudioLanguage?: string;
+  defaultLanguage?: string;
   localized?: {
     title: string;
     description: string;

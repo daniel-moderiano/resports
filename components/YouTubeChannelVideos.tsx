@@ -39,7 +39,6 @@ const YouTubeChannelVideos = ({uploadsId}: YouTubeChannelVideosProps) => {
     }
   }, [data, filters]);
 
-
   return (
     <div>YouTube Channel Videos
       {isLoading && (<div>YouTube loading...</div>)}
