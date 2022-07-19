@@ -2,6 +2,8 @@
 import { useGapiContext } from "context/GapiContext";
 import { useEffect } from "react";
 
+//! Consider checking for the gapi_processed="true" on the script tag instead? And attempt rechecks when it is false/undefined
+
 export const useGapiClient = () => {
   const { gapiClientReady, setGapiClientReady } = useGapiContext();
 
