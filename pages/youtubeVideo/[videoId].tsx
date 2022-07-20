@@ -1,36 +1,60 @@
 // The video/watch page that houses an embedded YouTube iframe/player
 
-import {useEffect, useState} from "react";
-import * as React from 'react';
 import {useYoutubeIframe} from "../../hooks/useYouTubeIframe";
+import {useEffect, useState} from "react";
+
+let player;
 
 const YouTubeVideo = () => {
-  // Create the iframe API script tag ONLY ONCE on initial render, and ensure its removal on dismount, otherwise tons of script tags will stack up
-  // Consider abstracting this to a custom hook that can be tested, as unit testing this component won't capture script tags appended to <body>
+  const [youtubeId, setYoutubeId] = useState("ZPt9dJw1Dbw");
+
+  useYoutubeIframe();
+
   // useEffect(() => {
-  //   const tag = document.createElement('script');
-  //   tag.src = "https://www.youtube.com/iframe_api";
-  //   document.body.appendChild(tag);
+  {/*  if (!window.YT) {*/}
+  {/*    // If not, load the script asynchronously*/}
+  {/*    const tag = document.createElement("script");*/}
+  //     tag.src = "https://www.youtube.com/iframe_api";
   //
-  //   function onYouTubeIframeAPIReady() {
-  //     console.log('Yay, YT exists!', window.YT);
+  //     // onYouTubeIframeAPIReady will load the video after the script is loaded
+  //
+  //     window.onYouTubeIframeAPIReady = loadVideo;
+  //
+  //     const firstScriptTag = document.getElementsByTagName("script")[0];
+  //     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  //   } else {
+  //     loadVideo();
   //   }
   //
-  //   return () => {
-  //     document.body.removeChild(tag);
+  //   function loadVideo() {
+  //     if (!player) {
+  //       player = new window.YT.Player(`youtube-player-${youtubeId}`, {
+  //         videoId: youtubeId,
+  //         events: {
+  //           onReady: (event) => {
+  //             event.target.playVideo();
+  //             event.target.loadVideoById({
+  //               videoId: youtubeId
+  //             });
+  //           }
+  //         }
+  //       });
+  //     }
+  //     if (player && player.loadVideoById) {
+  //       player.loadVideoById({ videoId: youtubeId });
+  //     }
   //   }
-  // }, []);
+  //   //
+  // }, [youtubeId]);
 
-  useYoutubeIframe(() => {
-    console.log(window.YT)})
-
+  const foo = () => {
+    setYoutubeId("ZrNqjSCfL8E");
+  };
 
   return (
     <div>
-
-      <div id="player"></div>
-
-
+      <div id={`youtube-player-${youtubeId}`} />
+      <button onClick={foo}>change video</button>
     </div>
   );
 };
