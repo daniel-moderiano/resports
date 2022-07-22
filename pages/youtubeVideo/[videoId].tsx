@@ -1,7 +1,7 @@
 // The video/watch page that houses an embedded YouTube iframe/player
 
-import {useYoutubeIframe} from "../../hooks/useYouTubeIframe";
-import {useEffect, useState} from "react";
+import { useYoutubeIframe } from "../../hooks/useYouTubeIframe";
+import { useEffect, useState } from "react";
 
 let player;
 
@@ -11,9 +11,9 @@ const YouTubeVideo = () => {
   useYoutubeIframe();
 
   // useEffect(() => {
-  {/*  if (!window.YT) {*/}
-  {/*    // If not, load the script asynchronously*/}
-  {/*    const tag = document.createElement("script");*/}
+  {/*  if (!window.YT) {*/ }
+  {/*    // If not, load the script asynchronously*/ }
+  {/*    const tag = document.createElement("script");*/ }
   //     tag.src = "https://www.youtube.com/iframe_api";
   //
   //     // onYouTubeIframeAPIReady will load the video after the script is loaded
@@ -53,7 +53,7 @@ const YouTubeVideo = () => {
 
   return (
     <div>
-      <div id={`youtube-player-${youtubeId}`} />
+      <div id='player' />
       <button onClick={foo}>change video</button>
     </div>
   );
