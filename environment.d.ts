@@ -9,6 +9,7 @@ declare global {
     }
   }
   interface Window {
-    YT: any;
+    YT: YT;
+    onYouTubeIframeAPIReady: () => void;
   }
 }

@@ -3,7 +3,7 @@
 import {useEffect} from "react";
 import * as React from "react";
 import {YouTubePlayer} from "youtube-player/dist/types";
-import {log} from "util";
+
 
 export const useYoutubeIframe = () => {
   const [player, setPlayer] = React.useState<null | YouTubePlayer>(null);
@@ -17,7 +17,16 @@ export const useYoutubeIframe = () => {
       document.body.appendChild(tag);
     }
 
-    window.onYouTubeIframeAPIReady = () => console.log('Actually loaded', window.YT);
+    // This function/property fires only once the API has loaded. This is different to the window.YT object simply becoming 'available'. However, within this function, YT can be called directly, vs calling window.YT
+    window.onYouTubeIframeAPIReady = () => {
+      const player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: 'M7lc1UVf-VE',
+      });
+
+      console.log(player);
+    }
 
     return () => {    // ensure script tags are cleaned on dismount
       document.body.removeChild(tag);
