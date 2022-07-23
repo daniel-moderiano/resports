@@ -59,11 +59,15 @@ describe('YouTube video duration conversion', () => {
     expect(convertYouTubeVideoDuration('PT11M1S')).toBe('11:01')
   });
 
-  it('Handles minutes only input', () => {
+  it('Handles hours/minutes only input', () => {
     expect(convertYouTubeVideoDuration('PT11H10M')).toBe('11:10:00')
   });
 
-  it('Handles hour only input', () => {
+  it('Handles hours only input', () => {
+    expect(convertYouTubeVideoDuration('PT11H')).toBe('11:00:00')
+  });
+
+  it('Handles minutes only input', () => {
     expect(convertYouTubeVideoDuration('PT11M')).toBe('11:00')
   });
 });

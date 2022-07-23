@@ -56,7 +56,13 @@ export const convertYouTubeVideoDuration = (duration: string) => {
     if (minutesSplit.length > 1) {    // duration is minutes/seconds
       convertedDuration += `${minutesSplit[0]}:`;
       const secondsSplit = minutesSplit[1].split('S');
-      convertedDuration += secondsSplit[0].length > 1 ? `${secondsSplit[0]}` : `0${secondsSplit[0]}`
+
+      if (secondsSplit.length > 1) {
+        convertedDuration += secondsSplit[0].length > 1 ? `${secondsSplit[0]}` : `0${secondsSplit[0]}`;
+      } else {    // There are zero seconds, as this would result in the 'S' being omitted entirely. Format accordingly
+        convertedDuration += '00';
+      }
+
     } else {    // duration is seconds only
       convertedDuration += `0:${duration.split('S')[0]}`;
     }
@@ -66,14 +72,36 @@ export const convertYouTubeVideoDuration = (duration: string) => {
   if (hoursSplit.length > 1) {
     convertedDuration += `${hoursSplit[0]}:`;
     const minutesSplit = hoursSplit[1].split('M');
-    convertedDuration += minutesSplit[0].length > 1 ? `${minutesSplit[0]}:` : `0${minutesSplit[0]}:`
 
-    const secondsSplit = minutesSplit[1].split('S');
-    convertedDuration += secondsSplit[0].length > 1 ? `${secondsSplit[0]}` : `0${secondsSplit[0]}`
+    if (minutesSplit.length > 1) {    // the likely case where there is a defined amount of minutes
+      convertedDuration += minutesSplit[0].length > 1 ? `${minutesSplit[0]}:` : `0${minutesSplit[0]}:`
+      const secondsSplit = minutesSplit[1].split('S');
+
+      if (secondsSplit.length > 1) {    // the likely case where there is a defined amount of seconds
+        convertedDuration += secondsSplit[0].length > 1 ? `${secondsSplit[0]}` : `0${secondsSplit[0]}`
+      } else {    // There are zero seconds, as this would result in the 'S' being omitted entirely. Format accordingly
+        convertedDuration += '00';
+      }
+
+    } else {    // there are zero minutes in the duration input. Format accordingly
+      convertedDuration += '00:';
+
+      // Treat seconds handling as normal, but use the now initial and only member of the minutesSplit array
+      const secondsSplit = minutesSplit[0].split('S');
+
+      if (secondsSplit.length > 1) {    // the likely case where there is a defined amount of seconds
+        convertedDuration += secondsSplit[0].length > 1 ? `${secondsSplit[0]}` : `0${secondsSplit[0]}`
+      } else {    // There are zero seconds, as this would result in the 'S' being omitted entirely. Format accordingly
+        convertedDuration += '00';
+      }
+    }
+
+
   }
 
   return convertedDuration;
 };
+
 
 
 // This function is used to convert an ISO 8601 duration into a single integer number of seconds. This is required to make ISO durations comparable arithmetically for duration filtering (for the YouTube filters)
