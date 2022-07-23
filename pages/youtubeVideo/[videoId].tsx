@@ -23,7 +23,7 @@ let player;
 const YouTubeVideo = ({ videoId }: YouTubeVideoProps) => {
   const [youtubeId, setYoutubeId] = useState("ZPt9dJw1Dbw");
 
-  useYoutubeIframe();
+  useYoutubeIframe(videoId);
 
   // useEffect(() => {
   {/*  if (!window.YT) {*/ }

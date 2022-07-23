@@ -1,15 +1,15 @@
-import {YouTubeVideoResult} from "../types/youtubeAPITypes";
+import { YouTubeVideoResult } from "../types/youtubeAPITypes";
 import styles from "@/styles/componentStyles/YouTubeVideoListing.module.css";
 import Image from "next/image";
-import {convertYouTubeVideoDuration} from "../helpers/videoDurationConversion";
+import { convertYouTubeVideoDuration } from "../helpers/videoDurationConversion";
 import Link from "next/link";
-import {timeAgo} from "../config/timeAgoFormatter";
+import { timeAgo } from "../config/timeAgoFormatter";
 
 interface YouTubeVideoListingProps {
   videoData: YouTubeVideoResult
 }
 
-const YouTubeVideoListing = ({videoData}: YouTubeVideoListingProps) => {
+const YouTubeVideoListing = ({ videoData }: YouTubeVideoListingProps) => {
   return (
     <div className={styles.videoListing}>
       <div className={styles.imageContainer}>
@@ -25,6 +25,9 @@ const YouTubeVideoListing = ({videoData}: YouTubeVideoListingProps) => {
       <p className={styles.channel}>{videoData.snippet.channelTitle}</p>
       <Link href={`https://www.youtube.com/watch?v=${videoData.id}`}>
         <a rel="noopener" target="_blank" className={styles.link}>View on YouTube</a>
+      </Link>
+      <Link href={`/youtubeVideo/${videoData.id}`}>
+        <a className={styles.link}>View in Player</a>
       </Link>
     </div>
   );

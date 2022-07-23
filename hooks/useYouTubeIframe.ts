@@ -5,7 +5,7 @@ import * as React from "react";
 import { YouTubePlayer } from "youtube-player/dist/types";
 
 
-export const useYoutubeIframe = () => {
+export const useYoutubeIframe = (videoId: string) => {
   const [player, setPlayer] = React.useState<null | YouTubePlayer>(null);
   const [windowLoaded, setWindowLoaded] = React.useState<number>(0);
 
@@ -25,19 +25,21 @@ export const useYoutubeIframe = () => {
     function loadVideo() {
       if (!player) {
         player = new YT.Player('player', {
-          videoId: 'ZPt9dJw1Dbw',
+          videoId: videoId,
+          width: window.innerWidth,
+          height: window.innerWidth * (9 / 16),
           events: {
             onReady: (event) => {
               event.target.playVideo();
               event.target.loadVideoById({
-                videoId: 'ZPt9dJw1Dbw'
+                videoId: videoId
               });
             }
           }
         });
       }
       if (player && player.loadVideoById) {
-        player.loadVideoById({ videoId: 'ZPt9dJw1Dbw' });
+        player.loadVideoById({ videoId: videoId });
       }
     }
 
@@ -61,7 +63,7 @@ export const useYoutubeIframe = () => {
     return () => {    // ensure script tags are cleaned on dismount
       document.body.removeChild(tag);
     }
-  }, []);
+  }, [videoId]);
 
   return { player, windowLoaded }
 };
