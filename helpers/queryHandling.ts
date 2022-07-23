@@ -36,3 +36,22 @@ export const sanitiseChannelQuery = (query: ParsedUrlQuery) => {
     return '';
   }
 };
+
+
+// Use this to ensure video IDs passed via a URL are in the correct format for API calls
+export const isValidVideoQuery = (query: ParsedUrlQuery) => {
+  if (typeof query.videoId === 'string') {   // covers lack of searchQuery param
+    return query.videoId.trim() !== '';   // covers empty/whitespace strings
+  }
+  return false;
+};
+
+// Sanitises query params for the Twitch and YouTube channel pages. It is safe to provide an empty string fallback, as this will throw an error accordingly
+export const sanitiseVideoQuery = (query: ParsedUrlQuery) => {
+  if (isValidVideoQuery(query)) {
+    // This is a safe type assertion as the valid query check has passed
+    return query.videoId as string;
+  } else {
+    return '';
+  }
+};

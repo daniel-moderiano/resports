@@ -2,10 +2,24 @@
 
 import { useYoutubeIframe } from "../../hooks/useYouTubeIframe";
 import { useEffect, useState } from "react";
+import { GetServerSideProps } from "next";
+
+interface YouTubeVideoProps {
+  videoId: string;
+}
+
+// This server side props function ensures the dynamic route param is made available at component render time so that it can be passed safely and directly to the useGetTwitchChannel hook. Using router.query in component causes it to be undefined on initial render.
+/* eslint-disable-next-line */
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const channelId = sanitiseChannelQuery(context.query);
+
+  // Pass data to the page via props
+  return { props: { videoId } }
+}
 
 let player;
 
-const YouTubeVideo = () => {
+const YouTubeVideo = ({ videoId }: YouTubeVideoProps) => {
   const [youtubeId, setYoutubeId] = useState("ZPt9dJw1Dbw");
 
   useYoutubeIframe();
