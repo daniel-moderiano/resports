@@ -55,12 +55,16 @@ describe('YouTube video duration conversion', () => {
     expect(convertYouTubeVideoDuration('PT10H5M12S')).toBe('10:05:12')
   });
 
-  it('Handles single digit seconds correctly', () => {
-    expect(convertYouTubeVideoDuration('PT11H10M0S')).toBe('11:10:00')
-  });
-
   it('Handles single digit seconds correctly (leading zeros)', () => {
     expect(convertYouTubeVideoDuration('PT11M1S')).toBe('11:01')
+  });
+
+  it('Handles minutes only input', () => {
+    expect(convertYouTubeVideoDuration('PT11H10M')).toBe('11:10:00')
+  });
+
+  it('Handles hour only input', () => {
+    expect(convertYouTubeVideoDuration('PT11M')).toBe('11:00')
   });
 });
 

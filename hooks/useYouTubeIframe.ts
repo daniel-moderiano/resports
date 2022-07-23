@@ -20,45 +20,22 @@ export const useYoutubeIframe = (videoId: string) => {
     let player: YT.Player;
 
     // This function/property fires only once the API has loaded. This is different to the window.YT object simply becoming 'available'. However, within this function, YT can be called directly, vs calling window.YT
-    window.onYouTubeIframeAPIReady = loadVideo;
+    window.onYouTubeIframeAPIReady = createPlayer;
 
-    function loadVideo() {
-      if (!player) {
-        player = new YT.Player('player', {
-          videoId: videoId,
-          width: window.innerWidth,
-          height: window.innerWidth * (9 / 16),
-          events: {
-            onReady: (event) => {
-              event.target.playVideo();
-              event.target.loadVideoById({
-                videoId: videoId
-              });
-            }
+
+    function createPlayer() {
+      player = new YT.Player('player', {
+        videoId: videoId,
+        width: window.innerWidth,
+        height: window.innerWidth * (9 / 16),
+        events: {
+          onReady: (event) => {
+            // event.target.playVideo();
           }
-        });
-      }
-      if (player && player.loadVideoById) {
-        player.loadVideoById({ videoId: videoId });
-      }
+        }
+      });
     }
 
-    // function onPlayerReady(event: YT.PlayerEvent) {
-    //   event.target.playVideo();
-    // }
-
-    // let done = false;
-
-    // function onPlayerStateChange(event: YT.OnStateChangeEvent) {
-    //   if (event.data == YT.PlayerState.PLAYING && !done) {
-    //     setTimeout(stopVideo, 6000);
-    //     done = true;
-    //   }
-    // }
-
-    // function stopVideo() {
-    //   player.stopVideo();
-    // }
 
     return () => {    // ensure script tags are cleaned on dismount
       document.body.removeChild(tag);
