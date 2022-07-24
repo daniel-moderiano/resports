@@ -26,8 +26,6 @@ export const useYoutubeIframe = (videoId: string) => {
     function createPlayer() {
       player = new YT.Player('player', {
         videoId: videoId,
-        width: window.innerWidth,
-        height: window.innerWidth * (9 / 16),
         events: {
           onReady: (event) => {
             // event.target.playVideo();

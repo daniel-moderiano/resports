@@ -23,7 +23,6 @@ const YouTubeChannelVideos = ({ uploadsId }: YouTubeChannelVideosProps) => {
   useEffect(() => {
     let tempVideos: YouTubeVideoResult[] = [];
     if (data) {
-      console.log(data);
 
       // Attempting filter without data will throw an error
       tempVideos = data.items;
