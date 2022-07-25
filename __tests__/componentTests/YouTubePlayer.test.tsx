@@ -4,14 +4,14 @@ import YouTubePlayer from '../../components/YouTubePlayer';
 
 describe('YouTube player styling and toggles', () => {
   it('Begins in normal (non-theater) mode', () => {
-    render(<YouTubePlayer />)
+    render(<YouTubePlayer playerReady={true} />)
     const wrapper = screen.getByTestId('wrapper');
     expect(wrapper).toHaveClass('wrapperNormal');
     expect(wrapper).not.toHaveClass('wrapperTheater');
   });
 
   it('Toggles theater mode on button click', async () => {
-    render(<YouTubePlayer />)
+    render(<YouTubePlayer playerReady={true} />)
     const wrapper = screen.getByTestId('wrapper');
     const btn = screen.getByRole('button', { name: /theater/i })
 
@@ -23,7 +23,7 @@ describe('YouTube player styling and toggles', () => {
   });
 
   it('Toggles back to normal mode on subsequent button click', async () => {
-    render(<YouTubePlayer />)
+    render(<YouTubePlayer playerReady={true} />)
     const wrapper = screen.getByTestId('wrapper');
     const btn = screen.getByRole('button', { name: /theater/i })
 

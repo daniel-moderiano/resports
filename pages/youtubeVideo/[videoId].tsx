@@ -20,11 +20,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const YouTubeVideo = ({ videoId }: YouTubeVideoProps) => {
 
-  useYoutubeIframe(videoId);
+  const { paused } = useYoutubeIframe(videoId);
 
   return (
     <>
-      <YouTubePlayer />
+      <YouTubePlayer playerReady={paused} />
     </>
   );
 };
