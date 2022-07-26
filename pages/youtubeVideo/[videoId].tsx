@@ -1,5 +1,4 @@
 // The video/watch page that houses an embedded YouTube iframe/player
-import { useYoutubeIframe } from "../../hooks/useYouTubeIframe";
 import { GetServerSideProps } from "next";
 import { sanitiseVideoQuery } from "helpers/queryHandling";
 import YouTubePlayer from "../../components/YouTubePlayer";
@@ -19,13 +18,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 
 const YouTubeVideo = ({ videoId }: YouTubeVideoProps) => {
-
-  const { paused } = useYoutubeIframe(videoId);
-
   return (
-    <>
-      <YouTubePlayer playerReady={paused} />
-    </>
+    <div>
+      <YouTubePlayer videoId={videoId} />
+    </div>
   );
 };
 

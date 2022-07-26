@@ -29,17 +29,6 @@ export const useYoutubeIframe = (videoId: string) => {
           autoplay: 0,
           showinfo: 0,
         },
-        events: {
-          onStateChange: (event) => {
-            if (player.getPlayerState() === 1) {
-              console.log('Was playing');
-
-            } else {
-              console.log('Was not playing');
-
-            }
-          }
-        }
       });
     }
 
