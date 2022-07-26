@@ -4,7 +4,7 @@ import * as React from 'react'
 export const useYoutubeIframe = (
   videoId: string,
   onPlayerReady: (event: YT.PlayerEvent) => void,
-  onPlayerStateChange: (event: YT.PlayerEvent) => void,
+  onPlayerStateChange: (event: YT.OnStateChangeEvent) => void,
 ) => {
   const [player, setPlayer] = React.useState<YT.Player | undefined>(undefined);
 
@@ -24,7 +24,7 @@ export const useYoutubeIframe = (
       const player = new YT.Player('player', {
         videoId: videoId,
         playerVars: {
-          controls: 0,
+          // controls: 0,
           enablejsapi: 1,
           iv_load_policy: 3,
           modestbranding: 1,

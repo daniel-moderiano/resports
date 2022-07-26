@@ -10,12 +10,16 @@ interface YouTubePlayerProps {
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
+  // Initialise in the unstarted state
+  const [playerState, setPlayerState] = useState(-1);
+
   function onPlayerReady(event: YT.PlayerEvent) {
     console.log('Player is ready');
   }
 
+  // Adjust the component state to reflect the player state when the user plays/pauses/ends
   function onPlayerStateChange(event: YT.OnStateChangeEvent) {
-    console.log(event.data);
+    setPlayerState(event.data);
   }
 
   const { player } = useYoutubeIframe(videoId, onPlayerReady, onPlayerStateChange);
@@ -41,7 +45,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       <div className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper">
         <div id="player" ></div>
         <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
-        <div className={styles.overlay}></div>
+        <div className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`}></div>
       </div>
 
       <button onClick={playVideo}>Play</button>
