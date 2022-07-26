@@ -51,7 +51,10 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       <div className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper">
         <div id="player"></div>
         <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
-        <div className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`}></div>
+        <div className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`}>
+
+        </div>
+        <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive}></div>
       </div>
 
       <button onClick={playVideo}>Play</button>
