@@ -20,19 +20,23 @@ export const useYoutubeIframe = (videoId: string) => {
       player = new YT.Player('player', {
         videoId: videoId,
         playerVars: {
-          // controls: 0,
-          autoplay: 1,
+          controls: 0,
           enablejsapi: 1,
           iv_load_policy: 3,
           modestbranding: 1,
           playsinline: 1,
+          rel: 0,
+          autoplay: 0,
+          showinfo: 0,
         },
         events: {
           onStateChange: (event) => {
-            if (event.data === 2) {   // video paused
-              setPaused(true);
+            if (player.getPlayerState() === 1) {
+              console.log('Was playing');
+
             } else {
-              setPaused(false)
+              console.log('Was not playing');
+
             }
           }
         }

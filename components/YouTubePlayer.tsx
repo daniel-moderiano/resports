@@ -18,7 +18,6 @@ const YouTubePlayer = ({ playerReady }: YouTubePlayerProps) => {
       </div>
       <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
     </div>
-
   )
 }
 
