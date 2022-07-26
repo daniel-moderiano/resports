@@ -32,6 +32,7 @@ export const useYoutubeIframe = (
           rel: 0,
           autoplay: 0,
           showinfo: 0,
+          mute: 1,
         },
 
         events: {

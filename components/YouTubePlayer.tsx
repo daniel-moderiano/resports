@@ -19,7 +19,13 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   // Adjust the component state to reflect the player state when the user plays/pauses/ends
   function onPlayerStateChange(event: YT.OnStateChangeEvent) {
-    setPlayerState(event.data);
+    // if (event.data === 1) {
+    //   setTimeout(() => {
+    //     setPlayerState(event.data)
+    //   }, 350)
+    // } else {
+    setPlayerState(event.data)
+    // }
   }
 
   const { player } = useYoutubeIframe(videoId, onPlayerReady, onPlayerStateChange);
@@ -43,7 +49,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   return (
     <>
       <div className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper">
-        <div id="player" ></div>
+        <div id="player"></div>
         <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
         <div className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`}></div>
       </div>
