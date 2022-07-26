@@ -10,14 +10,30 @@ interface YouTubePlayerProps {
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
-  const { player } = useYoutubeIframe(videoId);
+  function onPlayerReady(event: YT.PlayerEvent) {
+    console.log('Player is ready');
+  }
+
+  function onPlayerStateChange(event: YT.OnStateChangeEvent) {
+    console.log(event.data);
+  }
+
+  const { player } = useYoutubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
   const playVideo = () => {
-    player && player.playVideo();
+    if (player) {
+      setTimeout(() => {
+        player.playVideo();
+      }, 350)
+    }
   };
 
   const pauseVideo = () => {
-    player && player.pauseVideo();
+    if (player) {
+      setTimeout(() => {
+        player.pauseVideo();
+      }, 350)
+    }
   };
 
   return (
@@ -25,6 +41,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       <div className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper">
         <div id="player" ></div>
         <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
+        <div className={styles.overlay}></div>
       </div>
 
       <button onClick={playVideo}>Play</button>

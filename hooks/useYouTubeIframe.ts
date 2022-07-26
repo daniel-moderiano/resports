@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import * as React from 'react'
 
-export const useYoutubeIframe = (videoId: string) => {
+export const useYoutubeIframe = (
+  videoId: string,
+  onPlayerReady: (event: YT.PlayerEvent) => void,
+  onPlayerStateChange: (event: YT.PlayerEvent) => void,
+) => {
   const [player, setPlayer] = React.useState<YT.Player | undefined>(undefined);
 
   useEffect(() => {
@@ -29,6 +33,11 @@ export const useYoutubeIframe = (videoId: string) => {
           autoplay: 0,
           showinfo: 0,
         },
+
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
+        }
       });
 
       setPlayer(player)
