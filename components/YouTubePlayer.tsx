@@ -56,12 +56,17 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }
   };
 
-  const goFullscreen = () => {
-    document.querySelector('#wrapper')?.requestFullscreen()
-      .then()
-      .catch((err) => console.log(err))
-  }
+  // Call this function to switch the iframe/wrapper in and out of fullscreen mode. Esc key press will work as intended without explicitly adding this functionality
+  const toggleFullscreen = () => {
+    const wrapper: HTMLDivElement | null = document.querySelector("#wrapper");
 
+    if (!document.fullscreenElement && wrapper) {
+      wrapper.requestFullscreen().catch((err) => console.error(err));
+    } else {
+      document.exitFullscreen()
+        .catch((err) => console.error(err))
+    }
+  }
 
 
   return (
@@ -69,8 +74,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${fullscreenMode ? styles.wrapperFullscreen : ''}`} data-testid="wrapper">
         <div id="player"></div>
         <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
-        <div className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`} onClick={playOrPauseVideo} onMouseMove={() => console.log('Mousemove')}>
-
+        <div
+          className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`}
+          onClick={playOrPauseVideo}
+          onDoubleClick={toggleFullscreen}
+          onMouseMove={() => console.log('Mousemove')}>
         </div>
 
         {/* <div className={styles.overlay} ></div> */}
@@ -79,7 +87,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
       <button onClick={playVideoWithDelay}>Play</button>
       <button onClick={pauseVideoWithDelay}>Pause</button>
-      <button onClick={() => { goFullscreen() }}>Fullscreen</button>
+      <button onClick={toggleFullscreen}>Fullscreen</button>
     </>
   )
 }
