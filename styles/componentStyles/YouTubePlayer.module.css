@@ -14,6 +14,10 @@
   padding-top: 56.25%;
 }
 
+.wrapperTheater {
+  width: 100%;
+}
+
 .wrapper iframe,
 .wrapper object,
 .wrapper embed {
