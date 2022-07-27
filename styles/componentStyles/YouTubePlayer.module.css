@@ -28,6 +28,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
+  z-index: 2;
 }
 
 .overlay {
@@ -36,7 +37,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
   opacity: 0;
 }
 
@@ -58,7 +58,6 @@
     rgba(0, 0, 0, 1) 58%
   );
   opacity: 0;
-  /* animation: slidein 500ms; */
   transition: opacity 750ms ease-out;
 }
 
@@ -87,5 +86,4 @@
   position: absolute;
   opacity: 0;
   pointer-events: none;
-  cursor: not-allowed;
 }

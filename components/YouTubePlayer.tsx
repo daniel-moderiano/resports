@@ -15,22 +15,19 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   function onPlayerReady(event: YT.PlayerEvent) {
     console.log('Player is ready');
+    if (player) {
+      player.playVideo();
+    }
   }
 
   // Adjust the component state to reflect the player state when the user plays/pauses/ends
   function onPlayerStateChange(event: YT.OnStateChangeEvent) {
-    // if (event.data === 1) {
-    //   setTimeout(() => {
-    //     setPlayerState(event.data)
-    //   }, 350)
-    // } else {
     setPlayerState(event.data)
-    // }
   }
 
   const { player } = useYoutubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
-  const playVideo = () => {
+  const playVideoWithDelay = () => {
     if (player) {
       setTimeout(() => {
         player.playVideo();
@@ -38,7 +35,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }
   };
 
-  const pauseVideo = () => {
+  const pauseVideoWithDelay = () => {
     if (player) {
       setTimeout(() => {
         player.pauseVideo();
@@ -46,19 +43,37 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }
   };
 
+
+  // Use this function to play a paused video, or pause a playing video. Intended to activate on clicking the video, or pressing spacebar
+  const playOrPauseVideo = () => {
+    if (player) {
+      if (player.getPlayerState() === 1) {
+        setTimeout(() => {
+          player.pauseVideo();
+        }, 350)
+      } else {
+        setTimeout(() => {
+          player.playVideo();
+        }, 350)
+      }
+    }
+  }
+
   return (
     <>
       <div className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper">
         <div id="player"></div>
         <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
-        <div className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`}>
+        <div className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`} onClick={playOrPauseVideo}>
 
         </div>
+
+        {/* <div className={styles.overlay} ></div> */}
         <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive}></div>
       </div>
 
-      <button onClick={playVideo}>Play</button>
-      <button onClick={pauseVideo}>Pause</button>
+      <button onClick={playVideoWithDelay}>Play</button>
+      <button onClick={pauseVideoWithDelay}>Pause</button>
     </>
   )
 }

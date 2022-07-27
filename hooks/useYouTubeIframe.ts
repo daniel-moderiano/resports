@@ -30,7 +30,7 @@ export const useYoutubeIframe = (
           modestbranding: 1,
           playsinline: 1,
           rel: 0,
-          autoplay: 0,
+          autoplay: 1,
           showinfo: 0,
           mute: 1,
         },
