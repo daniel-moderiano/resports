@@ -22,40 +22,36 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   // Adjust the component state to reflect the player state when the user plays/pauses/ends
   function onPlayerStateChange(event: YT.OnStateChangeEvent) {
-    setPlayerState(event.data)
+    // setPlayerState(event.data)
   }
 
   const { player } = useYoutubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
   const playVideoWithDelay = () => {
     if (player) {
+      player.playVideo();
       setTimeout(() => {
-        player.playVideo();
-      }, 350)
+        setPlayerState(1);
+      }, 100);
     }
   };
 
   const pauseVideoWithDelay = () => {
     if (player) {
+      setPlayerState(2);
       setTimeout(() => {
         player.pauseVideo();
-      }, 350)
+      }, 300)
     }
   };
 
 
   // Use this function to play a paused video, or pause a playing video. Intended to activate on clicking the video, or pressing spacebar
   const playOrPauseVideo = () => {
-    if (player) {
-      if (player.getPlayerState() === 1) {
-        setTimeout(() => {
-          player.pauseVideo();
-        }, 350)
-      } else {
-        setTimeout(() => {
-          player.playVideo();
-        }, 350)
-      }
+    if (player && player.getPlayerState() === 1) {
+      pauseVideoWithDelay();
+    } else {
+      playVideoWithDelay();
     }
   }
 
@@ -64,7 +60,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       <div className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper">
         <div id="player"></div>
         <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
-        <div className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`} onClick={playOrPauseVideo}>
+        <div className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`} onClick={playOrPauseVideo} onMouseMove={() => console.log('Mousemove')}>
 
         </div>
 
