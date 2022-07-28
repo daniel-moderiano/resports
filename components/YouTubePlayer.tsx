@@ -9,7 +9,12 @@ interface YouTubePlayerProps {
 // The useYouTubeIframe hook will add the YouTube iframe to this div with id="player"
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
-  const [fullscreenMode, setFullscreenMode] = useState(false);
+  const [showControls, setShowControls] = useState(false);
+
+  // Indicates whether the user is moving their mouse over the video (i.e. user is active)
+  const [userActive, setUserActive] = useState(false);
+
+  let inactivityTimeout: NodeJS.Timeout;
 
   // Initialise in the unstarted state
   const [playerState, setPlayerState] = useState(-1);
@@ -23,6 +28,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   // Adjust the component state to reflect the player state when the user plays/pauses/ends
   function onPlayerStateChange(event: YT.OnStateChangeEvent) {
+    // TODO: Ensure this is set for anything not play or pause
     // setPlayerState(event.data)
   }
 
@@ -42,9 +48,20 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       setPlayerState(2);
       setTimeout(() => {
         player.pauseVideo();
-      }, 300)
+      }, 400)
     }
   };
+
+  // Used to show controls on mouse movement, and hide once mouse is still for a short time
+  const handleMouseMove = () => {
+    setUserActive(true)
+
+    clearTimeout(inactivityTimeout);
+
+    inactivityTimeout = setTimeout(function () {
+      setUserActive(false);
+    }, 2000);
+  }
 
 
   // Use this function to play a paused video, or pause a playing video. Intended to activate on clicking the video, or pressing spacebar
@@ -69,25 +86,26 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   }
 
 
+
+
   return (
     <>
-      <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${fullscreenMode ? styles.wrapperFullscreen : ''}`} data-testid="wrapper">
+      <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper">
         <div id="player"></div>
-        <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
         <div
           className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`}
           onClick={playOrPauseVideo}
           onDoubleClick={toggleFullscreen}
-          onMouseMove={() => console.log('Mousemove')}>
+          onMouseMove={handleMouseMove}>
         </div>
 
-        {/* <div className={styles.overlay} ></div> */}
         <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive}></div>
       </div>
 
-      <button onClick={playVideoWithDelay}>Play</button>
+      {userActive && <button onClick={playVideoWithDelay}>Play</button>}
       <button onClick={pauseVideoWithDelay}>Pause</button>
       <button onClick={toggleFullscreen}>Fullscreen</button>
+      <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
     </>
   )
 }
