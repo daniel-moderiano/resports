@@ -18,6 +18,9 @@
   width: 100%;
 }
 
+.wrapperFullscreen {
+}
+
 .wrapper iframe,
 .wrapper object,
 .wrapper embed {
@@ -52,7 +55,7 @@
     rgba(255, 255, 255, 0) 0%,
     rgba(0, 0, 0, 1) 58%
   );
-  transition: opacity 400ms;
+  transition: opacity 350ms;
 }
 
 .overlayPlaying {
@@ -90,4 +93,15 @@
   position: absolute;
   opacity: 0;
   pointer-events: none;
+}
+
+.controls {
+  display: block;
+  opacity: 1;
+}
+
+.controlsHide {
+  display: block;
+  opacity: 0;
+  transition: opacity 1.5s;
 }

@@ -48,7 +48,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       setPlayerState(2);
       setTimeout(() => {
         player.pauseVideo();
-      }, 400)
+      }, 350)
     }
   };
 
@@ -102,7 +102,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
         <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive}></div>
       </div>
 
-      {userActive && <button onClick={playVideoWithDelay}>Play</button>}
+      <button className={`${styles.controls} ${userActive ? '' : styles.controlsHide}`} onClick={playVideoWithDelay}>Play</button>
       <button onClick={pauseVideoWithDelay}>Pause</button>
       <button onClick={toggleFullscreen}>Fullscreen</button>
       <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
