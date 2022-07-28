@@ -39,7 +39,9 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const playVideoWithDelay = () => {
     if (player) {
       player.playVideo();
+
       setTimeout(() => {
+        setUserActive(false);    // ensure video controls fade
         setPlayerState(1);
       }, 100);
     }
@@ -58,7 +60,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const handleMouseMove = () => {
     console.log('Mousemove');
 
-    setUserActive(true)
+    setUserActive(true);
     clearTimeout(inactivityTimeout);
 
     inactivityTimeout = setTimeout(function () {
@@ -113,10 +115,10 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           onMouseMove={throttleMousemove}>
         </div>
 
-        <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive}></div>
+        <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive} onMouseMove={throttleMousemove}></div>
       </div>
 
-      <button className={`${styles.controls} ${userActive ? '' : styles.controlsHide}`} onClick={playVideoWithDelay}>Play</button>
+      <button className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onClick={playVideoWithDelay}>Play</button>
       <button onClick={pauseVideoWithDelay}>Pause</button>
       <button onClick={toggleFullscreen}>Fullscreen</button>
       <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
