@@ -76,7 +76,8 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
     enableCall = false;
     handleMouseMove();
-    setTimeout(() => enableCall = true, 300);
+    // Unsure exactly which throttle timeout will work best. 
+    setTimeout(() => enableCall = true, 500);
   }
 
 
@@ -116,12 +117,17 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
         </div>
 
         <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive} onMouseMove={throttleMousemove}></div>
+        <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} >
+          <button onClick={playVideoWithDelay}>Play</button>
+          <button onClick={pauseVideoWithDelay}>Pause</button>
+          <button onClick={toggleFullscreen}>Fullscreen</button>
+          <button onClick={() => { setTheaterMode((prevState) => !prevState) }}>Toggle theater mode</button>
+        </div>
       </div>
 
-      <button className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onClick={playVideoWithDelay}>Play</button>
-      <button onClick={pauseVideoWithDelay}>Pause</button>
-      <button onClick={toggleFullscreen}>Fullscreen</button>
-      <button onClick={() => { setTheaterMode((prevState) => !prevState) }} className={styles.toggle}>Toggle theater mode</button>
+
+
+
     </>
   )
 }

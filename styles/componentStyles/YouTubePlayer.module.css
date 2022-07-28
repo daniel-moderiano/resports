@@ -31,13 +31,6 @@
   height: 100%;
 }
 
-.toggle {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 2;
-}
-
 .overlay {
   position: absolute;
   top: 0;
@@ -96,8 +89,14 @@
 }
 
 .controls {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   opacity: 1;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 2;
 }
 
 .controlsHide {
