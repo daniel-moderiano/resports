@@ -11,6 +11,8 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
   const [showControls, setShowControls] = useState(false);
 
+  let enableCall = true;
+
   // Indicates whether the user is moving their mouse over the video (i.e. user is active)
   const [userActive, setUserActive] = useState(false);
 
@@ -54,13 +56,25 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   // Used to show controls on mouse movement, and hide once mouse is still for a short time
   const handleMouseMove = () => {
-    setUserActive(true)
+    console.log('Mousemove');
 
+    setUserActive(true)
     clearTimeout(inactivityTimeout);
 
     inactivityTimeout = setTimeout(function () {
       setUserActive(false);
     }, 2000);
+  };
+
+
+  const throttleMousemove = () => {
+    if (!enableCall) {
+      return;
+    }
+
+    enableCall = false;
+    handleMouseMove();
+    setTimeout(() => enableCall = true, 300);
   }
 
 
@@ -96,7 +110,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`}
           onClick={playOrPauseVideo}
           onDoubleClick={toggleFullscreen}
-          onMouseMove={handleMouseMove}>
+          onMouseMove={throttleMousemove}>
         </div>
 
         <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive}></div>
