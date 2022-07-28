@@ -41,9 +41,13 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       player.playVideo();
 
       setTimeout(() => {
-        setUserActive(false);    // ensure video controls fade
         setPlayerState(1);
       }, 100);
+
+      // A longer timeout is used here because it can be quite anti-user experience to have controls and cursor fade almost immediately after pressing play. 
+      setTimeout(() => {
+        setUserActive(false);    // ensure video controls fade   
+      }, 1000)
     }
   };
 
@@ -110,7 +114,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper">
         <div id="player"></div>
         <div
-          className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''}`}
+          className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''} ${(userActive || playerState === 2) ? '' : styles.overlayInactive}`}
           onClick={playOrPauseVideo}
           onDoubleClick={toggleFullscreen}
           onMouseMove={throttleMousemove}>

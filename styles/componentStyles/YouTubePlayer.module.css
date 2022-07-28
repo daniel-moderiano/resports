@@ -65,6 +65,10 @@
   background-color: black;
 }
 
+.overlayInactive {
+  cursor: none;
+}
+
 /* This is intended as a transparent click blocker, but may later house video controls */
 .blockerActive {
   /* Sufficient height to cover the YT suggestions with controls disabled */
