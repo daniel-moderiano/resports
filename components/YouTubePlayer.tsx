@@ -1,6 +1,7 @@
 import { useYoutubeIframe } from 'hooks/useYouTubeIframe';
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styles from '../styles/componentStyles/YouTubePlayer.module.css';
+import YouTubeVideoControls from './YouTubeVideoControls';
 
 interface YouTubePlayerProps {
   videoId: string;
@@ -9,7 +10,6 @@ interface YouTubePlayerProps {
 // The useYouTubeIframe hook will add the YouTube iframe to this div with id="player"
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
-  const [showControls, setShowControls] = useState(false);
 
   let enableCall = true;
 
@@ -22,7 +22,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [playerState, setPlayerState] = useState(-1);
 
   function onPlayerReady(event: YT.PlayerEvent) {
-    console.log('Player is ready');
     if (player) {
       player.playVideo();
     }
@@ -107,8 +106,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   }
 
 
-
-
   return (
     <>
       <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper">
@@ -121,11 +118,14 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
         </div>
 
         <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive} onMouseMove={throttleMousemove}></div>
-        <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} >
+        {/* <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} >
           <button onClick={playVideoWithDelay}>Play</button>
           <button onClick={pauseVideoWithDelay}>Pause</button>
           <button onClick={toggleFullscreen}>Fullscreen</button>
           <button onClick={() => { setTheaterMode((prevState) => !prevState) }}>Toggle theater mode</button>
+        </div> */}
+        <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} >
+          <YouTubeVideoControls />
         </div>
       </div>
 

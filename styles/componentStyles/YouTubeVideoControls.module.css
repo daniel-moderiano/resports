@@ -1,0 +1,16 @@
+.controlsBtn {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin-right: 0.5rem;
+}
+
+.controlsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
