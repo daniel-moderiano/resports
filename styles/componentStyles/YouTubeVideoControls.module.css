@@ -8,6 +8,12 @@
   padding: 0;
   margin-right: 0.5rem;
   border: none;
+  opacity: 0.9;
+}
+
+.controlsBtn:hover {
+  cursor: pointer;
+  opacity: 1;
 }
 
 .controlsContainer {

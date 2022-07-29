@@ -1,6 +1,14 @@
+import { Dispatch, SetStateAction } from 'react';
 import styles from '../styles/componentStyles/YouTubeVideoControls.module.css';
 
-const YouTubeVideoControls = () => {
+interface YouTubeVideoControlsProps {
+  player: YT.Player;
+  userActive: boolean;
+  setUserActive: Dispatch<SetStateAction<boolean>>;
+}
+
+const YouTubeVideoControls = ({ player, userActive, setUserActive }: YouTubeVideoControlsProps) => {
+
   return (
     <div>
       {/* <div>

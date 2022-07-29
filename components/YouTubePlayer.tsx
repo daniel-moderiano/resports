@@ -35,6 +35,14 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   const { player } = useYoutubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
+
+  // Used when a user hovers a control button. This will ensure the controls do not disappear when actively hovering a button
+  const onButtonHover = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('Hovering button');
+    clearTimeout(inactivityTimeout);
+    setUserActive(true);
+  }
+
   const playVideoWithDelay = () => {
     if (player) {
       player.playVideo();
@@ -68,7 +76,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
     inactivityTimeout = setTimeout(function () {
       setUserActive(false);
-    }, 2000);
+    }, 3000);
   };
 
 
@@ -114,7 +122,9 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''} ${(userActive || playerState === 2) ? '' : styles.overlayInactive}`}
           onClick={playOrPauseVideo}
           onDoubleClick={toggleFullscreen}
-          onMouseMove={throttleMousemove}>
+          onMouseMove={throttleMousemove}
+          onMouseLeave={() => setUserActive(false)}
+        >
         </div>
 
         <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive} onMouseMove={throttleMousemove}></div>
@@ -124,9 +134,18 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           <button onClick={toggleFullscreen}>Fullscreen</button>
           <button onClick={() => { setTheaterMode((prevState) => !prevState) }}>Toggle theater mode</button>
         </div> */}
-        <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} >
-          <YouTubeVideoControls />
-        </div>
+        {player && (
+          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove} onMouseLeave={() => setUserActive(false)}>
+            <YouTubeVideoControls
+              player={player}
+              userActive={userActive}
+              setUserActive={setUserActive}
+            />
+          </div>
+        )}
+        {/* <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`}>
+
+        </div> */}
       </div>
 
 
