@@ -97,6 +97,9 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }
   }
 
+  // Use this to toggle between theater mode. Should be attached to a theater button and potentially a keyboard shortcut
+  const toggleTheater = () => { setTheaterMode((prevState) => !prevState) };
+
 
   return (
     <>
@@ -112,12 +115,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
         </div>
 
         <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive} onMouseMove={throttleMousemove}></div>
-        {/* <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} >
-          <button onClick={playVideoWithDelay}>Play</button>
-          <button onClick={pauseVideoWithDelay}>Pause</button>
-          <button onClick={toggleFullscreen}>Fullscreen</button>
-          <button onClick={() => { setTheaterMode((prevState) => !prevState) }}>Toggle theater mode</button>
-        </div> */}
+
         {player && (
           <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove}>
             <YouTubeVideoControls
@@ -126,6 +124,8 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
               setUserActive={setUserActive}
               setPlayerState={setPlayerState}
               inactivityTimer={inactivityTimeout}
+              toggleFullscreen={toggleFullscreen}
+              toggleTheater={toggleTheater}
             />
           </div>
         )}

@@ -7,9 +7,19 @@ interface YouTubeVideoControlsProps {
   setUserActive: Dispatch<SetStateAction<boolean>>;
   setPlayerState: Dispatch<SetStateAction<number>>;
   inactivityTimer: React.MutableRefObject<NodeJS.Timeout | null>;
+  toggleFullscreen: () => void;
+  toggleTheater: () => void;
 }
 
-const YouTubeVideoControls = ({ player, userActive, setUserActive, setPlayerState, inactivityTimer }: YouTubeVideoControlsProps) => {
+const YouTubeVideoControls = ({
+  player,
+  userActive,
+  setUserActive,
+  setPlayerState,
+  inactivityTimer,
+  toggleFullscreen,
+  toggleTheater
+}: YouTubeVideoControlsProps) => {
   const playVideoWithDelay = () => {
     if (player) {
       player.playVideo();
@@ -86,12 +96,13 @@ const YouTubeVideoControls = ({ player, userActive, setUserActive, setPlayerStat
         </button>
 
         {/* Theater btn */}
-        <button className={styles.controlsBtn}>
+        <button className={styles.controlsBtn} onClick={toggleTheater}>
           <svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" viewBox="0 0 24 24" width="30px" fill="#FFFFFF"><g><rect fill="none" height="32" width="32" /></g><g><g><g><path d="M19,7H5C3.9,7,3,7.9,3,9v6c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V9C21,7.9,20.1,7,19,7z M19,15H5V9h14V15z" /></g></g></g></svg>
         </button>
 
         {/* Enter fullscreen btn */}
-        <button className={styles.controlsBtn}>
+        {/* TODO: Switch SVG depending on fullscreen state */}
+        <button className={styles.controlsBtn} onClick={toggleFullscreen}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" /></svg>
         </button>
 
