@@ -38,6 +38,8 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   // Used to show controls on mouse movement, and hide once mouse is still for a short time
   const handleMouseMove = () => {
+    console.log('Mousemove call');
+
     setUserActive(true);
     clearTimeout(inactivityTimeout.current as NodeJS.Timeout);
 
@@ -98,14 +100,14 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   return (
     <>
-      <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper">
+      <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)}>
         <div id="player"></div>
         <div
           className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''} ${(userActive || playerState === 2) ? '' : styles.overlayInactive}`}
           onClick={playOrPauseVideo}
           onDoubleClick={toggleFullscreen}
           onMouseMove={throttleMousemove}
-          onMouseLeave={() => setUserActive(false)}
+
         >
         </div>
 
@@ -117,12 +119,13 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           <button onClick={() => { setTheaterMode((prevState) => !prevState) }}>Toggle theater mode</button>
         </div> */}
         {player && (
-          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove} onMouseLeave={() => setUserActive(false)}>
+          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove}>
             <YouTubeVideoControls
               player={player}
               userActive={userActive}
               setUserActive={setUserActive}
               setPlayerState={setPlayerState}
+              inactivityTimer={inactivityTimeout}
             />
           </div>
         )}

@@ -6,9 +6,10 @@ interface YouTubeVideoControlsProps {
   userActive: boolean;
   setUserActive: Dispatch<SetStateAction<boolean>>;
   setPlayerState: Dispatch<SetStateAction<number>>;
+  inactivityTimer: React.MutableRefObject<NodeJS.Timeout | null>;
 }
 
-const YouTubeVideoControls = ({ player, userActive, setUserActive, setPlayerState }: YouTubeVideoControlsProps) => {
+const YouTubeVideoControls = ({ player, userActive, setUserActive, setPlayerState, inactivityTimer }: YouTubeVideoControlsProps) => {
   const playVideoWithDelay = () => {
     if (player) {
       player.playVideo();
