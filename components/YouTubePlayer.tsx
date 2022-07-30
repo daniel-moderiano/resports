@@ -12,9 +12,8 @@ interface YouTubePlayerProps {
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
-  let inactivityTimeout = React.useRef<null | NodeJS.Timeout>(null);
-
-  let enableCall = true;
+  const inactivityTimeout = React.useRef<null | NodeJS.Timeout>(null);
+  const enableCall = React.useRef(true);
 
   // Indicates whether the user is moving their mouse over the video (i.e. user is active)
   const [userActive, setUserActive] = useState(false);
@@ -40,19 +39,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   // Used to show controls on mouse movement, and hide once mouse is still for a short time
   const handleMouseMove = () => {
-    // Set a fake timeout to get the highest timeout id
-    // const highestTimeoutId = setTimeout(";");
-    // for (let i = 0; i < highestTimeoutId; i++) {
-    //   clearTimeout(i);
-    // }
-
-    // const highestId = window.setTimeout(() => {
-    //   for (let i = highestId; i >= 0; i--) {
-    //     console.log('Clearing timeout');
-
-    //     window.clearTimeout(i);
-    //   }
-    // }, 0);
 
     setUserActive(true);
     console.log('Clearing timeout', inactivityTimeout.current);
@@ -70,14 +56,14 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
 
   const throttleMousemove = () => {
-    if (!enableCall) {
+    if (!enableCall.current) {
       return;
     }
 
-    enableCall = false;
+    enableCall.current = false;
     handleMouseMove();
     // Unsure exactly which throttle timeout will work best. 
-    const timer = setTimeout(() => enableCall = true, 1000);
+    const timer = setTimeout(() => enableCall.current = true, 500);
     console.log('Throttling timeout', timer);
 
   }
