@@ -106,7 +106,8 @@
 
 .controlsHide {
   opacity: 0;
-  transition: opacity 1.5s;
+  transition: opacity 1s;
+  cursor: none;
 }
 
 .gradient {
@@ -123,4 +124,9 @@
     rgba(0, 0, 0, 0.5) 100%
   );
   pointer-events: none;
+}
+
+.gradientHide {
+  opacity: 0;
+  transition: opacity 1s;
 }

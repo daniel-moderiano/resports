@@ -11,12 +11,14 @@ interface YouTubePlayerProps {
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
+  let inactivityTimeout: NodeJS.Timeout;
+  const timeouts: NodeJS.Timeout[] = [];
   let enableCall = true;
 
   // Indicates whether the user is moving their mouse over the video (i.e. user is active)
   const [userActive, setUserActive] = useState(false);
 
-  let inactivityTimeout: NodeJS.Timeout;
+
 
   // Initialise in the unstarted state
   const [playerState, setPlayerState] = useState(-1);
@@ -35,48 +37,26 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   const { player } = useYoutubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
-
-  // Used when a user hovers a control button. This will ensure the controls do not disappear when actively hovering a button
-  const onButtonHover = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('Hovering button');
-    clearTimeout(inactivityTimeout);
-    setUserActive(true);
-  }
-
-  const playVideoWithDelay = () => {
-    if (player) {
-      player.playVideo();
-
-      setTimeout(() => {
-        setPlayerState(1);
-      }, 100);
-
-      // A longer timeout is used here because it can be quite anti-user experience to have controls and cursor fade almost immediately after pressing play. 
-      setTimeout(() => {
-        setUserActive(false);    // ensure video controls fade   
-      }, 1000)
-    }
-  };
-
-  const pauseVideoWithDelay = () => {
-    if (player) {
-      setPlayerState(2);
-      setTimeout(() => {
-        player.pauseVideo();
-      }, 350)
-    }
-  };
-
   // Used to show controls on mouse movement, and hide once mouse is still for a short time
   const handleMouseMove = () => {
-    console.log('Mousemove');
+    console.log(timeouts);
+
+    // Set a fake timeout to get the highest timeout id
+    const highestTimeoutId = setTimeout(";");
+    for (let i = 0; i < highestTimeoutId; i++) {
+      clearTimeout(i);
+    }
 
     setUserActive(true);
+    console.log('Clearing timeout', inactivityTimeout);
     clearTimeout(inactivityTimeout);
 
     inactivityTimeout = setTimeout(function () {
+      console.log(`Calling timeout`, inactivityTimeout);
+
       setUserActive(false);
     }, 3000);
+    timeouts.push(inactivityTimeout)
   };
 
 
@@ -94,10 +74,24 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   // Use this function to play a paused video, or pause a playing video. Intended to activate on clicking the video, or pressing spacebar
   const playOrPauseVideo = () => {
-    if (player && player.getPlayerState() === 1) {
-      pauseVideoWithDelay();
-    } else {
-      playVideoWithDelay();
+    if (player) {
+      if (player.getPlayerState() === 1) {
+        setPlayerState(2);
+        setTimeout(() => {
+          player.pauseVideo();
+        }, 350)
+      } else {
+        player.playVideo();
+
+        setTimeout(() => {
+          setPlayerState(1);
+        }, 100);
+
+        // A longer timeout is used here because it can be quite anti-user experience to have controls and cursor fade almost immediately after pressing play. 
+        setTimeout(() => {
+          setUserActive(false);    // ensure video controls fade   
+        }, 1000)
+      }
     }
   };
 
@@ -140,12 +134,13 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
               player={player}
               userActive={userActive}
               setUserActive={setUserActive}
+              setPlayerState={setPlayerState}
             />
           </div>
         )}
-        {/* <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`}>
+        <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`}>
 
-        </div> */}
+        </div>
       </div>
 
 

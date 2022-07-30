@@ -5,9 +5,33 @@ interface YouTubeVideoControlsProps {
   player: YT.Player;
   userActive: boolean;
   setUserActive: Dispatch<SetStateAction<boolean>>;
+  setPlayerState: Dispatch<SetStateAction<number>>;
 }
 
-const YouTubeVideoControls = ({ player, userActive, setUserActive }: YouTubeVideoControlsProps) => {
+const YouTubeVideoControls = ({ player, userActive, setUserActive, setPlayerState }: YouTubeVideoControlsProps) => {
+  const playVideoWithDelay = () => {
+    if (player) {
+      player.playVideo();
+
+      setTimeout(() => {
+        setPlayerState(1);
+      }, 100);
+
+      // A longer timeout is used here because it can be quite anti-user experience to have controls and cursor fade almost immediately after pressing play. 
+      setTimeout(() => {
+        setUserActive(false);    // ensure video controls fade   
+      }, 1000)
+    }
+  };
+
+  const pauseVideoWithDelay = () => {
+    if (player) {
+      setPlayerState(2);
+      setTimeout(() => {
+        player.pauseVideo();
+      }, 350)
+    }
+  };
 
   return (
     <div>
@@ -21,12 +45,12 @@ const YouTubeVideoControls = ({ player, userActive, setUserActive }: YouTubeVide
       </div> */}
       <div className={styles.controlsContainer}>
         {/* Play btn */}
-        <button className={styles.controlsBtn}>
+        <button className={styles.controlsBtn} onClick={playVideoWithDelay}>
           <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M8 5v14l11-7z" /></svg>
         </button>
 
         {/* Pause btn */}
-        <button className={styles.controlsBtn}>
+        <button className={styles.controlsBtn} onClick={pauseVideoWithDelay}>
           <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
         </button>
 
