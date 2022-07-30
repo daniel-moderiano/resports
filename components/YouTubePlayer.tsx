@@ -12,13 +12,12 @@ interface YouTubePlayerProps {
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
+  // useRef must be used here to avoid losing reference to timeout IDs as the component re-renders between hiding/showing controls
   const inactivityTimeout = React.useRef<null | NodeJS.Timeout>(null);
   const enableCall = React.useRef(true);
 
   // Indicates whether the user is moving their mouse over the video (i.e. user is active)
   const [userActive, setUserActive] = useState(false);
-
-
 
   // Initialise in the unstarted state
   const [playerState, setPlayerState] = useState(-1);
@@ -39,22 +38,16 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   // Used to show controls on mouse movement, and hide once mouse is still for a short time
   const handleMouseMove = () => {
-
     setUserActive(true);
-    console.log('Clearing timeout', inactivityTimeout.current);
     clearTimeout(inactivityTimeout.current as NodeJS.Timeout);
 
     inactivityTimeout.current = setTimeout(function () {
-      console.log(`Calling timeout`, inactivityTimeout.current);
-
       setUserActive(false);
     }, 3000);
-
-    console.log('Creating timeout', inactivityTimeout.current);
-
   };
 
 
+  // Use this to limit how many times the mousemove handler is called. Note this function itself will still be called every time
   const throttleMousemove = () => {
     if (!enableCall.current) {
       return;
@@ -63,9 +56,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     enableCall.current = false;
     handleMouseMove();
     // Unsure exactly which throttle timeout will work best. 
-    const timer = setTimeout(() => enableCall.current = true, 500);
-    console.log('Throttling timeout', timer);
-
+    setTimeout(() => enableCall.current = true, 500);
   }
 
 
