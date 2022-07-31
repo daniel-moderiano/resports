@@ -97,19 +97,18 @@ const YouTubeVideoControls = ({
 
         {/* Theater btn */}
         <button className={`${styles.controlsBtn} ${styles.theaterBtn}`} onClick={toggleTheater}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 138.7 90.93" width="24px"><rect x="3.5" y="3.5" width="131.7" height="83.93" fill="none" stroke="#FFFFFF" strokeWidth="24px" /></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 138.7 90.93" width="24px"><rect x="3.5" y="3.5" width="131.7" height="83.93" fill="none" stroke="#FFFFFF" strokeWidth="22px" /></svg>
         </button>
 
-        {/* Enter fullscreen btn */}
-        {/* TODO: Switch SVG depending on fullscreen state */}
+        {/* Fullscreen button (changes depending on enter/exit fullscreen) */}
         <button className={styles.controlsBtn} onClick={toggleFullscreen}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" /></svg>
+          {document.fullscreenElement ? (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" /></svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" /></svg>
+          )}
         </button>
 
-        {/* Exit fullscreen btn */}
-        <button className={styles.controlsBtn}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" /></svg>
-        </button>
       </div>
 
     </div>
