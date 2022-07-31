@@ -36,12 +36,13 @@ export const useYoutubeIframe = (
         },
 
         events: {
-          onReady: onPlayerReady,
+          onReady: () => {
+            setPlayer(player)
+            onPlayerReady
+          },
           onStateChange: onPlayerStateChange,
         }
       });
-
-      setPlayer(player)
     }
 
     return () => {    // ensure script tags are cleaned on dismount

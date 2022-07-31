@@ -22,8 +22,12 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   // Initialise in the unstarted state
   const [playerState, setPlayerState] = useState(-1);
 
+  // Once the YT Player is initialised, set it to this state. This is used to ensure an active player is passed to any children props or other relevant functions calling player functions
+  const [activePlayer, setActivePlayer] = React.useState<YT.Player | null>(null);
+
   function onPlayerReady(event: YT.PlayerEvent) {
     if (player) {
+      setActivePlayer(player)
       player.playVideo();
     }
   }
