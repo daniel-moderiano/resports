@@ -9,6 +9,7 @@ interface YouTubeVideoControlsProps {
   inactivityTimer: React.MutableRefObject<NodeJS.Timeout | null>;
   toggleFullscreen: () => void;
   toggleTheater: () => void;
+  playerState: number;
 }
 
 const YouTubeVideoControls = ({
@@ -18,7 +19,8 @@ const YouTubeVideoControls = ({
   setPlayerState,
   inactivityTimer,
   toggleFullscreen,
-  toggleTheater
+  toggleTheater,
+  playerState
 }: YouTubeVideoControlsProps) => {
   const playVideoWithDelay = () => {
     if (player) {
@@ -56,14 +58,19 @@ const YouTubeVideoControls = ({
       </div> */}
       <div className={styles.controlsContainer}>
         {/* Play btn */}
-        <button className={styles.controlsBtn} onClick={playVideoWithDelay}>
-          <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M8 5v14l11-7z" /></svg>
-        </button>
+        {playerState === 2 ? (
+          <button className={styles.controlsBtn} onClick={playVideoWithDelay}>
+            <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M8 5v14l11-7z" /></svg>
+          </button>
+        ) : (
+          <button className={styles.controlsBtn} onClick={pauseVideoWithDelay}>
+            <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+          </button>
+        )}
+
 
         {/* Pause btn */}
-        <button className={styles.controlsBtn} onClick={pauseVideoWithDelay}>
-          <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
-        </button>
+
 
         {/* Volume btn */}
         <button className={styles.controlsBtn}>

@@ -120,6 +120,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove}>
             <YouTubeVideoControls
               player={player}
+              playerState={playerState}
               userActive={userActive}
               setUserActive={setUserActive}
               setPlayerState={setPlayerState}
