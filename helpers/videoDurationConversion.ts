@@ -148,3 +148,8 @@ export const convertISOToSeconds = (duration: string) => {
 
   return cumulativeSeconds;
 }
+
+
+export const formatElapsedTime = (elapsedTimeInSeconds: number) => {
+  return '00:00'
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../styles/componentStyles/YouTubeVideoControls.module.css';
 
 interface YouTubeVideoControlsProps {
@@ -20,6 +20,9 @@ const YouTubeVideoControls = ({
   // This local state is used to avoid the long delays of an API call to check muted state when toggling icons and UI
   const [playerMuted, setPlayerMuted] = useState(true);
 
+  // A constantly updated duration state to provide a video duration elapsed to the UI
+  const [elapsedDuration, setElapsedDuration] = useState(0)
+
   // Use this function to completely mute or unmute a video. Is unrelated to setting a distinct volume level
   const toggleMute = () => {
     if (player.isMuted()) {
@@ -30,6 +33,13 @@ const YouTubeVideoControls = ({
       player.mute();
     }
   };
+
+  useEffect(() => {
+    setInterval(() => {
+      const elapsedTime = player.getCurrentTime();
+      setElapsedDuration(elapsedTime);
+    }, 1000)
+  }, [player])
 
   const skipForward = (timeToSkipInSeconds: number) => {
     const currentTime = player.getCurrentTime();
@@ -86,6 +96,10 @@ const YouTubeVideoControls = ({
         <button className={styles.controlsBtn} onClick={() => skipBackward(60)}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" /></svg>
         </button>
+
+        <div className={styles.duration}>
+          {elapsedDuration}
+        </div>
 
         {/* Fast forward btn */}
         <button className={styles.controlsBtn} onClick={() => skipForward(60)}>
