@@ -1,24 +1,16 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import styles from '../styles/componentStyles/YouTubeVideoControls.module.css';
 
 interface YouTubeVideoControlsProps {
   player: YT.Player;
-  userActive: boolean;
-  setUserActive: Dispatch<SetStateAction<boolean>>;
-  setPlayerState: Dispatch<SetStateAction<number>>;
-  inactivityTimer: React.MutableRefObject<NodeJS.Timeout | null>;
+  playerState: number;
   toggleFullscreen: () => void;
   toggleTheater: () => void;
-  playerState: number;
   togglePlay: () => void;
 }
 
 const YouTubeVideoControls = ({
   player,
-  userActive,
-  setUserActive,
-  setPlayerState,
-  inactivityTimer,
   toggleFullscreen,
   toggleTheater,
   playerState,
@@ -27,32 +19,6 @@ const YouTubeVideoControls = ({
 
   // This local state is used to avoid the long delays of an API call to check muted state when toggling icons and UI
   const [playerMuted, setPlayerMuted] = useState(true);
-
-  const playVideoWithDelay = () => {
-    console.log(player);
-
-    if (player) {
-      player.playVideo();
-
-      setTimeout(() => {
-        setPlayerState(1);
-      }, 100);
-
-      // A longer timeout is used here because it can be quite anti-user experience to have controls and cursor fade almost immediately after pressing play. 
-      setTimeout(() => {
-        setUserActive(false);    // ensure video controls fade   
-      }, 1000)
-    }
-  };
-
-  const pauseVideoWithDelay = () => {
-    if (player) {
-      setPlayerState(2);
-      setTimeout(() => {
-        player.pauseVideo();
-      }, 350)
-    }
-  };
 
   // Use this function to completely mute or unmute a video. Is unrelated to setting a distinct volume level
   const toggleMute = () => {
@@ -63,7 +29,18 @@ const YouTubeVideoControls = ({
       setPlayerMuted(true);
       player.mute();
     }
-  }
+  };
+
+  const skipForward = (timeToSkipInSeconds: number) => {
+    const currentTime = player.getCurrentTime();
+    player.seekTo(currentTime + timeToSkipInSeconds, true);
+  };
+
+  const skipBackward = (timeToSkipInSeconds: number) => {
+    const currentTime = player.getCurrentTime();
+    player.seekTo(currentTime - timeToSkipInSeconds, true);
+  };
+
 
   return (
     <div>
@@ -82,13 +59,11 @@ const YouTubeVideoControls = ({
           {playerState === 2 ? (
             // Play icon
             <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M8 5v14l11-7z" /></svg>
-
           ) : (
             // Pause icon
             <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
           )}
         </button>
-
 
         {/* Volume btn */}
         <button className={styles.controlsBtn} onClick={toggleMute}>
@@ -103,22 +78,22 @@ const YouTubeVideoControls = ({
 
 
         {/* Back 10 btn */}
-        <button className={styles.controlsBtn}>
+        <button className={styles.controlsBtn} onClick={() => skipBackward(600)}>
           <svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" viewBox="0 0 24 24" width="30px" fill="#FFFFFF"><g><rect fill="none" height="32" width="32" /></g><g><g><path d="M11.99,5V1l-5,5l5,5V7c3.31,0,6,2.69,6,6s-2.69,6-6,6s-6-2.69-6-6h-2c0,4.42,3.58,8,8,8s8-3.58,8-8S16.41,5,11.99,5z" /><g><path d="M10.89,16h-0.85v-3.26l-1.01,0.31v-0.69l1.77-0.63h0.09V16z" /><path d="M15.17,14.24c0,0.32-0.03,0.6-0.1,0.82s-0.17,0.42-0.29,0.57s-0.28,0.26-0.45,0.33s-0.37,0.1-0.59,0.1 s-0.41-0.03-0.59-0.1s-0.33-0.18-0.46-0.33s-0.23-0.34-0.3-0.57s-0.11-0.5-0.11-0.82V13.5c0-0.32,0.03-0.6,0.1-0.82 s0.17-0.42,0.29-0.57s0.28-0.26,0.45-0.33s0.37-0.1,0.59-0.1s0.41,0.03,0.59,0.1c0.18,0.07,0.33,0.18,0.46,0.33 s0.23,0.34,0.3,0.57s0.11,0.5,0.11,0.82V14.24z M14.32,13.38c0-0.19-0.01-0.35-0.04-0.48s-0.07-0.23-0.12-0.31 s-0.11-0.14-0.19-0.17s-0.16-0.05-0.25-0.05s-0.18,0.02-0.25,0.05s-0.14,0.09-0.19,0.17s-0.09,0.18-0.12,0.31 s-0.04,0.29-0.04,0.48v0.97c0,0.19,0.01,0.35,0.04,0.48s0.07,0.24,0.12,0.32s0.11,0.14,0.19,0.17s0.16,0.05,0.25,0.05 s0.18-0.02,0.25-0.05s0.14-0.09,0.19-0.17s0.09-0.19,0.11-0.32s0.04-0.29,0.04-0.48V13.38z" /></g></g></g></svg>
         </button>
 
         {/* Rewind btn */}
-        <button className={styles.controlsBtn}>
+        <button className={styles.controlsBtn} onClick={() => skipBackward(60)}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" /></svg>
         </button>
 
         {/* Fast forward btn */}
-        <button className={styles.controlsBtn}>
+        <button className={styles.controlsBtn} onClick={() => skipForward(60)}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none" /><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z" /></svg>
         </button>
 
         {/* Forward 10 btn */}
-        <button className={styles.controlsBtn}>
+        <button className={styles.controlsBtn} onClick={() => skipForward(600)}>
           <svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" viewBox="0 0 24 24" width="30px" fill="#FFFFFF"><g><rect fill="none" height="32" width="32" /></g><g><g><path d="M18,13c0,3.31-2.69,6-6,6s-6-2.69-6-6s2.69-6,6-6v4l5-5l-5-5v4c-4.42,0-8,3.58-8,8c0,4.42,3.58,8,8,8s8-3.58,8-8H18z" /><polygon points="10.86,15.94 10.86,11.67 10.77,11.67 9,12.3 9,12.99 10.01,12.68 10.01,15.94" /><path d="M12.25,13.44v0.74c0,1.9,1.31,1.82,1.44,1.82c0.14,0,1.44,0.09,1.44-1.82v-0.74c0-1.9-1.31-1.82-1.44-1.82 C13.55,11.62,12.25,11.53,12.25,13.44z M14.29,13.32v0.97c0,0.77-0.21,1.03-0.59,1.03c-0.38,0-0.6-0.26-0.6-1.03v-0.97 c0-0.75,0.22-1.01,0.59-1.01C14.07,12.3,14.29,12.57,14.29,13.32z" /></g></g></svg>
         </button>
 
