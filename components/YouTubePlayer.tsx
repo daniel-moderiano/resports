@@ -131,6 +131,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
               inactivityTimer={inactivityTimeout}
               toggleFullscreen={toggleFullscreen}
               toggleTheater={toggleTheater}
+              togglePlay={playOrPauseVideo}
             />
           </div>
         )}
