@@ -149,7 +149,7 @@ export const convertISOToSeconds = (duration: string) => {
   return cumulativeSeconds;
 }
 
-
+// Used to convert a raw duration in seconds to a UI-friendly video duration elapsed
 export const formatElapsedTime = (elapsedTimeInSeconds: number) => {
   const time = {
     hours: 0,
@@ -157,10 +157,12 @@ export const formatElapsedTime = (elapsedTimeInSeconds: number) => {
     seconds: 0,
   };
 
+  // These calculations yield the numerical amount of each time unit
   time.hours = Math.floor(elapsedTimeInSeconds / 3600);
   time.minutes = Math.floor((elapsedTimeInSeconds % 3600) / 60);
   time.seconds = Math.floor((elapsedTimeInSeconds % 3600) % 60);
 
+  // Do not show '00' hours; instead omit entirely if video duration < 1 hour
   let formattedHours = '';
   if (time.hours > 0) {
     formattedHours = `${time.hours.toString()}:`;
@@ -176,16 +178,14 @@ export const formatElapsedTime = (elapsedTimeInSeconds: number) => {
       } else {
         formattedMinutes = time.minutes.toString();
       }
-
     }
-  } else {
+  } else {    // For videos < 1 hour, omit the leading zero for a cleaner look
     if (time.hours > 0) {
-      formattedMinutes = '00';
+      formattedMinutes = `0${time.minutes.toString()}`;
     } else {
-      formattedMinutes = '0';
+      formattedMinutes = time.minutes.toString();
     }
   }
-
 
   let formattedSeconds = '';
   if (time.seconds > 0) {
@@ -198,6 +198,6 @@ export const formatElapsedTime = (elapsedTimeInSeconds: number) => {
     formattedSeconds = '00';
   }
 
-
+  // Note the colon only exists between mins/sec as it needs full omission for zero hours
   return `${formattedHours}${formattedMinutes}:${formattedSeconds}`
 }
