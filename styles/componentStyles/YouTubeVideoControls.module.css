@@ -24,20 +24,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem;
 }
 
 .duration {
   color: white;
   font-size: 0.85rem;
-  width: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-left: 1rem;
+  text-align: left;
+  margin-right: 0.35rem;
+  margin-left: 0.2rem;
+  width: 32px;
+  padding-top: 0.1rem;
 }
 
-.durationText {
+.durationMedium {
+  width: 40px;
+}
+
+.durationLarge {
+  width: 50px;
 }
 
 .leftControls {
