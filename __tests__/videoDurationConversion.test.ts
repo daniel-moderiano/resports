@@ -149,10 +149,10 @@ describe('Elapsed duration conversions', () => {
   });
 
   it('Handles hanging second inputs combined with hours (2)', () => {
-    expect(formatElapsedTime(4201)).toBe('1:00:01');
+    expect(formatElapsedTime(4201)).toBe('1:10:01');
   });
 
   it('Handles hanging second inputs combined with hours (2)', () => {
-    expect(formatElapsedTime(4210)).toBe('1:00:10');
+    expect(formatElapsedTime(4210)).toBe('1:10:10');
   });
 });

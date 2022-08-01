@@ -161,9 +161,43 @@ export const formatElapsedTime = (elapsedTimeInSeconds: number) => {
   time.minutes = Math.floor((elapsedTimeInSeconds % 3600) / 60);
   time.seconds = Math.floor((elapsedTimeInSeconds % 3600) % 60);
 
+  let formattedHours = '';
+  if (time.hours > 0) {
+    formattedHours = `${time.hours.toString()}:`;
+  }
 
-  console.log(time);
+  let formattedMinutes = '';
+  if (time.minutes > 0) {
+    if (time.minutes >= 10) {
+      formattedMinutes = time.minutes.toString();
+    } else {
+      if (time.hours > 0) {
+        formattedMinutes = `0${time.minutes.toString()}`;
+      } else {
+        formattedMinutes = time.minutes.toString();
+      }
+
+    }
+  } else {
+    if (time.hours > 0) {
+      formattedMinutes = '00';
+    } else {
+      formattedMinutes = '0';
+    }
+  }
 
 
-  return '00:00'
+  let formattedSeconds = '';
+  if (time.seconds > 0) {
+    if (time.seconds >= 10) {
+      formattedSeconds = time.seconds.toString();
+    } else {
+      formattedSeconds = `0${time.seconds.toString()}`;
+    }
+  } else {
+    formattedSeconds = '00';
+  }
+
+
+  return `${formattedHours}${formattedMinutes}:${formattedSeconds}`
 }
