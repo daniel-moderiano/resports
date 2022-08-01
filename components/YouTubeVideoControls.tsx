@@ -34,12 +34,10 @@ const YouTubeVideoControls = ({
     }
   };
 
-  formatElapsedTime(61)
-
   useEffect(() => {
     setInterval(() => {
       const elapsedTime = player.getCurrentTime();
-      setElapsedDuration(Math.floor(elapsedTime).toFixed(0));
+      setElapsedDuration(formatElapsedTime(elapsedTime));
     }, 1000)
   }, [player])
 
