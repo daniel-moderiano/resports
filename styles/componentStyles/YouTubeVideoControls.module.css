@@ -6,7 +6,6 @@
   width: 36px;
   height: 36px;
   padding: 0;
-  margin-right: 0.5rem;
   border: none;
   opacity: 0.9;
 }
@@ -24,13 +23,39 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
   padding: 0.25rem 0.5rem;
 }
 
 .duration {
   color: white;
-  width: 3rem;
-  overflow: hidden;
   font-size: 0.85rem;
+  width: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 1rem;
+}
+
+.durationText {
+}
+
+.leftControls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.rightControls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.leftControls .controlsBtn {
+  margin-right: 0.5rem;
+}
+
+.rightControls .controlsBtn {
+  margin-left: 0.5rem;
 }
