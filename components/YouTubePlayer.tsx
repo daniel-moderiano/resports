@@ -38,8 +38,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   // Used to show controls on mouse movement, and hide once mouse is still for a short time
   const handleMouseMove = () => {
-    console.log('Mousemove call');
-
     setUserActive(true);
     clearTimeout(inactivityTimeout.current as NodeJS.Timeout);
 

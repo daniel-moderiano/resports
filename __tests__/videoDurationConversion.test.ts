@@ -113,7 +113,7 @@ describe('Elapsed duration conversions', () => {
   });
 
   it('Rounds >0.5 s input down to 0:00', () => {
-    expect(formatElapsedTime(0.67678)).toBe('0:01');
+    expect(formatElapsedTime(0.67678)).toBe('0:00');
   });
 
   it('Handles second inputs >10 s', () => {

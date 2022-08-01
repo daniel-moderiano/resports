@@ -151,5 +151,19 @@ export const convertISOToSeconds = (duration: string) => {
 
 
 export const formatElapsedTime = (elapsedTimeInSeconds: number) => {
+  const time = {
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  };
+
+  time.hours = Math.floor(elapsedTimeInSeconds / 3600);
+  time.minutes = Math.floor((elapsedTimeInSeconds % 3600) / 60);
+  time.seconds = Math.floor((elapsedTimeInSeconds % 3600) % 60);
+
+
+  console.log(time);
+
+
   return '00:00'
 }
