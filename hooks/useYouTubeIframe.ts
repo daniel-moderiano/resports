@@ -24,7 +24,7 @@ export const useYoutubeIframe = (
       const player = new YT.Player('player', {
         videoId: videoId,
         playerVars: {
-          controls: 0,
+          // controls: 0,
           enablejsapi: 1,
           iv_load_policy: 3,
           modestbranding: 1,
