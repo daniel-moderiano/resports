@@ -23,12 +23,10 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [playerState, setPlayerState] = useState(-1);
 
   // Allow the user to manually revert to standard YT controls to allow a manual adjustment to video quality
-  const [showYTControls, setShowYTControls] = useState(false);
+  const [showYTControls, setShowYTControls] = useState(true);
 
   function onPlayerReady(event: YT.PlayerEvent) {
-    if (player) {
-      player.playVideo();
-    }
+    setShowYTControls(false)
   }
 
   // Adjust the component state to reflect the player state when the user plays/pauses/ends
@@ -38,6 +36,14 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   }
 
   const { player } = useYoutubeIframe(videoId, onPlayerReady, onPlayerStateChange);
+
+  React.useEffect(() => {
+    if (player) {
+      setTimeout(() => {
+        setShowYTControls(false);
+      }, 10000)
+    }
+  }, [player])
 
   // Used to show controls on mouse movement, and hide once mouse is still for a short time
   const handleMouseMove = () => {
@@ -130,10 +136,16 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           </div>
         )}
         <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`}></div>
-        <div className={styles.controlsBlocker}>
-          <div className={styles.progressBlocker}></div>
-          <div className={styles.leftControlsBlocker}></div>
-        </div>
+
+        {showYTControls && (
+          <div className={styles.YTcontrolsBlocker}>
+            <div className={styles.YTprogressBlocker}></div>
+            <div className={styles.blockersContainer}>
+              <div className={styles.leftControlsBlocker}></div>
+              <div className={styles.rightControlsBlocker}></div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="playerMode">

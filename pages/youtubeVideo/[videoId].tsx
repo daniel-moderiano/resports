@@ -21,6 +21,7 @@ const YouTubeVideo = ({ videoId }: YouTubeVideoProps) => {
   return (
     <div>
       <YouTubePlayer videoId={videoId} />
+
     </div>
   );
 };
