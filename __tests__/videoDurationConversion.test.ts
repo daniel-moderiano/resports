@@ -71,6 +71,10 @@ describe('YouTube video duration conversion', () => {
   it('Handles minutes only input', () => {
     expect(convertYouTubeVideoDuration('PT11M')).toBe('11:00')
   });
+
+  it('Handles scheduled livestreams', () => {
+    expect(convertYouTubeVideoDuration('P0D')).toBe('UPCOMING')
+  });
 });
 
 describe('ISO to seconds duration conversion', () => {

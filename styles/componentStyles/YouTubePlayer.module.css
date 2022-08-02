@@ -21,6 +21,10 @@
 .wrapperFullscreen {
 }
 
+.wrapperInitial {
+  background-color: black;
+}
+
 .wrapper iframe,
 .wrapper object,
 .wrapper embed {

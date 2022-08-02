@@ -41,7 +41,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     if (player) {
       setTimeout(() => {
         setShowYTControls(false);
-      }, 10000)
+      }, 5500)
     }
   }, [player])
 
@@ -110,7 +110,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   return (
     <div>
-      <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)}>
+      <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)}>
         <div id="player"></div>
         {!showYTControls && (
           <div
@@ -135,6 +135,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
             />
           </div>
         )}
+
         <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`}></div>
 
         {showYTControls && (

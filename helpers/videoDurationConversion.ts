@@ -44,6 +44,11 @@ export const convertTwitchVideoDuration = (duration: string) => {
 export const convertYouTubeVideoDuration = (duration: string) => {
   let convertedDuration = '';
 
+  // Scheduled livestreams will not have a duration set yet. This line avoids errors with attempting to convert it like a normal duration below. 
+  if (duration === "P0D") {
+    return 'UPCOMING';
+  }
+
   // Removes the 'PT' from ISO duration as this is not necessary for UI or further adjustments
   // Because the max YouTube VOD is 12 hours, we do not have to factor any designators between 'P' and 'T'
   duration = duration.split('PT')[1]
