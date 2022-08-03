@@ -1,5 +1,5 @@
-import {YouTubeVideoResult} from "../types/youtubeAPITypes";
-import {filterByDateYouTube, filterByDurationYouTube, filterByKeywordYouTube} from "../helpers/YouTubeVideoFilters";
+import { YouTubeVideoResult } from "../types/youtubeAPITypes";
+import { filterByDateYouTube, filterByDurationYouTube, filterByKeywordYouTube } from "../helpers/YouTubeVideoFilters";
 
 const testVideos: YouTubeVideoResult[] = [
   {
@@ -331,8 +331,68 @@ describe('Filter videos by duration', () => {
     ]);
   });
 
-  it('does not return video with duration equal to the minimum specified', () => {
-    expect(filterByDurationYouTube(testVideos, 750, 760)).toStrictEqual([]);
+  it('returns video with duration equal to the minimum specified', () => {
+    expect(filterByDurationYouTube(testVideos, 750, 760)).toStrictEqual([{
+      "kind": "youtube#video",
+      "etag": "eUcSXOPwJTu6USe5ObyvKCLAhX0",
+      "id": "oc6faXVc54E",
+      "snippet": {
+        "publishedAt": "2022-07-12T15:39:48Z",
+        "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
+        "title": "JavaScript Under The Hood [5] - JavaScript Engine Overview",
+        "description": "In this final video of the series, we will talk about JS engines and look at how JavaScript code is turned into machine code that runs on the CPU.\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n0:00 - Intro\n0:42 - What is a JS Engine?\n1:31 - Specific Browser Engines\n3:30 - Compiled vs Interpreted Languages\n6:11 - JS Engine Process Overview\n7:25 - Abstract Syntax Tree (AST)\n10:01 - Interpreter & Bytecode\n10:58 - JIT Compilation",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/oc6faXVc54E/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/oc6faXVc54E/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/oc6faXVc54E/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Traversy Media",
+        "tags": [
+          "javascript",
+          "javascript engine",
+          "javascript v8 engine",
+          "node.js v8",
+          "spidermonkey engine"
+        ],
+        "categoryId": "28",
+        "liveBroadcastContent": "none",
+        "localized": {
+          "title": "JavaScript Under The Hood [5] - JavaScript Engine Overview",
+          "description": "In this final video of the series, we will talk about JS engines and look at how JavaScript code is turned into machine code that runs on the CPU.\n\n💖  Show Support\nPatreon: https://www.patreon.com/traversymedia\nPayPal: https://paypal.me/traversymedia\n\n👇 Follow Me On Social Media:\nTwitter: https://twitter.com/traversymedia\nInstagram: https://www.instagram.com/traversymedia\nLinkedin: https://www.linkedin.com/in/bradtraversy\n\nTimestamps:\n0:00 - Intro\n0:42 - What is a JS Engine?\n1:31 - Specific Browser Engines\n3:30 - Compiled vs Interpreted Languages\n6:11 - JS Engine Process Overview\n7:25 - Abstract Syntax Tree (AST)\n10:01 - Interpreter & Bytecode\n10:58 - JIT Compilation"
+        },
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT12M30S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false",
+        "licensedContent": true,
+        "contentRating": {},
+        "projection": "rectangular"
+      },
+      "statistics": {
+        "viewCount": "10191",
+        "likeCount": "684",
+        "favoriteCount": "0",
+        "commentCount": "53"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/oc6faXVc54E\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+      }
+    },]);
   });
 
   it('returns an empty array if no videos exist above the minimum specified duration', () => {
@@ -344,7 +404,7 @@ describe('Filter videos by duration', () => {
   });
 
   it('returns correct videos in duration interval min-max', () => {
-    expect(filterByDurationYouTube(testVideos, 740, 760)).toStrictEqual([  {
+    expect(filterByDurationYouTube(testVideos, 740, 760)).toStrictEqual([{
       "kind": "youtube#video",
       "etag": "eUcSXOPwJTu6USe5ObyvKCLAhX0",
       "id": "oc6faXVc54E",
@@ -693,7 +753,7 @@ describe('Filter videos by date', () => {
     ]);
   });
 
-  it('does not include video on the specified date (unless released at 00:00:00)', () =>  {
+  it('does not include video on the specified date (unless released at 00:00:00)', () => {
     expect(filterByDateYouTube(testVideos, new Date("2022-01-24T14:00:01Z"))).toStrictEqual([
       {
         "kind": "youtube#video",
