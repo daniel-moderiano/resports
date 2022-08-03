@@ -75,6 +75,10 @@ describe('YouTube video duration conversion', () => {
   it('Handles scheduled livestreams', () => {
     expect(convertYouTubeVideoDuration('P0D')).toBe('UPCOMING')
   });
+
+  it('Handles very rare uploaded livestreams > 12 hours', () => {
+    expect(convertYouTubeVideoDuration('P868DT11H43M51S')).toBe('12+ hours');
+  });
 });
 
 describe('ISO to seconds duration conversion', () => {
@@ -108,6 +112,10 @@ describe('ISO to seconds duration conversion', () => {
 
   it('Handles zero duration input unique to scheduled livestreams', () => {
     expect(convertISOToSeconds('P0D')).toBe(0);
+  });
+
+  it('Handles very rare uploaded livestreams > 12 hours', () => {
+    expect(convertISOToSeconds('P868DT11H43M51S')).toBe(12);
   });
 });
 

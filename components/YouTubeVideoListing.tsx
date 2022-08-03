@@ -10,6 +10,9 @@ interface YouTubeVideoListingProps {
 }
 
 const YouTubeVideoListing = ({ videoData }: YouTubeVideoListingProps) => {
+  console.log(videoData);
+
+
   return (
     <div className={styles.videoListing}>
       <div className={styles.imageContainer}>

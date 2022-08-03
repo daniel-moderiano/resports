@@ -49,6 +49,11 @@ export const convertYouTubeVideoDuration = (duration: string) => {
     return 'UPCOMING';
   }
 
+  // Handle the extreme edge case where a livestream has exceeded 12 hours in upload length (typically archives will be limited at 12 hours, but some exist beyond this). These long durations include a 'Day' or 'D' delimeter
+  if (duration.includes('D')) {
+    return '12+ hours';
+  }
+
   // Removes the 'PT' from ISO duration as this is not necessary for UI or further adjustments
   // Because the max YouTube VOD is 12 hours, we do not have to factor any designators between 'P' and 'T'
   duration = duration.split('PT')[1]
@@ -108,7 +113,6 @@ export const convertYouTubeVideoDuration = (duration: string) => {
 };
 
 
-
 // This function is used to convert an ISO 8601 duration into a single integer number of seconds. This is required to make ISO durations comparable arithmetically for duration filtering (for the YouTube filters)
 export const convertISOToSeconds = (duration: string) => {
   let cumulativeSeconds = 0;
@@ -118,9 +122,14 @@ export const convertISOToSeconds = (duration: string) => {
     return 0;
   }
 
+  // Handle the extreme edge case where a livestream has exceeded 12 hours in upload length (typically archives will be limited at 12 hours, but some exist beyond this). For filtering purposes, 12 hours is fine as a return value. These long durations include a 'Day' or 'D' delimeter
+  if (duration.includes('D')) {
+    return 12;
+  }
+
   // Removes the 'PT' from ISO duration as this is not necessary for UI or further adjustments
   // Because the max YouTube VOD is 12 hours, we do not have to factor any designators between 'P' and 'T'
-  duration = duration.split('PT')[1];
+  duration = duration.split('T')[1];
 
   // Splitting at the hours allows use to handle all the conditionals easily from the top-down
   // It also correctly handles input no matter the duration, whereas using a length conditional would vary for 0 mins/secs
@@ -158,6 +167,7 @@ export const convertISOToSeconds = (duration: string) => {
 
   return cumulativeSeconds;
 }
+
 
 // Used to convert a raw duration in seconds to a UI-friendly video duration elapsed
 export const formatElapsedTime = (elapsedTimeInSeconds: number) => {
