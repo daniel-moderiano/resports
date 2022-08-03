@@ -44,7 +44,7 @@ export const convertTwitchVideoDuration = (duration: string) => {
 export const convertYouTubeVideoDuration = (duration: string) => {
   let convertedDuration = '';
 
-  // Scheduled livestreams will not have a duration set yet. This line avoids errors with attempting to convert it like a normal duration below. 
+  // Scheduled livestreams will not have a duration set yet. This line avoids errors with attempting to convert it like a normal duration below. Because this is a UI-driven function, we return the UI acceptable display string
   if (duration === "P0D") {
     return 'UPCOMING';
   }
@@ -112,6 +112,11 @@ export const convertYouTubeVideoDuration = (duration: string) => {
 // This function is used to convert an ISO 8601 duration into a single integer number of seconds. This is required to make ISO durations comparable arithmetically for duration filtering (for the YouTube filters)
 export const convertISOToSeconds = (duration: string) => {
   let cumulativeSeconds = 0;
+
+  // Scheduled livestreams will not have a duration set yet. This line avoids errors with attempting to convert it like a normal duration below. We will filter livestreams by video type rather than duration, so it is OK to return the appropriate 0 duration
+  if (duration === "P0D") {
+    return 0;
+  }
 
   // Removes the 'PT' from ISO duration as this is not necessary for UI or further adjustments
   // Because the max YouTube VOD is 12 hours, we do not have to factor any designators between 'P' and 'T'

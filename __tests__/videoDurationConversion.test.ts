@@ -105,6 +105,10 @@ describe('ISO to seconds duration conversion', () => {
   it('Handles single digit seconds correctly (leading zeros)', () => {
     expect(convertISOToSeconds('PT11M1S')).toBe(661)
   });
+
+  it('Handles zero duration input unique to scheduled livestreams', () => {
+    expect(convertISOToSeconds('P0D')).toBe(0);
+  });
 });
 
 describe('Elapsed duration conversions', () => {
