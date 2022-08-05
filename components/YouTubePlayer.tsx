@@ -12,6 +12,9 @@ interface YouTubePlayerProps {
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
+  // This local state is used to avoid the long delays of an API call to check muted state when toggling icons and UI
+  const [playerMuted, setPlayerMuted] = useState(true);
+
   // useRef must be used here to avoid losing reference to timeout IDs as the component re-renders between hiding/showing controls
   const inactivityTimeout = React.useRef<null | NodeJS.Timeout>(null);
   const enableCall = React.useRef(true);
@@ -58,6 +61,21 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     // Unsure exactly which throttle timeout will work best. 
     setTimeout(() => enableCall.current = true, 500);
   }
+
+  // Use this function to completely mute or unmute a video. Is unrelated to setting a distinct volume level
+  const toggleMute = React.useCallback(() => {
+    if (!player) {
+      return;
+    }
+
+    if (player.isMuted()) {
+      setPlayerMuted(false);
+      player.unMute();
+    } else {
+      setPlayerMuted(true);
+      player.mute();
+    }
+  }, [player]);
 
 
   // Use this function to play a paused video, or pause a playing video. Intended to activate on clicking the video, or pressing spacebar
@@ -114,6 +132,9 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
         case " ": // IE/Edge specific value
           playOrPauseVideo();
           break;
+        case "m":
+          toggleMute();
+          break;
         case "Down": // IE/Edge specific value
         case "ArrowDown":
           // Do something for "down arrow" key press.
@@ -137,7 +158,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       }
     }
     window.addEventListener('keydown', handleKeyPress)
-  }, [playOrPauseVideo, player])
+  }, [playOrPauseVideo, player, toggleMute])
 
 
 
@@ -165,6 +186,8 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
               toggleFullscreen={toggleFullscreen}
               toggleTheater={toggleTheater}
               togglePlay={playOrPauseVideo}
+              toggleMute={toggleMute}
+              playerMuted={playerMuted}
             />
           </div>
         )}

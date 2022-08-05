@@ -8,6 +8,8 @@ interface YouTubeVideoControlsProps {
   toggleFullscreen: () => void;
   toggleTheater: () => void;
   togglePlay: () => void;
+  toggleMute: () => void;
+  playerMuted: boolean;
 }
 
 const YouTubeVideoControls = ({
@@ -15,24 +17,12 @@ const YouTubeVideoControls = ({
   toggleFullscreen,
   toggleTheater,
   playerState,
-  togglePlay
+  togglePlay,
+  toggleMute,
+  playerMuted
 }: YouTubeVideoControlsProps) => {
-  // This local state is used to avoid the long delays of an API call to check muted state when toggling icons and UI
-  const [playerMuted, setPlayerMuted] = useState(true);
-
   // A constantly updated duration state to provide a video duration elapsed to the UI
   const [elapsedDuration, setElapsedDuration] = useState('');
-
-  // Use this function to completely mute or unmute a video. Is unrelated to setting a distinct volume level
-  const toggleMute = () => {
-    if (player.isMuted()) {
-      setPlayerMuted(false);
-      player.unMute();
-    } else {
-      setPlayerMuted(true);
-      player.mute();
-    }
-  };
 
   useEffect(() => {
     setInterval(() => {
