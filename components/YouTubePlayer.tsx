@@ -26,7 +26,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [showYTControls, setShowYTControls] = useState(true);
 
   function onPlayerReady(event: YT.PlayerEvent) {
-    setShowYTControls(false)
+    setShowYTControls(false);
   }
 
   // Adjust the component state to reflect the player state when the user plays/pauses/ends
@@ -108,9 +108,13 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const toggleTheater = () => { setTheaterMode((prevState) => !prevState) };
 
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    console.log(event.key);
+  }
+
   return (
     <div>
-      <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)}>
+      <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)} tabIndex={10}>
         <div id="player"></div>
         {!showYTControls && (
           <div
@@ -118,6 +122,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
             onClick={playOrPauseVideo}
             onDoubleClick={toggleFullscreen}
             onMouseMove={throttleMousemove}
+            onKeyDown={handleKeyPress}
           >
           </div>
         )}
@@ -150,11 +155,21 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       </div>
 
       <div className="playerMode">
-        <button onClick={() => setShowYTControls(true)}>Show YT Controls</button>
-        <button onClick={() => setShowYTControls(false)}>Hide YT Controls</button>
+        <button onClick={() => {
+          if (player) {
+            player.getIframe().src = player.getIframe().src.replace('controls=0', 'controls=1')
+            setShowYTControls(true);
+          }
+        }}>Show YT Controls</button>
+        <button onClick={() => {
+          if (player) {
+            player.getIframe().src = player.getIframe().src.replace('controls=1', 'controls=0');
+            setShowYTControls(false);
+          }
+        }}>Hide YT Controls</button>
         <p>{showYTControls ? 'YouTube mode' : 'Custom mode'}</p>
       </div>
-    </div>
+    </div >
   )
 }
 

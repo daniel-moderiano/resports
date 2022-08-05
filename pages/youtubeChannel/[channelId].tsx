@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { sanitiseChannelQuery } from '../../helpers/queryHandling';
 import { GetServerSideProps } from 'next';
 import YouTubeChannelVideos from "@/components/YouTubeChannelVideos";
+import { useEffect } from 'react';
 
 interface YouTubeChannelProps {
   channelId: string;
@@ -19,6 +20,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
   const { isLoading, isError, data } = useGetYouTubeChannel(channelId);
+
+  useEffect(() => {
+    if (data && data.channelData) {
+      fetch(`https://cors-anywhere.herokuapp.com/https://www.youtube.com/channel/${data.channelData.id}`, {
+      })
+        .then((response) => response.text())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err))
+    }
+  }, [data])
 
   return (
     <div>
@@ -56,5 +67,5 @@ const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
   )
 }
 
-export default YouTubeChannel
+export default YouTubeChannel;
 
