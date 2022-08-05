@@ -32,12 +32,12 @@ export const useYoutubeIframe = (
           rel: 0,
           autoplay: 1,
           showinfo: 0,
-          mute: 1,
         },
 
         events: {
           onReady: () => {
             setPlayer(player)
+            player.playVideo();
             onPlayerReady
           },
           onStateChange: onPlayerStateChange,

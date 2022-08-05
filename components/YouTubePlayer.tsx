@@ -13,7 +13,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
   // This local state is used to avoid the long delays of an API call to check muted state when toggling icons and UI
-  const [playerMuted, setPlayerMuted] = useState(true);
+  const [playerMuted, setPlayerMuted] = useState(false);
 
   // useRef must be used here to avoid losing reference to timeout IDs as the component re-renders between hiding/showing controls
   const inactivityTimeout = React.useRef<null | NodeJS.Timeout>(null);
@@ -29,7 +29,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [showYTControls, setShowYTControls] = useState(false);
 
   function onPlayerReady(event: YT.PlayerEvent) {
-    setShowYTControls(false);
+    // TODO
   }
 
   // Adjust the component state to reflect the player state when the user plays/pauses/ends
@@ -111,16 +111,27 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       document.exitFullscreen()
         .catch((err) => console.error(err))
     }
+
+    // Move focus to the parent wrapper rather than remaining on the toggleFullscreen btn. This is the extected UX interaction
+    if (wrapper) { wrapper.focus() }
   }
 
   // Use this to toggle between theater mode. Should be attached to a theater button and potentially a keyboard shortcut
-  const toggleTheater = () => { setTheaterMode((prevState) => !prevState) };
+  const toggleTheater = () => {
+    setTheaterMode((prevState) => !prevState);
+
+    // Move focus to the parent wrapper rather than remaining on the toggleFullscreen btn. This is the extected UX interaction
+    const wrapper: HTMLDivElement | null = document.querySelector("#wrapper");
+    if (wrapper) { wrapper.focus() }
+  };
 
   React.useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const focusedElement = event.target as HTMLElement;
+      console.log(focusedElement.nodeName);
 
-      if (focusedElement.nodeName === "button") {   // do not alter the normal events for keyboard events on buttons
+
+      if (focusedElement.nodeName === "BUTTON") {   // do not alter the normal events for keyboard events on buttons
         return;
       }
 
