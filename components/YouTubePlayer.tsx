@@ -23,7 +23,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [playerState, setPlayerState] = useState(-1);
 
   // Allow the user to manually revert to standard YT controls to allow a manual adjustment to video quality
-  const [showYTControls, setShowYTControls] = useState(true);
+  const [showYTControls, setShowYTControls] = useState(false);
 
   function onPlayerReady(event: YT.PlayerEvent) {
     setShowYTControls(false);
@@ -37,14 +37,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
   const { player } = useYoutubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
-  React.useEffect(() => {
-    if (player) {
-      setTimeout(() => {
-        setShowYTControls(false);
-      }, 5500)
-    }
-  }, [player])
-
   // Used to show controls on mouse movement, and hide once mouse is still for a short time
   const handleMouseMove = () => {
     setUserActive(true);
@@ -54,7 +46,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       setUserActive(false);
     }, 3000);
   };
-
 
   // Use this to limit how many times the mousemove handler is called. Note this function itself will still be called every time
   const throttleMousemove = () => {
@@ -70,7 +61,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
 
   // Use this function to play a paused video, or pause a playing video. Intended to activate on clicking the video, or pressing spacebar
-  const playOrPauseVideo = () => {
+  const playOrPauseVideo = React.useCallback(() => {
     if (player) {
       if (player.getPlayerState() === 1) {
         setPlayerState(2);
@@ -90,7 +81,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
         }, 1000)
       }
     }
-  };
+  }, [player]);
 
   // Call this function to switch the iframe/wrapper in and out of fullscreen mode. Esc key press will work as intended without explicitly adding this functionality
   const toggleFullscreen = () => {
@@ -107,14 +98,52 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   // Use this to toggle between theater mode. Should be attached to a theater button and potentially a keyboard shortcut
   const toggleTheater = () => { setTheaterMode((prevState) => !prevState) };
 
+  React.useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      const focusedElement = event.target as HTMLElement;
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    console.log(event.key);
-  }
+      if (focusedElement.nodeName === "button") {   // do not alter the normal events for keyboard events on buttons
+        return;
+      }
+
+      if (!player) {
+        return;
+      }
+
+      switch (event.key) {
+        case " ": // IE/Edge specific value
+          playOrPauseVideo();
+          break;
+        case "Down": // IE/Edge specific value
+        case "ArrowDown":
+          // Do something for "down arrow" key press.
+          break;
+        case "Up": // IE/Edge specific value
+        case "ArrowUp":
+          // Do something for "up arrow" key press.
+          break;
+        case "Left": // IE/Edge specific value
+        case "ArrowLeft":
+          // Do something for "left arrow" key press.
+          player.seekTo(player.getCurrentTime() - 5, true);
+          break;
+        case "Right": // IE/Edge specific value
+        case "ArrowRight":
+          // Do something for "right arrow" key press.
+          player.seekTo(player.getCurrentTime() + 5, true);
+          break;
+        default:
+          return; // Quit when this doesn't handle the key event.
+      }
+    }
+    window.addEventListener('keydown', handleKeyPress)
+  }, [playOrPauseVideo, player])
+
+
 
   return (
     <div>
-      <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)} tabIndex={10}>
+      <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)} tabIndex={0}>
         <div id="player"></div>
         {!showYTControls && (
           <div
@@ -122,7 +151,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
             onClick={playOrPauseVideo}
             onDoubleClick={toggleFullscreen}
             onMouseMove={throttleMousemove}
-            onKeyDown={handleKeyPress}
           >
           </div>
         )}
