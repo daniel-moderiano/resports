@@ -1,7 +1,8 @@
 import {
   convertISOToSeconds,
   convertTwitchVideoDuration,
-  convertYouTubeVideoDuration
+  convertYouTubeVideoDuration,
+  formatElapsedTime
 } from "../helpers/videoDurationConversion";
 
 describe('Twitch video duration conversion', () => {
@@ -55,12 +56,28 @@ describe('YouTube video duration conversion', () => {
     expect(convertYouTubeVideoDuration('PT10H5M12S')).toBe('10:05:12')
   });
 
-  it('Handles single digit seconds correctly', () => {
-    expect(convertYouTubeVideoDuration('PT11H10M0S')).toBe('11:10:00')
-  });
-
   it('Handles single digit seconds correctly (leading zeros)', () => {
     expect(convertYouTubeVideoDuration('PT11M1S')).toBe('11:01')
+  });
+
+  it('Handles hours/minutes only input', () => {
+    expect(convertYouTubeVideoDuration('PT11H10M')).toBe('11:10:00')
+  });
+
+  it('Handles hours only input', () => {
+    expect(convertYouTubeVideoDuration('PT11H')).toBe('11:00:00')
+  });
+
+  it('Handles minutes only input', () => {
+    expect(convertYouTubeVideoDuration('PT11M')).toBe('11:00')
+  });
+
+  it('Handles scheduled livestreams', () => {
+    expect(convertYouTubeVideoDuration('P0D')).toBe('UPCOMING')
+  });
+
+  it('Handles very rare uploaded livestreams > 12 hours', () => {
+    expect(convertYouTubeVideoDuration('P868DT11H43M51S')).toBe('12+ hours');
   });
 });
 
@@ -91,5 +108,67 @@ describe('ISO to seconds duration conversion', () => {
 
   it('Handles single digit seconds correctly (leading zeros)', () => {
     expect(convertISOToSeconds('PT11M1S')).toBe(661)
+  });
+
+  it('Handles zero duration input unique to scheduled livestreams', () => {
+    expect(convertISOToSeconds('P0D')).toBe(0);
+  });
+
+  it('Handles very rare uploaded livestreams > 12 hours', () => {
+    expect(convertISOToSeconds('P868DT11H43M51S')).toBe(12);
+  });
+});
+
+describe('Elapsed duration conversions', () => {
+  it('Handles zero second input correctly', () => {
+    expect(formatElapsedTime(0)).toBe('0:00');
+  });
+
+  it('Rounds <0.5 s input down to 0:00', () => {
+    expect(formatElapsedTime(0.2345)).toBe('0:00');
+  });
+
+  it('Rounds >0.5 s input down to 0:00', () => {
+    expect(formatElapsedTime(0.67678)).toBe('0:00');
+  });
+
+  it('Handles second inputs >10 s', () => {
+    expect(formatElapsedTime(34)).toBe('0:34');
+  });
+
+  it('Handles minute inputs correctly', () => {
+    expect(formatElapsedTime(120)).toBe('2:00');
+  });
+
+  it('Handles hanging seconds combined with minutes', () => {
+    expect(formatElapsedTime(121)).toBe('2:01');
+  });
+
+  it('Handles hanging seconds combined with minutes (2)', () => {
+    expect(formatElapsedTime(130)).toBe('2:10');
+  });
+
+  it('Adds new figure for >10 min inputs', () => {
+    expect(formatElapsedTime(620)).toBe('10:20');
+  });
+
+  it('Adds new figure for >60 min inputs', () => {
+    expect(formatElapsedTime(5400)).toBe('1:30:00');
+  });
+
+  it('Handles hanging minute inputs combined with hours', () => {
+    expect(formatElapsedTime(3660)).toBe('1:01:00');
+  });
+
+  it('Handles hanging minute inputs combined with hours (2)', () => {
+    expect(formatElapsedTime(4200)).toBe('1:10:00');
+  });
+
+  it('Handles hanging second inputs combined with hours (2)', () => {
+    expect(formatElapsedTime(4201)).toBe('1:10:01');
+  });
+
+  it('Handles hanging second inputs combined with hours (2)', () => {
+    expect(formatElapsedTime(4210)).toBe('1:10:10');
   });
 });

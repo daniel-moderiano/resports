@@ -8,4 +8,8 @@ declare global {
       NEXT_PUBLIC_TWITCH_CLIENT_SECRET: string;
     }
   }
+  interface Window {
+    YT: YT;
+    onYouTubeIframeAPIReady: () => void;
+  }
 }

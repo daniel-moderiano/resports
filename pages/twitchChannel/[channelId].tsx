@@ -2,7 +2,6 @@ import { useGetTwitchChannel } from '../../hooks/useGetTwitchChannel';
 import Image from 'next/image';
 import { sanitiseChannelQuery } from '../../helpers/queryHandling';
 import { GetServerSideProps } from 'next';
-import { useState } from 'react';
 import TwitchChannelVideos from '../../components/TwitchChannelVideos';
 
 interface TwitchChannelProps {

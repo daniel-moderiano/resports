@@ -1,18 +1,18 @@
-import {useGetYouTubeVideos} from "../hooks/useGetYouTubeVideos";
+import { useGetYouTubeVideos } from "../hooks/useGetYouTubeVideos";
 import * as React from "react";
 import YouTubeVideoListing from "@/components/YouTubeVideoListing";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import styles from "@/styles/componentStyles/YouTubeChannelVideos.module.css";
 import VideosFilterMenu from "@/components/VideosFilterMenu";
-import {VideoFilters} from "@/components/TwitchChannelVideos";
-import {YouTubeVideoResult} from "../types/youtubeAPITypes";
-import {filterByDateYouTube, filterByDurationYouTube, filterByKeywordYouTube} from "../helpers/YouTubeVideoFilters";
+import { VideoFilters } from "@/components/TwitchChannelVideos";
+import { YouTubeVideoResult } from "../types/youtubeAPITypes";
+import { filterByDateYouTube, filterByDurationYouTube, filterByKeywordYouTube } from "../helpers/YouTubeVideoFilters";
 
 interface YouTubeChannelVideosProps {
   uploadsId: string;
 }
 
-const YouTubeChannelVideos = ({uploadsId}: YouTubeChannelVideosProps) => {
+const YouTubeChannelVideos = ({ uploadsId }: YouTubeChannelVideosProps) => {
   const { isLoading, isError, data } = useGetYouTubeVideos(uploadsId);
   const [hideVideos, setHideVideos] = useState(true);
   const [filters, setFilters] = React.useState<VideoFilters | null>(null);
@@ -23,6 +23,7 @@ const YouTubeChannelVideos = ({uploadsId}: YouTubeChannelVideosProps) => {
   useEffect(() => {
     let tempVideos: YouTubeVideoResult[] = [];
     if (data) {
+
       // Attempting filter without data will throw an error
       tempVideos = data.items;
       if (filters) {
@@ -58,7 +59,7 @@ const YouTubeChannelVideos = ({uploadsId}: YouTubeChannelVideosProps) => {
             {filteredVideos.length > 0 ? (
               <>
                 {filteredVideos.map((video) => (
-                  <YouTubeVideoListing key={video.id} videoData={video}/>
+                  <YouTubeVideoListing key={video.id} videoData={video} />
                 ))}
               </>
             ) : (

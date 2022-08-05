@@ -21,7 +21,7 @@ export const sanitiseSearchQuery = (query: ParsedUrlQuery) => {
 
 // Use this to ensure channel IDs passed via a URL are in the correct format for API calls
 export const isValidChannelQuery = (query: ParsedUrlQuery) => {
-  if (typeof query.channelId === 'string') {   // covers lack of searchQuery param
+  if (typeof query.channelId === 'string') {   // covers lack of channelId param
     return query.channelId.trim() !== '';   // covers empty/whitespace strings
   }
   return false;
@@ -32,6 +32,25 @@ export const sanitiseChannelQuery = (query: ParsedUrlQuery) => {
   if (isValidChannelQuery(query)) {
     // This is a safe type assertion as the valid query check has passed
     return query.channelId as string;
+  } else {
+    return '';
+  }
+};
+
+
+// Use this to ensure video IDs passed via a URL are in the correct format for API calls
+export const isValidVideoQuery = (query: ParsedUrlQuery) => {
+  if (typeof query.videoId === 'string') {   // covers lack of videoId param
+    return query.videoId.trim() !== '';   // covers empty/whitespace strings
+  }
+  return false;
+};
+
+// Sanitises query params for the Twitch and YouTube videoIds pages. With an empty string ID, no video will load, but the application will not crash
+export const sanitiseVideoQuery = (query: ParsedUrlQuery) => {
+  if (isValidVideoQuery(query)) {
+    // This is a safe type assertion as the valid query check has passed
+    return query.videoId as string;
   } else {
     return '';
   }
