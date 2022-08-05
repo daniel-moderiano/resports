@@ -128,10 +128,10 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   React.useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const focusedElement = event.target as HTMLElement;
-      console.log(focusedElement.nodeName);
 
-
-      if (focusedElement.nodeName === "BUTTON") {   // do not alter the normal events for keyboard events on buttons
+      // do not alter the normal events for keyboard events on buttons, but ensure they trigger a user active state
+      if (focusedElement.nodeName === "BUTTON") {
+        handleMouseMove();    // TODO: Rename this function considering it's use here
         return;
       }
 
@@ -181,7 +181,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       window.removeEventListener('keydown', handleKeyPress);
     }
   }, [playOrPauseVideo, player, toggleMute])
-
 
 
   return (
