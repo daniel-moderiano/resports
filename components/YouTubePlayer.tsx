@@ -129,19 +129,26 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       }
 
       switch (event.key) {
-        case " ": // IE/Edge specific value
+        case "k":
+        case " ":
           playOrPauseVideo();
           break;
         case "m":
           toggleMute();
           break;
+        case "f":
+          toggleFullscreen();
+          break;
+        case "t":
+          toggleTheater();
+          break;
         case "Down": // IE/Edge specific value
         case "ArrowDown":
-          // Do something for "down arrow" key press.
+          player.setVolume(player.getVolume() - 5);
           break;
         case "Up": // IE/Edge specific value
         case "ArrowUp":
-          // Do something for "up arrow" key press.
+          player.setVolume(player.getVolume() + 5);
           break;
         case "Left": // IE/Edge specific value
         case "ArrowLeft":
@@ -157,7 +164,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           return; // Quit when this doesn't handle the key event.
       }
     }
-    window.addEventListener('keydown', handleKeyPress)
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    }
   }, [playOrPauseVideo, player, toggleMute])
 
 
