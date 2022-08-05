@@ -21,15 +21,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const YouTubeChannel = ({ channelId }: YouTubeChannelProps) => {
   const { isLoading, isError, data } = useGetYouTubeChannel(channelId);
 
-  useEffect(() => {
-    if (data && data.channelData) {
-      fetch(`https://cors-anywhere.herokuapp.com/https://www.youtube.com/channel/${data.channelData.id}`, {
-      })
-        .then((response) => response.text())
-        .then((data) => console.log(data))
-        .catch((err) => console.log(err))
-    }
-  }, [data])
+  // TODO: a possible livestream solution
+  // useEffect(() => {
+  //   if (data && data.channelData) {
+  //     fetch(`https://cors-anywhere.herokuapp.com/https://www.youtube.com/channel/${data.channelData.id}`, {
+  //     })
+  //       .then((response) => response.text())
+  //       .then((data) => console.log(data))
+  //       .catch((err) => console.log(err))
+  //   }
+  // }, [data])
 
   return (
     <div>

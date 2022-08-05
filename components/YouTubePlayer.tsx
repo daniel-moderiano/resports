@@ -1,4 +1,4 @@
-import { useYoutubeIframe } from 'hooks/useYouTubeIframe';
+import { useYouTubeIframe } from '../hooks/useYouTubeIframe';
 import { useState } from 'react'
 import styles from '../styles/componentStyles/YouTubePlayer.module.css';
 import YouTubeVideoControls from './YouTubeVideoControls';
@@ -38,7 +38,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     // setPlayerState(event.data)
   }
 
-  const { player } = useYoutubeIframe(videoId, onPlayerReady, onPlayerStateChange);
+  const { player } = useYouTubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
   // Used to show controls on mouse movement, and hide once mouse is still for a short time
   const handleMouseMove = () => {

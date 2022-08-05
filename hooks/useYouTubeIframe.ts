@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import * as React from 'react'
 
-export const useYoutubeIframe = (
+export const useYouTubeIframe = (
   videoId: string,
   onPlayerReady: (event: YT.PlayerEvent) => void,
   onPlayerStateChange: (event: YT.OnStateChangeEvent) => void,
