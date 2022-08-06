@@ -2,7 +2,9 @@ import { useYouTubeIframe } from '../hooks/useYouTubeIframe';
 import { useState } from 'react'
 import styles from '../styles/componentStyles/YouTubePlayer.module.css';
 import YouTubeVideoControls from './YouTubeVideoControls';
-import * as React from 'react'
+import * as React from 'react';
+
+// TODO: Add the same wrapper.focus() feature to the mute and +/- mins buttons. The play/pause function must be preserved as priority in these cases to avoid space press while the user is on a skip forward button that has faded away
 
 interface YouTubePlayerProps {
   videoId: string;
@@ -100,6 +102,12 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       }
     }
   }, [player]);
+
+  // Use this function in any position where the user's focus should return to the video
+  const releaseFocus = () => {
+    const wrapper: HTMLDivElement | null = document.querySelector("#wrapper");
+    if (wrapper) { wrapper.focus() }
+  }
 
   // Call this function to switch the iframe/wrapper in and out of fullscreen mode. Esc key press will work as intended without explicitly adding this functionality
   const toggleFullscreen = () => {
