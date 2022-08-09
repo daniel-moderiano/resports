@@ -236,16 +236,14 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
       <div className="playerMode">
         <button onClick={() => {
-          if (player) {
-            player.getIframe().src = player.getIframe().src.replace('controls=0', 'controls=1')
-            setShowYTControls(true);
-          }
+
+          setShowYTControls(true);
+
         }}>Show YT Controls</button>
         <button onClick={() => {
-          if (player) {
-            player.getIframe().src = player.getIframe().src.replace('controls=1', 'controls=0');
-            setShowYTControls(false);
-          }
+
+          setShowYTControls(false);
+
         }}>Hide YT Controls</button>
         <p>{showYTControls ? 'YouTube mode' : 'Custom mode'}</p>
       </div>
