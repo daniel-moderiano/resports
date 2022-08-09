@@ -2,7 +2,9 @@ import { useYouTubeIframe } from '../hooks/useYouTubeIframe';
 import { useState } from 'react'
 import styles from '../styles/componentStyles/YouTubePlayer.module.css';
 import YouTubeVideoControls from './YouTubeVideoControls';
-import * as React from 'react'
+import * as React from 'react';
+
+// TODO: Add the same wrapper.focus() feature to the mute and +/- mins buttons. The play/pause function must be preserved as priority in these cases to avoid space press while the user is on a skip forward button that has faded away
 
 interface YouTubePlayerProps {
   videoId: string;
@@ -26,17 +28,19 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [playerState, setPlayerState] = useState(-1);
 
   // Allow the user to manually revert to standard YT controls to allow a manual adjustment to video quality
-  const [showYTControls, setShowYTControls] = useState(false);
+  const [showYTControls, setShowYTControls] = useState(true);
 
-  function onPlayerReady(event: YT.PlayerEvent) {
+  // Do not enable the setShowYTControls buttons initially or else the YT controls will be spoiler filled and visible before fading out. This can be avoided by disabling the buttons until controls have faded out
+  const [buttonsDisabled, setButtonsDisabled] = useState(false);
+
+  const onPlayerReady = React.useCallback((event: YT.PlayerEvent) => {
     // TODO
-  }
+  }, [])
 
   // Adjust the component state to reflect the player state when the user plays/pauses/ends
-  function onPlayerStateChange(event: YT.OnStateChangeEvent) {
+  const onPlayerStateChange = React.useCallback((event: YT.OnStateChangeEvent) => {
     // TODO: Ensure this is set for anything not play or pause
-    // setPlayerState(event.data)
-  }
+  }, []);
 
   const { player } = useYouTubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
@@ -67,7 +71,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     if (!player) {
       return;
     }
-
     if (player.isMuted()) {
       setPlayerMuted(false);
       player.unMute();
@@ -100,6 +103,12 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       }
     }
   }, [player]);
+
+  // Use this function in any position where the user's focus should return to the video
+  const releaseFocus = () => {
+    const wrapper: HTMLDivElement | null = document.querySelector("#wrapper");
+    if (wrapper) { wrapper.focus() }
+  }
 
   // Call this function to switch the iframe/wrapper in and out of fullscreen mode. Esc key press will work as intended without explicitly adding this functionality
   const toggleFullscreen = () => {
@@ -227,17 +236,15 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       </div>
 
       <div className="playerMode">
-        <button onClick={() => {
-          if (player) {
-            player.getIframe().src = player.getIframe().src.replace('controls=0', 'controls=1')
-            setShowYTControls(true);
-          }
+        <button disabled={buttonsDisabled} onClick={() => {
+
+          setShowYTControls(true);
+
         }}>Show YT Controls</button>
-        <button onClick={() => {
-          if (player) {
-            player.getIframe().src = player.getIframe().src.replace('controls=1', 'controls=0');
-            setShowYTControls(false);
-          }
+        <button disabled={buttonsDisabled} onClick={() => {
+
+          setShowYTControls(false);
+
         }}>Hide YT Controls</button>
         <p>{showYTControls ? 'YouTube mode' : 'Custom mode'}</p>
       </div>
