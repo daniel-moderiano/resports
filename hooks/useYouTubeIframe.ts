@@ -10,6 +10,7 @@ export const useYouTubeIframe = (
 
   useEffect(() => {
     const tag = document.createElement('script');
+    tag.id = "iframe";
 
     if (!window.YT) {   // ensure duplicate tag append does not occur
       tag.src = "https://www.youtube.com/iframe_api";
@@ -30,14 +31,22 @@ export const useYouTubeIframe = (
           modestbranding: 1,
           playsinline: 1,
           rel: 0,
-          autoplay: 1,
+          // autoplay: 1,
           showinfo: 0,
+          disablekb: 1,
+          // mute: 1,
+          autohide: 1,
         },
 
         events: {
           onReady: () => {
-            setPlayer(player)
+            setPlayer(player);
+            // This sequence of events ensures the YT controls are spoiler hidden in the controlled flow of execution
             player.playVideo();
+            // setTimeout(() => {
+            //   player.pauseVideo();
+            //   player.unMute();
+            // }, 500)
             onPlayerReady
           },
           onStateChange: onPlayerStateChange,
@@ -46,9 +55,9 @@ export const useYouTubeIframe = (
     }
 
     return () => {    // ensure script tags are cleaned on dismount
-      document.body.removeChild(tag);
+      tag.remove();
     }
-  }, [videoId]);
+  }, [videoId, onPlayerReady, onPlayerStateChange]);
 
   return {
     player

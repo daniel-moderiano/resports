@@ -28,17 +28,19 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [playerState, setPlayerState] = useState(-1);
 
   // Allow the user to manually revert to standard YT controls to allow a manual adjustment to video quality
-  const [showYTControls, setShowYTControls] = useState(false);
+  const [showYTControls, setShowYTControls] = useState(true);
 
-  function onPlayerReady(event: YT.PlayerEvent) {
+  // Do not enable the setShowYTControls buttons initially or else the YT controls will be spoiler filled and visible before fading out. This can be avoided by disabling the buttons until controls have faded out
+  const [buttonsDisabled, setButtonsDisabled] = useState(false);
+
+  const onPlayerReady = React.useCallback((event: YT.PlayerEvent) => {
     // TODO
-  }
+  }, [])
 
   // Adjust the component state to reflect the player state when the user plays/pauses/ends
-  function onPlayerStateChange(event: YT.OnStateChangeEvent) {
+  const onPlayerStateChange = React.useCallback((event: YT.OnStateChangeEvent) => {
     // TODO: Ensure this is set for anything not play or pause
-    // setPlayerState(event.data)
-  }
+  }, []);
 
   const { player } = useYouTubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
@@ -69,7 +71,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     if (!player) {
       return;
     }
-
     if (player.isMuted()) {
       setPlayerMuted(false);
       player.unMute();
@@ -235,12 +236,12 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       </div>
 
       <div className="playerMode">
-        <button onClick={() => {
+        <button disabled={buttonsDisabled} onClick={() => {
 
           setShowYTControls(true);
 
         }}>Show YT Controls</button>
-        <button onClick={() => {
+        <button disabled={buttonsDisabled} onClick={() => {
 
           setShowYTControls(false);
 
