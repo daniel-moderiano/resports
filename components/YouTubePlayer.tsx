@@ -9,8 +9,6 @@ interface YouTubePlayerProps {
 }
 
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
-  console.log('Rendering player');
-
   const [theaterMode, setTheaterMode] = useState(false);
 
   // This local state is used to avoid the long delays of an API call to check muted state when toggling icons and UI
@@ -61,7 +59,21 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     signalUserActivity();
     // Unsure exactly which throttle timeout will work best, but 500 seems adequate for now
     setTimeout(() => enableCall.current = true, 500);
-  }
+  };
+
+  const skipForward = React.useCallback((timeToSkipInSeconds: number) => {
+    if (player) {
+      const currentTime = player.getCurrentTime();
+      player.seekTo(currentTime + timeToSkipInSeconds, true);
+    }
+  }, [player]);
+
+  const skipBackward = React.useCallback((timeToSkipInSeconds: number) => {
+    if (player) {
+      const currentTime = player.getCurrentTime();
+      player.seekTo(currentTime - timeToSkipInSeconds, true);
+    }
+  }, [player]);
 
   // This function is distinct to manually setting a specific volume level, but counts as user activity
   const toggleMute = React.useCallback(() => {
@@ -168,13 +180,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           break;
         case "Left": // IE/Edge specific value
         case "ArrowLeft":
-          // Do something for "left arrow" key press.
-          player.seekTo(player.getCurrentTime() - 5, true);
+          skipBackward(5);
           break;
         case "Right": // IE/Edge specific value
         case "ArrowRight":
-          // Do something for "right arrow" key press.
-          player.seekTo(player.getCurrentTime() + 5, true);
+          skipForward(5)
           break;
         default:
           return; // Quit when this doesn't handle the key event.
@@ -185,7 +195,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     }
-  }, [playOrPauseVideo, player, toggleMute])
+  }, [playOrPauseVideo, player, toggleMute, skipForward, skipBackward])
 
 
   return (
@@ -213,6 +223,8 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
               togglePlay={playOrPauseVideo}
               toggleMute={toggleMute}
               playerMuted={playerMuted}
+              skipForward={skipForward}
+              skipBackward={skipBackward}
             />
           </div>
         )}

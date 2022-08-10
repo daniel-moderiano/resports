@@ -22,6 +22,8 @@ interface YouTubeVideoControlsProps {
   toggleTheater: () => void;
   togglePlay: () => void;
   toggleMute: () => void;
+  skipForward: (timeToSkipInSeconds: number) => void
+  skipBackward: (timeToSkipInSeconds: number) => void
   playerMuted: boolean;
 }
 
@@ -32,6 +34,8 @@ const YouTubeVideoControls = ({
   playerState,
   togglePlay,
   toggleMute,
+  skipBackward,
+  skipForward,
   playerMuted
 }: YouTubeVideoControlsProps) => {
   // A constantly updated duration state to provide a video duration elapsed to the UI
@@ -48,16 +52,6 @@ const YouTubeVideoControls = ({
     }, 1000)
   }, [player])
 
-  const skipForward = (timeToSkipInSeconds: number) => {
-    const currentTime = player.getCurrentTime();
-    player.seekTo(currentTime + timeToSkipInSeconds, true);
-  };
-
-  const skipBackward = (timeToSkipInSeconds: number) => {
-    const currentTime = player.getCurrentTime();
-    player.seekTo(currentTime - timeToSkipInSeconds, true);
-  };
-
   // Use this function in any position where the user's focus should return to the video
   const releaseFocus = () => {
     const wrapper: HTMLDivElement | null = document.querySelector("#wrapper");
@@ -67,11 +61,11 @@ const YouTubeVideoControls = ({
   return (
     <div className={styles.controlsContainer}>
       <div className={styles.leftControls}>
-        <button className={styles.controlsBtn} onClick={togglePlay} id="playBtn">
-          {playerState === 2 ? (
-            <PlayIcon iconStyles={styles.icons32} fill="#FFFFFF" />
-          ) : (
+        <button className={styles.controlsBtn} onClick={togglePlay} id="playBtn" aria-label={playerState === 1 ? 'Pause video' : 'Play video'}>
+          {playerState === 1 ? (
             <PauseIcon iconStyles={styles.icons32} fill="#FFFFFF" />
+          ) : (
+            <PlayIcon iconStyles={styles.icons32} fill="#FFFFFF" />
           )}
         </button>
 
