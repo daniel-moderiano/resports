@@ -206,7 +206,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           </div>
         )}
 
-        <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive} onMouseMove={throttleMousemove}></div>
+        {/* <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive} onMouseMove={throttleMousemove}></div> */}
 
         {(!showYTControls && player) && (
           <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove}>
@@ -252,4 +252,4 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   )
 }
 
-export default YouTubePlayer
+export default YouTubePlayer;
