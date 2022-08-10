@@ -4,13 +4,10 @@ import styles from '../styles/componentStyles/YouTubePlayer.module.css';
 import YouTubeVideoControls from './YouTubeVideoControls';
 import * as React from 'react';
 
-// TODO: Add the same wrapper.focus() feature to the mute and +/- mins buttons. The play/pause function must be preserved as priority in these cases to avoid space press while the user is on a skip forward button that has faded away
-
 interface YouTubePlayerProps {
   videoId: string;
 }
 
-// The useYouTubeIframe hook will add the YouTube iframe to this div with id="player"
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
@@ -24,14 +21,12 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   // Indicates whether the user is moving their mouse over the video (i.e. user is active)
   const [userActive, setUserActive] = useState(false);
 
-  // Initialise in the unstarted state
+  // Initialise playerState in the UNSTARTED state, whose code is -1. This way we can detect an initial change if necessary
   const [playerState, setPlayerState] = useState(-1);
 
   // Allow the user to manually revert to standard YT controls to allow a manual adjustment to video quality
   const [showYTControls, setShowYTControls] = useState(true);
 
-  // Do not enable the setShowYTControls buttons initially or else the YT controls will be spoiler filled and visible before fading out. This can be avoided by disabling the buttons until controls have faded out
-  const [buttonsDisabled, setButtonsDisabled] = useState(false);
 
   const onPlayerReady = React.useCallback((event: YT.PlayerEvent) => {
     // TODO
@@ -42,10 +37,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     // TODO: Ensure this is set for anything not play or pause
   }, []);
 
+  // Adds the YT Iframe to the div#player returned below
   const { player } = useYouTubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
-  // Used to show controls on mouse movement, and hide once mouse is still for a short time
-  const handleMouseMove = () => {
+  // A general user activity function. Use this whenever the user performs an 'active' action and it will signal the user is interacting with the video, which then enables other features such as showing controls
+  const signalUserActivity = () => {
     setUserActive(true);
     clearTimeout(inactivityTimeout.current as NodeJS.Timeout);
 
@@ -61,13 +57,14 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }
 
     enableCall.current = false;
-    handleMouseMove();
-    // Unsure exactly which throttle timeout will work best. 
+    signalUserActivity();
+    // Unsure exactly which throttle timeout will work best, but 500 seems adequate for now
     setTimeout(() => enableCall.current = true, 500);
   }
 
-  // Use this function to completely mute or unmute a video. Is unrelated to setting a distinct volume level
+  // This function is distinct to manually setting a specific volume level, but counts as user activity
   const toggleMute = React.useCallback(() => {
+    signalUserActivity();
     if (!player) {
       return;
     }
@@ -140,7 +137,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
       // do not alter the normal events for keyboard events on buttons, but ensure they trigger a user active state
       if (focusedElement.nodeName === "BUTTON") {
-        handleMouseMove();    // TODO: Rename this function considering it's use here
+        signalUserActivity();    // TODO: Rename this function considering it's use here
         return;
       }
 
@@ -220,7 +217,9 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           </div>
         )}
 
-        <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`}></div>
+        {!showYTControls && (
+          <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`}></div>
+        )}
 
         {showYTControls && (
           <div className={styles.YTcontrolsBlocker}>
@@ -234,16 +233,8 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       </div>
 
       <div className="playerMode">
-        <button disabled={buttonsDisabled} onClick={() => {
-
-          setShowYTControls(true);
-
-        }}>Show YT Controls</button>
-        <button disabled={buttonsDisabled} onClick={() => {
-
-          setShowYTControls(false);
-
-        }}>Hide YT Controls</button>
+        <button onClick={() => setShowYTControls(true)}>Show YT Controls</button>
+        <button onClick={() => setShowYTControls(false)}>Hide YT Controls</button>
         <p>{showYTControls ? 'YouTube mode' : 'Custom mode'}</p>
       </div>
     </div >
