@@ -1,10 +1,15 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
 import YouTubePlayer from '../../components/YouTubePlayer';
 
 // Named mocks to test player functions being called
-const muteMock = jest.mock;
-const unMuteMock = jest.fn;
+const muteMock = jest.fn();
+const unMuteMock = jest.fn();
+const playMock = jest.fn();
+const pauseMock = jest.fn();
+const seekToMock = jest.fn();
+const setVolumeMock = jest.fn();
+let getPlayerStateMock: () => number;
 
 
 // Provide channel data and other UI states via this mock of the channel search API call
@@ -12,10 +17,16 @@ jest.mock('../../hooks/useYouTubeIframe', () => ({
   // Make sure a player object is returned here to trigger the functions requiring a truthy player object
   useYouTubeIframe: () => ({
     player: {
-      getCurrentTime: () => 0,
-      isMuted: jest.fn,
+      getCurrentTime: jest.fn,
+      isMuted: () => false,
       mute: muteMock,
       unMute: unMuteMock,
+      playVideo: playMock,
+      pauseVideo: pauseMock,
+      getPlayerState: getPlayerStateMock,
+      seekTo: seekToMock,
+      setVolume: setVolumeMock,
+      getVolume: jest.fn,
     }
   })
 }));
@@ -131,7 +142,7 @@ describe('YouTube player control toggles', () => {
 });
 
 describe('YouTube player keyboard shortcuts', () => {
-  it('Mutes the video on "m" key press, when in an unmuted state', async () => {
+  it('Mutes/unmutes the video on "m" key press', async () => {
     render(<YouTubePlayer videoId='1234' />)
     const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
     const wrapper = screen.getByTestId('wrapper');
@@ -141,10 +152,12 @@ describe('YouTube player keyboard shortcuts', () => {
     wrapper.focus();
     await userEvent.keyboard('m');
 
+    // The mock iframe hook sets the initial mute state to 'unmuted', hence the mute mock should be called
     expect(muteMock).toBeCalled();
   });
 
-  it('Unutes the video on "m" key press, when in a muted state', async () => {
+  it('Plays a paused video on "k" key press', async () => {
+    getPlayerStateMock = () => 2;   // 'pause' the video
     render(<YouTubePlayer videoId='1234' />)
     const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
     const wrapper = screen.getByTestId('wrapper');
@@ -152,10 +165,99 @@ describe('YouTube player keyboard shortcuts', () => {
     // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
     await userEvent.click(hideYTBtn);
     wrapper.focus();
-    await userEvent.keyboard('m');
+    await userEvent.keyboard('k');
 
-    const customControls = screen.getByTestId('customControls');
-    expect(customControls).not.toHaveClass('controlsHide');
+    // Allow time for the timout to expire before playing video
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 500));
+    })
+
+    expect(playMock).toBeCalled();
+  });
+
+  it('Pauses a playing video on "k" key press', async () => {
+    getPlayerStateMock = () => 1;   // 'play' the video
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+    const wrapper = screen.getByTestId('wrapper');
+
+    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
+    await userEvent.click(hideYTBtn);
+    wrapper.focus();
+    await userEvent.keyboard('k');
+
+    // Allow time for the timout to expire before pausing video
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 500));
+    })
+
+    expect(pauseMock).toBeCalled();
+  });
+
+  it('Plays a paused video on "k" key press', async () => {
+    getPlayerStateMock = () => 2;   // 'pause' the video
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+    const wrapper = screen.getByTestId('wrapper');
+
+    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
+    await userEvent.click(hideYTBtn);
+    wrapper.focus();
+    await userEvent.keyboard('[Space]');
+
+    // Allow time for the timout to expire before playing video
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 500));
+    })
+
+    expect(playMock).toBeCalled();
+  });
+
+  it('Pauses a playing video on "k" key press', async () => {
+    getPlayerStateMock = () => 1;   // 'play' the video
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+    const wrapper = screen.getByTestId('wrapper');
+
+    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
+    await userEvent.click(hideYTBtn);
+    wrapper.focus();
+    await userEvent.keyboard('[Space]');
+
+    // Allow time for the timout to expire before pausing video
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 500));
+    })
+
+    expect(pauseMock).toBeCalled();
+  });
+
+  it('Adjusts volume on up/down arrow press', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+    const wrapper = screen.getByTestId('wrapper');
+
+    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
+    await userEvent.click(hideYTBtn);
+    wrapper.focus();
+    await userEvent.keyboard('[ArrowUp]');
+    await userEvent.keyboard('[ArrowDown]');
+
+    expect(setVolumeMock).toBeCalledTimes(2);
+  });
+
+  it('Seeks forward/backward on right/left arrow key press', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+    const wrapper = screen.getByTestId('wrapper');
+
+    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
+    await userEvent.click(hideYTBtn);
+    wrapper.focus();
+    await userEvent.keyboard('[ArrowLeft]');
+    await userEvent.keyboard('[ArrowRight]');
+
+    expect(seekToMock).toBeCalledTimes(2);
   });
 });
 
