@@ -123,9 +123,7 @@ describe('YouTube player control toggles', () => {
   });
 
   it('Hides custom controls 3 seconds after user activity is first registered', async () => {
-
     render(<YouTubePlayer videoId='1234' />)
-
     const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
 
     // First enable custom controls, then hover the relevant div to trigger user activity/controls to show
@@ -137,6 +135,56 @@ describe('YouTube player control toggles', () => {
     await act(async () => {
       await new Promise(res => setTimeout(res, 3500));
     })
+
+    const customControls = screen.getByTestId('customControls');
+    expect(customControls).toHaveClass('controlsHide');
+  });
+
+  it('Cancels original fade out timer when userr is active within original fade out timer', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+
+    // First enable custom controls, then hover the relevant div to trigger user activity/controls to show
+    await userEvent.click(hideYTBtn);
+    const overlay = screen.getByTestId('overlay');
+    await userEvent.hover(overlay);
+
+    // Wait only 0.5 seconds before hovering again to re-trigger controls
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 1500));
+    });
+
+    await userEvent.hover(overlay);
+
+    // Check during the period that the original timer would have ended
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 2000));
+    });
+
+    const customControls = screen.getByTestId('customControls');
+    expect(customControls).not.toHaveClass('controlsHide');
+  });
+
+  it('Resets fade out time when user is active during original fade out time', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+
+    // First enable custom controls, then hover the relevant div to trigger user activity/controls to show
+    await userEvent.click(hideYTBtn);
+    const overlay = screen.getByTestId('overlay');
+    await userEvent.hover(overlay);
+
+    // Wait only 0.5 seconds before hovering again to re-trigger controls
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 500));
+    });
+
+    await userEvent.hover(overlay);
+
+    // Wait a further 3 seconds for controls to disappear
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 3500));
+    });
 
     const customControls = screen.getByTestId('customControls');
     expect(customControls).toHaveClass('controlsHide');
