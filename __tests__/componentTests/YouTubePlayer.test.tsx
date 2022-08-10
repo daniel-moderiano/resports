@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
 import YouTubePlayer from '../../components/YouTubePlayer';
 import { act } from 'react-dom/test-utils';
@@ -9,6 +9,9 @@ jest.mock('../../hooks/useYouTubeIframe', () => ({
   useYouTubeIframe: () => ({
     player: {
       getCurrentTime: () => 0,
+      isMuted: jest.fn,
+      mute: jest.fn,
+      unMute: jest.fn,
     }
   })
 }));
@@ -140,6 +143,20 @@ describe('YouTube player control toggles', () => {
     expect(customControls).toHaveClass('controlsHide');
   });
 
+  it('Shows controls on press of mute keyboard shortcut', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+    const wrapper = screen.getByTestId('wrapper');
+
+    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
+    await userEvent.click(hideYTBtn);
+    wrapper.focus();
+    await userEvent.keyboard('m');
+
+    const customControls = screen.getByTestId('customControls');
+    expect(customControls).not.toHaveClass('controlsHide');
+  });
+
   it('Cancels original fade out timer when userr is active within original fade out timer', async () => {
     render(<YouTubePlayer videoId='1234' />)
     const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
@@ -189,4 +206,6 @@ describe('YouTube player control toggles', () => {
     const customControls = screen.getByTestId('customControls');
     expect(customControls).toHaveClass('controlsHide');
   });
-})
+});
+
+
