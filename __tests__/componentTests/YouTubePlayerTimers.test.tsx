@@ -12,6 +12,7 @@ jest.mock('../../hooks/useYouTubeIframe', () => ({
       isMuted: jest.fn,
       mute: jest.fn,
       unMute: jest.fn,
+      getPlayerState: jest.fn,
     }
   })
 }));
