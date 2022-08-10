@@ -25,4 +25,12 @@ describe('YouTube player styling and toggles', () => {
     const controlsBlocker = screen.getByTestId('controlsBlocker');
     expect(controlsBlocker).toBeInTheDocument();
   });
+
+  it('Hides controls gradient and video overlay by default', () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const gradient = screen.queryByTestId('gradient');
+    const overlay = screen.queryByTestId('overlay');
+    expect(gradient).not.toBeInTheDocument();
+    expect(overlay).not.toBeInTheDocument();
+  });
 });

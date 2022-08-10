@@ -133,7 +133,9 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
       // do not alter the normal events for keyboard events on buttons, but ensure they trigger a user active state
       if (focusedElement.nodeName === "BUTTON") {
-        signalUserActivity();
+        if (focusedElement.className.includes('controlsBtn')) {   // user is interacting with controls
+          signalUserActivity();
+        }
         return;
       }
 
@@ -148,6 +150,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           break;
         case "m":
           toggleMute();
+          signalUserActivity();
           break;
         case "f":
           toggleFullscreen();
@@ -195,6 +198,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
             onClick={playOrPauseVideo}
             onDoubleClick={toggleFullscreen}
             onMouseMove={throttleMousemove}
+            data-testid="overlay"
           >
           </div>
         )}
@@ -214,7 +218,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
         )}
 
         {!showYTControls && (
-          <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`}></div>
+          <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`} data-testid="gradient"></div>
         )}
 
         {showYTControls && (
