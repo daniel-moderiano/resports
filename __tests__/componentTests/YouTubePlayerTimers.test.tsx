@@ -52,7 +52,30 @@ describe('YouTube player controls/user activity timers', () => {
     expect(customControls).not.toHaveClass('controlsHide');
   });
 
-  it('Cancels original fade out timer when userr is active within original fade out timer', async () => {
+  it('Fades controls after some time following a mute keyboard shortcut', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+    const wrapper = screen.getByTestId('wrapper');
+
+    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
+    await userEvent.click(hideYTBtn);
+    wrapper.focus();
+    await userEvent.keyboard('m');
+
+    // Wait an appropriate amount of time > 3 s
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 3500));
+    });
+
+    const customControls = screen.getByTestId('customControls');
+    expect(customControls).toHaveClass('controlsHide');
+
+    // Also check the cursor/overlay disappears
+    const overlay = screen.getByTestId('overlay');
+    expect(overlay).toHaveClass('overlayInactive');
+  });
+
+  it('Cancels original fade out timer when user is active within original fade out timer', async () => {
     render(<YouTubePlayer videoId='1234' />)
     const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
 

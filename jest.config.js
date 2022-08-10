@@ -16,7 +16,7 @@ const customJestConfig = {
     "\\.(css|less)$": "identity-obj-proxy",
   },
   testEnvironment: 'jest-environment-jsdom',
-  modulePathIgnorePatterns: ["e2eTests"]
+  modulePathIgnorePatterns: ["e2eTests"],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

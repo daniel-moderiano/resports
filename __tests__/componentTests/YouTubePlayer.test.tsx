@@ -64,6 +64,54 @@ describe('YouTube player styling and modes', () => {
   });
 
   // * Testing fullscreen functionality is not only impossible without a valid iframe (with 'allowFullscreen'), but potentially redundant as it is an inbuilt browser API function
+
+  it('Hides controls gradient and video overlay by default', () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const gradient = screen.queryByTestId('gradient');
+    const overlay = screen.queryByTestId('overlay');
+    expect(gradient).not.toBeInTheDocument();
+    expect(overlay).not.toBeInTheDocument();
+  });
+
+  it('Shows clear overlay when the video is playing (custom mode)', async () => {
+    getPlayerStateMock = () => 2;   // 'pause' the video
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+    const wrapper = screen.getByTestId('wrapper');
+
+    // Ensure the video is in a 'playing' state using key shortcuts
+    await userEvent.click(hideYTBtn);
+    wrapper.focus();
+    await userEvent.keyboard('k');
+
+    // Allow for the timeout to expire before the playVideo func is called
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 500));
+    });
+
+    const overlay = screen.getByTestId('overlay');
+    expect(overlay).toHaveClass('overlayPlaying');
+  });
+
+  it('Shows blocking overlay when the video is paused', async () => {
+    getPlayerStateMock = () => 1;   // 'play' the video
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+    const wrapper = screen.getByTestId('wrapper');
+
+    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
+    await userEvent.click(hideYTBtn);
+    wrapper.focus();
+    await userEvent.keyboard('k');
+
+    // Allow time for the timout to expire before pausing video
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 500));
+    })
+
+    const overlay = screen.getByTestId('overlay');
+    expect(overlay).toHaveClass('overlayPaused');
+  });
 });
 
 describe('YouTube player control toggles', () => {
@@ -77,14 +125,6 @@ describe('YouTube player control toggles', () => {
     render(<YouTubePlayer videoId='1234' />)
     const controlsBlocker = screen.getByTestId('controlsBlocker');
     expect(controlsBlocker).toBeInTheDocument();
-  });
-
-  it('Hides controls gradient and video overlay by default', () => {
-    render(<YouTubePlayer videoId='1234' />)
-    const gradient = screen.queryByTestId('gradient');
-    const overlay = screen.queryByTestId('overlay');
-    expect(gradient).not.toBeInTheDocument();
-    expect(overlay).not.toBeInTheDocument();
   });
 
   it('Hides YT controls (and show custom controls) on respective button press', async () => {
@@ -138,6 +178,21 @@ describe('YouTube player control toggles', () => {
 
     const customControls = screen.getByTestId('customControls');
     expect(customControls).not.toHaveClass('controlsHide');
+  });
+
+  it('Shows gradient alongside custom controls', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+
+    // First enable custom controls, then hover the relevant div to trigger user activity/controls to show
+    await userEvent.click(hideYTBtn);
+    const overlay = screen.getByTestId('overlay');
+    await userEvent.hover(overlay);
+
+    const customControls = screen.getByTestId('customControls');
+    const gradient = screen.getByTestId('gradient');
+    expect(customControls).not.toHaveClass('controlsHide');
+    expect(gradient).not.toHaveClass('gradientHide')
   });
 });
 
@@ -260,4 +315,6 @@ describe('YouTube player keyboard shortcuts', () => {
     expect(seekToMock).toBeCalledTimes(2);
   });
 });
+
+
 
