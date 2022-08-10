@@ -13,4 +13,16 @@ describe('YouTube player styling and toggles', () => {
     expect(wrapper).toHaveClass('wrapperNormal');
     expect(wrapper).not.toHaveClass('wrapperTheater');
   });
+
+  it('Initialises video without custom controls', () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const customControls = screen.queryByTestId('customControls');
+    expect(customControls).not.toBeInTheDocument();
+  });
+
+  it('Initialises video without YT controls blocker in place', () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const controlsBlocker = screen.getByTestId('controlsBlocker');
+    expect(controlsBlocker).toBeInTheDocument();
+  });
 });

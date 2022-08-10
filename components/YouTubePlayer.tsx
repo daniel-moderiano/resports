@@ -200,7 +200,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
         )}
 
         {(!showYTControls && player) && (
-          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove}>
+          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove} data-testid="customControls">
             <YouTubeVideoControls
               player={player}
               playerState={playerState}
@@ -218,7 +218,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
         )}
 
         {showYTControls && (
-          <div className={styles.YTcontrolsBlocker}>
+          <div className={styles.YTcontrolsBlocker} data-testid="controlsBlocker">
             <div className={styles.YTprogressBlocker}></div>
             <div className={styles.blockersContainer}>
               <div className={styles.leftControlsBlocker}></div>
