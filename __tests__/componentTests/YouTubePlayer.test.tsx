@@ -4,10 +4,11 @@ import YouTubePlayer from '../../components/YouTubePlayer';
 
 // Provide channel data and other UI states via this mock of the channel search API call
 jest.mock('../../hooks/useYouTubeIframe', () => ({
-  useYouTubeIframe: () => ({})
+  // Make sure a player object is returned here to trigger the functions requiring a truthy player object
+  useYouTubeIframe: () => ({ player: {} })
 }));
 
-describe('YouTube player styling and toggles', () => {
+describe('YouTube player styling and modes', () => {
   it('Begins in normal (non-theater) mode', () => {
     render(<YouTubePlayer videoId='1234' />)
     const wrapper = screen.getByTestId('wrapper');
@@ -15,6 +16,31 @@ describe('YouTube player styling and toggles', () => {
     expect(wrapper).not.toHaveClass('wrapperTheater');
   });
 
+  it('Switches to theater mode on "t" key press', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const wrapper = screen.getByTestId('wrapper');
+
+    await userEvent.keyboard('[KeyT]');
+
+    expect(wrapper).toHaveClass('wrapperTheater');
+    expect(wrapper).not.toHaveClass('wrapperNormal');
+  });
+
+  it('Switches to normal mode on "t" subsequent key press', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const wrapper = screen.getByTestId('wrapper');
+
+    await userEvent.keyboard('[KeyT]');
+    await userEvent.keyboard('[KeyT]');
+
+    expect(wrapper).toHaveClass('wrapperNormal');
+    expect(wrapper).not.toHaveClass('wrapperTheater');
+  });
+
+  // * Testing fullscreen functionality is not only impossible without a valid iframe (with 'allowFullscreen'), but potentially redundant as it is an inbuilt browser API function
+});
+
+describe('YouTube player control toggles', () => {
   it('Initialises video without custom controls', () => {
     render(<YouTubePlayer videoId='1234' />)
     const customControls = screen.queryByTestId('customControls');
@@ -58,4 +84,4 @@ describe('YouTube player styling and toggles', () => {
     const controlsBlocker = screen.getByTestId('controlsBlocker');
     expect(controlsBlocker).toBeInTheDocument();
   });
-});
+})
