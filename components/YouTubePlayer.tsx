@@ -131,9 +131,9 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const focusedElement = event.target as HTMLElement;
 
-      // do not alter the normal events for keyboard events on buttons, but ensure they trigger a user active state
+      // Ensure these key actions do not mess with normal button expectations and functionality
       if (focusedElement.nodeName === "BUTTON") {
-        if (focusedElement.className.includes('controlsBtn')) {   // user is interacting with controls
+        if (focusedElement.className.includes('controlsBtn')) {   // user is interacting with video controls
           signalUserActivity();
         }
         return;
@@ -234,7 +234,10 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
 
       <div className="playerMode">
         <button onClick={() => setShowYTControls(true)}>Show YT Controls</button>
-        <button onClick={() => setShowYTControls(false)}>Hide YT Controls</button>
+        <button onClick={() => {
+          setShowYTControls(false);
+          // signalUserActivity();
+        }}>Hide YT Controls</button>
         <p>{showYTControls ? 'YouTube mode' : 'Custom mode'}</p>
       </div>
     </div >
