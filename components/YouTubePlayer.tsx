@@ -9,6 +9,8 @@ interface YouTubePlayerProps {
 }
 
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
+  console.log('Rendering player');
+
   const [theaterMode, setTheaterMode] = useState(false);
 
   // This local state is used to avoid the long delays of an API call to check muted state when toggling icons and UI
@@ -76,7 +78,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }
   }, [player]);
 
-
   // Use this function to play a paused video, or pause a playing video. Intended to activate on clicking the video, or pressing spacebar
   const playOrPauseVideo = React.useCallback(() => {
     if (player) {
@@ -99,7 +100,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       }
     }
   }, [player]);
-
 
   // Call this function to switch the iframe/wrapper in and out of fullscreen mode. Esc key press will work as intended without explicitly adding this functionality
   const toggleFullscreen = () => {
