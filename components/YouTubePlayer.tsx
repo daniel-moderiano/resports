@@ -27,7 +27,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   // Allow the user to manually revert to standard YT controls to allow a manual adjustment to video quality
   const [showYTControls, setShowYTControls] = useState(true);
 
-
   const onPlayerReady = React.useCallback((event: YT.PlayerEvent) => {
     // TODO
   }, [])
@@ -83,13 +82,13 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     if (player) {
       if (player.getPlayerState() === 1) {
         setPlayerState(2);
-        setTimeout(() => {
+        setTimeout(() => {    // Give the gradient time to fade in so you can be sure the YT controls are hidden
           player.pauseVideo();
         }, 350)
       } else {
         player.playVideo();
 
-        setTimeout(() => {
+        setTimeout(() => {    // Give the gradient time to fade so you can be sure the YT controls are hidden
           setPlayerState(1);
         }, 100);
 
@@ -101,16 +100,12 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }
   }, [player]);
 
-  // Use this function in any position where the user's focus should return to the video
-  const releaseFocus = () => {
-    const wrapper: HTMLDivElement | null = document.querySelector("#wrapper");
-    if (wrapper) { wrapper.focus() }
-  }
 
   // Call this function to switch the iframe/wrapper in and out of fullscreen mode. Esc key press will work as intended without explicitly adding this functionality
   const toggleFullscreen = () => {
     const wrapper: HTMLDivElement | null = document.querySelector("#wrapper");
 
+    // These are async functions, but we are not particularly interested in error handling. This is mainyl to avoid linting errors
     if (!document.fullscreenElement && wrapper) {
       wrapper.requestFullscreen().catch((err) => console.error(err));
     } else {
@@ -122,7 +117,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     if (wrapper) { wrapper.focus() }
   }
 
-  // Use this to toggle between theater mode. Should be attached to a theater button and potentially a keyboard shortcut
+  // Use this to toggle between theater mode. Can be attached to a button or keypress as needed
   const toggleTheater = () => {
     setTheaterMode((prevState) => !prevState);
 
@@ -131,13 +126,14 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     if (wrapper) { wrapper.focus() }
   };
 
+  // A global keypress handler to allow the user to control the video regardless of where they are on the page. 
   React.useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const focusedElement = event.target as HTMLElement;
 
       // do not alter the normal events for keyboard events on buttons, but ensure they trigger a user active state
       if (focusedElement.nodeName === "BUTTON") {
-        signalUserActivity();    // TODO: Rename this function considering it's use here
+        signalUserActivity();
         return;
       }
 
