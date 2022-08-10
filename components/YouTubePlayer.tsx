@@ -191,7 +191,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   return (
     <div>
       <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)} tabIndex={0}>
-        {/* <div id="player"></div> */}
+        <div id="player"></div>
         {!showYTControls && (
           <div
             className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''} ${(userActive || playerState === 2) ? '' : styles.overlayInactive}`}

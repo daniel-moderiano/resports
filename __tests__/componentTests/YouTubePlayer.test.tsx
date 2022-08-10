@@ -1,12 +1,20 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
 import YouTubePlayer from '../../components/YouTubePlayer';
+import { act } from 'react-dom/test-utils';
 
 // Provide channel data and other UI states via this mock of the channel search API call
 jest.mock('../../hooks/useYouTubeIframe', () => ({
   // Make sure a player object is returned here to trigger the functions requiring a truthy player object
-  useYouTubeIframe: () => ({ player: {} })
+  useYouTubeIframe: () => ({
+    player: {
+      getCurrentTime: () => 0,
+    }
+  })
 }));
+
+// The max test timeout should be increase to deal with waiting for timeout intervals in certain tests
+jest.setTimeout(10000)
 
 describe('YouTube player styling and modes', () => {
   it('Begins in normal (non-theater) mode', () => {
@@ -61,7 +69,7 @@ describe('YouTube player control toggles', () => {
     expect(overlay).not.toBeInTheDocument();
   });
 
-  it('Hides YT controls on respective button press', async () => {
+  it('Hides YT controls (and show custom controls) on respective button press', async () => {
     render(<YouTubePlayer videoId='1234' />)
     const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
 
@@ -69,7 +77,9 @@ describe('YouTube player control toggles', () => {
     await userEvent.click(hideYTBtn);
 
     const controlsBlocker = screen.queryByTestId('controlsBlocker');
+    const customControls = screen.getByTestId('customControls');
     expect(controlsBlocker).not.toBeInTheDocument();
+    expect(customControls).toBeInTheDocument();
   });
 
   it('Toggles between custom vs YT controls on respective button press', async () => {
@@ -82,6 +92,53 @@ describe('YouTube player control toggles', () => {
     await userEvent.click(showYTBtn);
 
     const controlsBlocker = screen.getByTestId('controlsBlocker');
+    const customControls = screen.queryByTestId('customControls');
     expect(controlsBlocker).toBeInTheDocument();
+    expect(customControls).not.toBeInTheDocument();
+  });
+
+  it('Renders custom controls hidden when hiding YT controls', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+
+    // This should enable custom controls
+    await userEvent.click(hideYTBtn);
+
+    const customControls = screen.getByTestId('customControls');
+    expect(customControls).toHaveClass('controlsHide');
+    expect(customControls).toBeInTheDocument();
+  });
+
+  it('Visually display custom controls on mute/unmute with keypress', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+
+    // First enable custom controls, then hover the relevant div to trigger user activity/controls to show
+    await userEvent.click(hideYTBtn);
+    const overlay = screen.getByTestId('overlay');
+    await userEvent.hover(overlay);
+
+    const customControls = screen.getByTestId('customControls');
+    expect(customControls).not.toHaveClass('controlsHide');
+  });
+
+  it('Hides custom controls 3 seconds after user activity is first registered', async () => {
+
+    render(<YouTubePlayer videoId='1234' />)
+
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+
+    // First enable custom controls, then hover the relevant div to trigger user activity/controls to show
+    await userEvent.click(hideYTBtn);
+    const overlay = screen.getByTestId('overlay');
+    await userEvent.hover(overlay);
+
+    // Wait for controls to fade. Act is called here because this line does note directly use React Testing Library, and is the line that involves several DOM elements changing/re-rendering. React recommends act() in these cases
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 3500));
+    })
+
+    const customControls = screen.getByTestId('customControls');
+    expect(customControls).toHaveClass('controlsHide');
   });
 })
