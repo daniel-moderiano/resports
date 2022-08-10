@@ -38,7 +38,7 @@
 }
 
 .durationLarge {
-  width: 55px;
+  width: 54px;
 }
 
 .leftControls {
@@ -61,6 +61,18 @@
   margin-left: 0.5rem;
 }
 
-.volumeIcons {
+.icons24 {
+  width: 24px;
+}
+
+.icons27 {
   width: 27px;
+}
+
+.icons30 {
+  width: 30px;
+}
+
+.icons32 {
+  width: 32px;
 }
