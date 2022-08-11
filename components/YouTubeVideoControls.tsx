@@ -63,17 +63,17 @@ const YouTubeVideoControls = ({
       <div className={styles.leftControls}>
         <button className={styles.controlsBtn} onClick={togglePlay} id="playBtn" aria-label={playerState === 1 ? 'Pause video' : 'Play video'}>
           {playerState === 1 ? (
-            <PauseIcon iconStyles={styles.icons32} fill="#FFFFFF" />
+            <PauseIcon iconStyles={styles.icons32} fill="#FFFFFF" testId='pauseIcon' />
           ) : (
-            <PlayIcon iconStyles={styles.icons32} fill="#FFFFFF" />
+            <PlayIcon iconStyles={styles.icons32} fill="#FFFFFF" testId='playIcon' />
           )}
         </button>
 
-        <button className={styles.controlsBtn} onClick={() => { toggleMute(); releaseFocus(); }}>
+        <button className={styles.controlsBtn} onClick={() => { toggleMute(); releaseFocus(); }} aria-label={playerMuted ? 'Unmute video' : 'Mute video'}>
           {playerMuted ? (
-            <MutedIcon iconStyles={styles.icons27} fill="#FFFFFF" />
+            <MutedIcon iconStyles={styles.icons27} fill="#FFFFFF" testId='mutedIcon' />
           ) : (
-            <VolumeIcon iconStyles={styles.icons27} fill="none" />
+            <VolumeIcon iconStyles={styles.icons27} fill="none" testId='volumeIcon' />
           )}
         </button>
 
@@ -112,11 +112,11 @@ const YouTubeVideoControls = ({
           <TheaterIcon iconStyles={styles.icons24} fill="#FFFFFF" />
         </button>
 
-        <button className={styles.controlsBtn} onClick={toggleFullscreen}>
+        <button className={styles.controlsBtn} onClick={toggleFullscreen} aria-label={document.fullscreenElement ? 'Exit fullscreen' : 'Enter fullscreen'}>
           {document.fullscreenElement ? (
-            <ExitFullscreenIcon iconStyles={styles.icons30} fill="#FFFFFF" />
+            <ExitFullscreenIcon iconStyles={styles.icons30} fill="#FFFFFF" testId='exitFullscreenIcon' />
           ) : (
-            <EnterFullscreenIcon iconStyles={styles.icons30} fill="#FFFFFF" />
+            <EnterFullscreenIcon iconStyles={styles.icons30} fill="#FFFFFF" testId='enterFullscreenIcon' />
           )}
         </button>
       </div>

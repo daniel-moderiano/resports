@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
 import YouTubeVideoControls from '../../components/YouTubeVideoControls';
 
@@ -16,13 +16,13 @@ const togglePlayMock = jest.fn();
 const toggleMuteMock = jest.fn();
 const skipForwardMock = jest.fn();
 const skipBackwardMock = jest.fn();
-const playerMutedMock = true;
+let playerMutedMock = true;
 
 
 // The max test timeout should be increase to deal with waiting for timeout intervals in certain tests
 jest.setTimeout(10000)
 
-describe('YouTube player styling and modes', () => {
+describe('YouTube video control icons and labels', () => {
   const setup = () => {
     render(<YouTubeVideoControls
       // @ts-expect-error a complete Player object is not required for these tests
@@ -38,25 +38,59 @@ describe('YouTube player styling and modes', () => {
     />)
   };
 
-  it('Shows play icon when video is unstarted (default)', () => {
+  it('Shows correct play icon and aria-label when video is unstarted', () => {
     setup();
     const playBtn = screen.getByRole('button', { name: 'Play video' });
+    const playIcon = screen.getByTestId(/playIcon/i)
     expect(playBtn).toBeInTheDocument();
+    expect(playIcon).toBeInTheDocument();
   });
 
-  it('Shows pause icon when video is playing', () => {
+  it('Shows correct pause icon and aria-label when video is playing', () => {
     playerStateMock = 1;
     setup();
-    const playBtn = screen.getByRole('button', { name: 'Pause video' });
-    expect(playBtn).toBeInTheDocument();
+    const pauseBtn = screen.getByRole('button', { name: 'Pause video' });
+    const pauseIcon = screen.getByTestId(/pauseIcon/i)
+    expect(pauseBtn).toBeInTheDocument();
+    expect(pauseIcon).toBeInTheDocument();
   });
 
-  it('Shows play icon when video is paused', () => {
+  it('Shows correct play icon and aria-label when video is paused', () => {
     playerStateMock = 2;
     setup();
     const playBtn = screen.getByRole('button', { name: 'Play video' });
+    const playIcon = screen.getByTestId(/playIcon/i)
     expect(playBtn).toBeInTheDocument();
+    expect(playIcon).toBeInTheDocument();
   });
+
+  it('Shows correct volume icon and aria-label (mute video) when video is unmuted', () => {
+    playerMutedMock = false;    // unmute the videos
+    setup();
+    const muteBtn = screen.getByRole('button', { name: 'Mute video' });
+    const volumeIcon = screen.getByTestId(/volumeIcon/i)
+    expect(muteBtn).toBeInTheDocument();
+    expect(volumeIcon).toBeInTheDocument();
+  });
+
+  it('Shows correct muted icon and aria-label (unmute video) when video is muted', () => {
+    playerMutedMock = true;    // unmute the videos
+    setup();
+    const unMuteBtn = screen.getByRole('button', { name: 'Unmute video' });
+    const mutedIcon = screen.getByTestId(/mutedIcon/i)
+    expect(unMuteBtn).toBeInTheDocument();
+    expect(mutedIcon).toBeInTheDocument();
+  });
+
+  it('Shows correct enter fullscreen icon and aria-label on initial load', () => {
+    setup();
+    const enterFullscreenBtn = screen.getByRole('button', { name: 'Enter fullscreen' });
+    const enterFullscreenIcon = screen.getByTestId(/enterFullscreenIcon/i)
+    expect(enterFullscreenBtn).toBeInTheDocument();
+    expect(enterFullscreenIcon).toBeInTheDocument();
+  });
+
+  // It is impossible to mock entering fullscreen to test the toggle to exit fullscreen label/icon. Hence only entering is tested here.
 });
 
 
