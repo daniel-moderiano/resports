@@ -22,7 +22,7 @@ let playerMutedMock = true;
 // The max test timeout should be increase to deal with waiting for timeout intervals in certain tests
 jest.setTimeout(10000)
 
-describe('YouTube video control icons and labels', () => {
+describe('YouTube video controls icons and label toggles', () => {
   const setup = () => {
     render(<YouTubeVideoControls
       // @ts-expect-error a complete Player object is not required for these tests
@@ -84,7 +84,7 @@ describe('YouTube video control icons and labels', () => {
 
   it('Shows correct enter fullscreen icon and aria-label on initial load', () => {
     setup();
-    const enterFullscreenBtn = screen.getByRole('button', { name: 'Enter fullscreen' });
+    const enterFullscreenBtn = screen.getByRole('button', { name: 'Enter fullscreen mode' });
     const enterFullscreenIcon = screen.getByTestId(/enterFullscreenIcon/i)
     expect(enterFullscreenBtn).toBeInTheDocument();
     expect(enterFullscreenIcon).toBeInTheDocument();
@@ -93,4 +93,109 @@ describe('YouTube video control icons and labels', () => {
   // It is impossible to mock entering fullscreen to test the toggle to exit fullscreen label/icon. Hence only entering is tested here.
 });
 
+describe('YouTube video controls functionality', () => {
+  const setup = () => {
+    render(<YouTubeVideoControls
+      // @ts-expect-error a complete Player object is not required for these tests
+      player={playerMock}
+      playerState={playerStateMock}
+      playerMuted={playerMutedMock}
+      toggleFullscreen={toggleFullscreenMock}
+      togglePlay={togglePlayMock}
+      toggleTheater={toggleTheaterMock}
+      skipForward={skipForwardMock}
+      skipBackward={skipBackwardMock}
+      toggleMute={toggleMuteMock}
+    />)
+  };
+
+  it('Play button calls play/pause function on click', async () => {
+    setup();
+    const playBtn = screen.getByRole('button', { name: 'Play video' });
+    await userEvent.click(playBtn);
+    expect(togglePlayMock).toBeCalled();
+  });
+
+  it('Pause button calls play/pause function on click', async () => {
+    playerStateMock = 1;    // "play" the video
+    setup();
+    const pauseBtn = screen.getByRole('button', { name: 'Pause video' });
+    await userEvent.click(pauseBtn);
+    expect(togglePlayMock).toBeCalled();
+  });
+
+  it('Mute button calls mute toggle function on click', async () => {
+    playerMutedMock = false;
+    setup();
+    const muteBtn = screen.getByRole('button', { name: 'Mute video' });
+    await userEvent.click(muteBtn);
+    expect(toggleMuteMock).toBeCalled();
+  });
+
+  it('Unmute button calls mute toggle function on click', async () => {
+    playerMutedMock = true;
+    setup();
+    const unMuteBtn = screen.getByRole('button', { name: 'Unmute video' });
+    await userEvent.click(unMuteBtn);
+    expect(toggleMuteMock).toBeCalled();
+  });
+
+  it('Enter fullscreen button calls fullscreen toggle function on click', async () => {
+    setup();
+    const fullscreenBtn = screen.getByRole('button', { name: 'Enter fullscreen mode' });
+    await userEvent.click(fullscreenBtn);
+    expect(toggleFullscreenMock).toBeCalled();
+  });
+
+  // * We cannot mock fullscreen, so testing the exit fullscreen btn is impossible
+
+  it('Theater button calls theater toggle function on click', async () => {
+    setup();
+    const theaterBtn = screen.getByRole('button', { name: 'Switch to theater mode' });
+    await userEvent.click(theaterBtn);
+    expect(toggleTheaterMock).toBeCalled();
+  });
+
+  it('Calls skip forward function with 1 minute equivalent input on forward 1 btn click', async () => {
+    setup();
+    const skipOne = screen.getByRole('button', { name: 'Skip forward one minute' });
+    await userEvent.click(skipOne);
+    expect(skipForwardMock).toBeCalledWith(60);
+  });
+
+  it('Calls skip forward function with 5 minute equivalent input on forward 5 btn click', async () => {
+    setup();
+    const skipFive = screen.getByRole('button', { name: 'Skip forward five minutes' });
+    await userEvent.click(skipFive);
+    expect(skipForwardMock).toBeCalledWith(300);
+  });
+
+  it('Calls skip forward function with 10 minute equivalent input on forward 10 btn click', async () => {
+    setup();
+    const skipTen = screen.getByRole('button', { name: 'Skip forward ten minutes' });
+    await userEvent.click(skipTen);
+    expect(skipForwardMock).toBeCalledWith(600);
+  });
+
+  it('Calls skip backward function with 1 minute equivalent input on backward 1 btn click', async () => {
+    setup();
+    const skipOne = screen.getByRole('button', { name: 'Skip backward one minute' });
+    await userEvent.click(skipOne);
+    expect(skipBackwardMock).toBeCalledWith(60);
+  });
+
+  it('Calls skip backward function with 5 minute equivalent input on backward 5 btn click', async () => {
+    setup();
+    const skipFive = screen.getByRole('button', { name: 'Skip backward five minutes' });
+    await userEvent.click(skipFive);
+    expect(skipBackwardMock).toBeCalledWith(300);
+  });
+
+  it('Calls skip backward function with 10 minute equivalent input on backward 10 btn click', async () => {
+    setup();
+    const skipTen = screen.getByRole('button', { name: 'Skip backward ten minutes' });
+    await userEvent.click(skipTen);
+    expect(skipBackwardMock).toBeCalledWith(600);
+  });
+});
 

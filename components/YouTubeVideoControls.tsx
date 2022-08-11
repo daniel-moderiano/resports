@@ -77,15 +77,15 @@ const YouTubeVideoControls = ({
           )}
         </button>
 
-        <button className={styles.controlsBtn} onClick={() => { skipBackward(600); releaseFocus(); }}>
+        <button className={styles.controlsBtn} onClick={() => { skipBackward(600); releaseFocus(); }} aria-label="Skip backward ten minutes">
           <BackTenIcon iconStyles={styles.icons30} fill="#FFFFFF" />
         </button>
 
-        <button className={styles.controlsBtn} onClick={() => { skipBackward(300); releaseFocus(); }}>
+        <button className={styles.controlsBtn} onClick={() => { skipBackward(300); releaseFocus(); }} aria-label="Skip backward five minutes">
           <BackFiveIcon iconStyles={styles.icons30} fill="#FFFFFF" />
         </button>
 
-        <button className={styles.controlsBtn} onClick={() => { skipBackward(60); releaseFocus(); }}>
+        <button className={styles.controlsBtn} onClick={() => { skipBackward(60); releaseFocus(); }} aria-label="Skip backward one minute">
           <BackOneIcon iconStyles={styles.icons30} fill="#FFFFFF" />
         </button>
 
@@ -94,25 +94,25 @@ const YouTubeVideoControls = ({
           {elapsedDuration}
         </span>
 
-        <button className={styles.controlsBtn} onClick={() => { skipForward(60); releaseFocus(); }}>
+        <button className={styles.controlsBtn} onClick={() => { skipForward(60); releaseFocus(); }} aria-label="Skip forward one minute">
           <ForwardOneIcon iconStyles={styles.icons30} fill="#FFFFFF" />
         </button>
 
-        <button className={styles.controlsBtn} onClick={() => { skipForward(300); releaseFocus(); }}>
+        <button className={styles.controlsBtn} onClick={() => { skipForward(300); releaseFocus(); }} aria-label="Skip forward five minutes">
           <ForwardFiveIcon iconStyles={styles.icons30} fill="#FFFFFF" />
         </button>
 
-        <button className={styles.controlsBtn} onClick={() => { skipForward(600); releaseFocus(); }}>
+        <button className={styles.controlsBtn} onClick={() => { skipForward(600); releaseFocus(); }} aria-label="Skip forward ten minutes">
           <ForwardTenIcon iconStyles={styles.icons30} fill="#FFFFFF" />
         </button>
       </div>
 
       <div className={styles.rightControls}>
-        <button className={styles.controlsBtn} onClick={toggleTheater} data-testid="theater">
+        <button className={styles.controlsBtn} onClick={toggleTheater} data-testid="theater" aria-label="Switch to theater mode">
           <TheaterIcon iconStyles={styles.icons24} fill="#FFFFFF" />
         </button>
 
-        <button className={styles.controlsBtn} onClick={toggleFullscreen} aria-label={document.fullscreenElement ? 'Exit fullscreen' : 'Enter fullscreen'}>
+        <button className={styles.controlsBtn} onClick={toggleFullscreen} aria-label={document.fullscreenElement ? 'Exit fullscreen mode' : 'Enter fullscreen mode'}>
           {document.fullscreenElement ? (
             <ExitFullscreenIcon iconStyles={styles.icons30} fill="#FFFFFF" testId='exitFullscreenIcon' />
           ) : (
