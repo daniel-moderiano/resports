@@ -2,7 +2,6 @@
 import { GetServerSideProps } from "next";
 import { sanitiseVideoQuery } from "../../../helpers/queryHandling";
 import YouTubePlayer from "../../../components/YouTubePlayer";
-import { useState } from "react";
 import Link from "next/link";
 
 interface YouTubeVideoProps {
@@ -17,7 +16,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // Pass data to the page via props
   return { props: { videoId } }
 }
-
 
 const YouTubeVideo = ({ videoId }: YouTubeVideoProps) => {
   return (
