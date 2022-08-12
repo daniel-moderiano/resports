@@ -1,5 +1,6 @@
 // The video/watch page that houses an embedded Twitch iframe/player
 import { GetServerSideProps } from "next";
+import { useEffect } from "react";
 import { sanitiseVideoQuery } from "../../helpers/queryHandling";
 
 interface TwitchVideoProps {
@@ -17,10 +18,43 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 
 const TwitchVideo = ({ videoId }: TwitchVideoProps) => {
+
+  useEffect(() => {
+    const tag = document.createElement('script');
+
+    // This conditional ensures the script tag is added to a fresh page, but that if one exists, we fully reload the page. This ensures that any parameter change (e.g. change in videoId, or controls enabled vs disabled) full reloads a new iframe. The alternative would be a non-loading iframe, or no change in iframe at all
+    if (!window.YT) {
+      tag.src = "https://player.twitch.tv/js/embed/v1.js";
+      document.body.appendChild(tag);
+    } else {
+      // * Reloading the iframe only does NOT achieve the desired effect!
+      window.location.reload();
+    }
+
+    function createTwitchPlayer() {
+      new Twitch.Player("player", {
+        width: 854,
+        height: 480,
+        video: videoId,
+        controls: false,
+      });
+    }
+
+    fetch('https://rechat.twitch.tv/rechat-messages?start=10&video_id=155772534').then((res) => console.log(res)).catch((err) => console.log(err))
+
+    tag.onload = createTwitchPlayer;
+
+    return () => {    // ensure script tags are cleaned on dismount
+      tag.remove();
+    }
+  }, [videoId]);
+
   return (
     <div>
       <p>{videoId}</p>
       Hello Sarah
+
+      <div id="player"></div>
     </div>
   );
 };
