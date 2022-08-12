@@ -56,4 +56,10 @@ describe('Twitch video listing component', () => {
     const channelName = screen.getByText(/loserfruit/i);
     expect(channelName).toBeInTheDocument()
   });
+
+  it('Includes player link', () => {
+    render(<TwitchVideoListing videoData={testData} />)
+    const playerLink = screen.getByRole('link', { name: /view on player/i });
+    expect(playerLink).toBeInTheDocument();
+  });
 });
