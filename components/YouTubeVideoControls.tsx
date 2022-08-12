@@ -90,7 +90,7 @@ const YouTubeVideoControls = ({
         </button>
 
         {/* These duration styles resize to ensure the text is always centered without constantly shifting adjacent divs */}
-        <span className={`${styles.duration} ${(elapsedDuration.length > 4 && elapsedDuration.length <= 5) ? styles.durationMedium : ''} ${elapsedDuration.length > 5 ? styles.durationLarge : ''}`}>
+        <span className={`${styles.duration} ${(elapsedDuration.length > 4 && elapsedDuration.length <= 5) ? styles.durationMedium : ''} ${elapsedDuration.length > 5 ? styles.durationLarge : ''}`} data-testid="duration">
           {elapsedDuration}
         </span>
 

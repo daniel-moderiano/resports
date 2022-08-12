@@ -4,7 +4,7 @@ import YouTubeVideoControls from '../../components/YouTubeVideoControls';
 
 // Named mocks to test player functions being called
 const playerMock = {
-  getCurrentTime: jest.fn,
+  getCurrentTime: () => 1,
   isMuted: () => false,
   getVolume: jest.fn,
 };
@@ -91,6 +91,12 @@ describe('YouTube video controls icons and label toggles', () => {
   });
 
   // It is impossible to mock entering fullscreen to test the toggle to exit fullscreen label/icon. Hence only entering is tested here.
+
+  it('Shows elapsed duration on initial render (i.e. without 1 second delay)', () => {
+    setup();
+    const duration = screen.getByText('0:01')
+    expect(duration).toBeInTheDocument();
+  });
 });
 
 describe('YouTube video controls functionality', () => {
