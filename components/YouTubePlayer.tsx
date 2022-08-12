@@ -4,13 +4,10 @@ import styles from '../styles/componentStyles/YouTubePlayer.module.css';
 import YouTubeVideoControls from './YouTubeVideoControls';
 import * as React from 'react';
 
-// TODO: Add the same wrapper.focus() feature to the mute and +/- mins buttons. The play/pause function must be preserved as priority in these cases to avoid space press while the user is on a skip forward button that has faded away
-
 interface YouTubePlayerProps {
   videoId: string;
 }
 
-// The useYouTubeIframe hook will add the YouTube iframe to this div with id="player"
 const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
@@ -24,14 +21,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   // Indicates whether the user is moving their mouse over the video (i.e. user is active)
   const [userActive, setUserActive] = useState(false);
 
-  // Initialise in the unstarted state
+  // Initialise playerState in the UNSTARTED state, whose code is -1. This way we can detect an initial change if necessary
   const [playerState, setPlayerState] = useState(-1);
 
   // Allow the user to manually revert to standard YT controls to allow a manual adjustment to video quality
   const [showYTControls, setShowYTControls] = useState(true);
-
-  // Do not enable the setShowYTControls buttons initially or else the YT controls will be spoiler filled and visible before fading out. This can be avoided by disabling the buttons until controls have faded out
-  const [buttonsDisabled, setButtonsDisabled] = useState(false);
 
   const onPlayerReady = React.useCallback((event: YT.PlayerEvent) => {
     // TODO
@@ -42,10 +36,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     // TODO: Ensure this is set for anything not play or pause
   }, []);
 
+  // Adds the YT Iframe to the div#player returned below
   const { player } = useYouTubeIframe(videoId, onPlayerReady, onPlayerStateChange);
 
-  // Used to show controls on mouse movement, and hide once mouse is still for a short time
-  const handleMouseMove = () => {
+  // A general user activity function. Use this whenever the user performs an 'active' action and it will signal the user is interacting with the video, which then enables other features such as showing controls
+  const signalUserActivity = () => {
     setUserActive(true);
     clearTimeout(inactivityTimeout.current as NodeJS.Timeout);
 
@@ -61,13 +56,28 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }
 
     enableCall.current = false;
-    handleMouseMove();
-    // Unsure exactly which throttle timeout will work best. 
+    signalUserActivity();
+    // Unsure exactly which throttle timeout will work best, but 500 seems adequate for now
     setTimeout(() => enableCall.current = true, 500);
-  }
+  };
 
-  // Use this function to completely mute or unmute a video. Is unrelated to setting a distinct volume level
+  const skipForward = React.useCallback((timeToSkipInSeconds: number) => {
+    if (player) {
+      const currentTime = player.getCurrentTime();
+      player.seekTo(currentTime + timeToSkipInSeconds, true);
+    }
+  }, [player]);
+
+  const skipBackward = React.useCallback((timeToSkipInSeconds: number) => {
+    if (player) {
+      const currentTime = player.getCurrentTime();
+      player.seekTo(currentTime - timeToSkipInSeconds, true);
+    }
+  }, [player]);
+
+  // This function is distinct to manually setting a specific volume level, but counts as user activity
   const toggleMute = React.useCallback(() => {
+    signalUserActivity();
     if (!player) {
       return;
     }
@@ -80,19 +90,18 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }
   }, [player]);
 
-
   // Use this function to play a paused video, or pause a playing video. Intended to activate on clicking the video, or pressing spacebar
   const playOrPauseVideo = React.useCallback(() => {
     if (player) {
       if (player.getPlayerState() === 1) {
         setPlayerState(2);
-        setTimeout(() => {
+        setTimeout(() => {    // Give the gradient time to fade in so you can be sure the YT controls are hidden
           player.pauseVideo();
         }, 350)
       } else {
         player.playVideo();
 
-        setTimeout(() => {
+        setTimeout(() => {    // Give the gradient time to fade so you can be sure the YT controls are hidden
           setPlayerState(1);
         }, 100);
 
@@ -104,16 +113,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }
   }, [player]);
 
-  // Use this function in any position where the user's focus should return to the video
-  const releaseFocus = () => {
-    const wrapper: HTMLDivElement | null = document.querySelector("#wrapper");
-    if (wrapper) { wrapper.focus() }
-  }
-
   // Call this function to switch the iframe/wrapper in and out of fullscreen mode. Esc key press will work as intended without explicitly adding this functionality
   const toggleFullscreen = () => {
     const wrapper: HTMLDivElement | null = document.querySelector("#wrapper");
 
+    // These are async functions, but we are not particularly interested in error handling. This is mainyl to avoid linting errors
     if (!document.fullscreenElement && wrapper) {
       wrapper.requestFullscreen().catch((err) => console.error(err));
     } else {
@@ -125,7 +129,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     if (wrapper) { wrapper.focus() }
   }
 
-  // Use this to toggle between theater mode. Should be attached to a theater button and potentially a keyboard shortcut
+  // Use this to toggle between theater mode. Can be attached to a button or keypress as needed
   const toggleTheater = () => {
     setTheaterMode((prevState) => !prevState);
 
@@ -134,13 +138,16 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     if (wrapper) { wrapper.focus() }
   };
 
+  // A global keypress handler to allow the user to control the video regardless of where they are on the page. 
   React.useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const focusedElement = event.target as HTMLElement;
 
-      // do not alter the normal events for keyboard events on buttons, but ensure they trigger a user active state
+      // Ensure these key actions do not mess with normal button expectations and functionality
       if (focusedElement.nodeName === "BUTTON") {
-        handleMouseMove();    // TODO: Rename this function considering it's use here
+        if (focusedElement.className.includes('controlsBtn')) {   // user is interacting with video controls
+          signalUserActivity();
+        }
         return;
       }
 
@@ -155,6 +162,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           break;
         case "m":
           toggleMute();
+          signalUserActivity();
           break;
         case "f":
           toggleFullscreen();
@@ -172,13 +180,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           break;
         case "Left": // IE/Edge specific value
         case "ArrowLeft":
-          // Do something for "left arrow" key press.
-          player.seekTo(player.getCurrentTime() - 5, true);
+          skipBackward(5);
           break;
         case "Right": // IE/Edge specific value
         case "ArrowRight":
-          // Do something for "right arrow" key press.
-          player.seekTo(player.getCurrentTime() + 5, true);
+          skipForward(5)
           break;
         default:
           return; // Quit when this doesn't handle the key event.
@@ -189,7 +195,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     }
-  }, [playOrPauseVideo, player, toggleMute])
+  }, [playOrPauseVideo, player, toggleMute, skipForward, skipBackward])
 
 
   return (
@@ -202,14 +208,13 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
             onClick={playOrPauseVideo}
             onDoubleClick={toggleFullscreen}
             onMouseMove={throttleMousemove}
+            data-testid="overlay"
           >
           </div>
         )}
 
-        {/* <div className={playerState === 2 ? styles.blockerActive : styles.blockerInactive} onMouseMove={throttleMousemove}></div> */}
-
         {(!showYTControls && player) && (
-          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove}>
+          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove} data-testid="customControls">
             <YouTubeVideoControls
               player={player}
               playerState={playerState}
@@ -218,14 +223,18 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
               togglePlay={playOrPauseVideo}
               toggleMute={toggleMute}
               playerMuted={playerMuted}
+              skipForward={skipForward}
+              skipBackward={skipBackward}
             />
           </div>
         )}
 
-        <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`}></div>
+        {!showYTControls && (
+          <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`} data-testid="gradient"></div>
+        )}
 
         {showYTControls && (
-          <div className={styles.YTcontrolsBlocker}>
+          <div className={styles.YTcontrolsBlocker} data-testid="controlsBlocker">
             <div className={styles.YTprogressBlocker}></div>
             <div className={styles.blockersContainer}>
               <div className={styles.leftControlsBlocker}></div>
@@ -236,15 +245,19 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       </div>
 
       <div className="playerMode">
-        <button disabled={buttonsDisabled} onClick={() => {
-
+        <button onClick={() => {
           setShowYTControls(true);
-
+          // If the user switches controls while paused, then pauses the video on YT controls, then switches back to custom controls while paused, the overlay is still in play mode. This happens because the setPlayerState is not called with YT native pause/play. Hence it is manually called here
+          if (player && player.getPlayerState() === 2) {
+            setPlayerState(2);
+          }
         }}>Show YT Controls</button>
-        <button disabled={buttonsDisabled} onClick={() => {
-
+        <button onClick={() => {
           setShowYTControls(false);
-
+          // If the user switches controls while paused, then plays the video on YT controls, then switches back to custom controls while playing, the overlay is still in pause mode. This happens because the setPlayerState is not called with YT native pause/play. Hence it is manually called here
+          if (player && player.getPlayerState() === 1) {
+            setPlayerState(1);
+          }
         }}>Hide YT Controls</button>
         <p>{showYTControls ? 'YouTube mode' : 'Custom mode'}</p>
       </div>
