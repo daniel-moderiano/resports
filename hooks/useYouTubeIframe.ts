@@ -3,8 +3,9 @@ import * as React from 'react'
 
 export const useYouTubeIframe = (
   videoId: string,
-  onPlayerReady: (event: YT.PlayerEvent) => void,
-  onPlayerStateChange: (event: YT.OnStateChangeEvent) => void,
+  enableControls: boolean,
+  onPlayerReady?: (event: YT.PlayerEvent) => void,
+  onPlayerStateChange?: (event: YT.OnStateChangeEvent) => void,
 ) => {
   const [player, setPlayer] = React.useState<YT.Player | undefined>(undefined);
 
@@ -24,7 +25,7 @@ export const useYouTubeIframe = (
       const player = new YT.Player('player', {
         videoId: videoId,
         playerVars: {
-          controls: 1,
+          controls: enableControls ? 1 : 0,
           enablejsapi: 1,
           iv_load_policy: 3,
           modestbranding: 1,
@@ -50,7 +51,7 @@ export const useYouTubeIframe = (
     return () => {    // ensure script tags are cleaned on dismount
       tag.remove();
     }
-  }, [videoId, onPlayerReady, onPlayerStateChange]);
+  }, [videoId, onPlayerReady, onPlayerStateChange, enableControls]);
 
   return {
     player

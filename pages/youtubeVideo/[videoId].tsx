@@ -2,6 +2,7 @@
 import { GetServerSideProps } from "next";
 import { sanitiseVideoQuery } from "helpers/queryHandling";
 import YouTubePlayer from "../../components/YouTubePlayer";
+import YouTubeCustomPlayer from "../../components/YouTubeCustomPlayer";
 
 interface YouTubeVideoProps {
   videoId: string;
@@ -20,7 +21,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const YouTubeVideo = ({ videoId }: YouTubeVideoProps) => {
   return (
     <div>
-      <YouTubePlayer videoId={videoId} />
+      {/* <YouTubePlayer videoId={videoId} /> */}
+      <YouTubeCustomPlayer videoId={videoId} />
     </div>
   );
 };

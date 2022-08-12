@@ -4,11 +4,11 @@ import styles from '../styles/componentStyles/YouTubePlayer.module.css';
 import YouTubeVideoControls from './YouTubeVideoControls';
 import * as React from 'react';
 
-interface YouTubePlayerProps {
+interface YouTubeCustomPlayerProps {
   videoId: string;
 }
 
-const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
+const YouTubeCustomPlayer = ({ videoId }: YouTubeCustomPlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
   // This local state is used to avoid the long delays of an API call to check muted state when toggling icons and UI
@@ -24,11 +24,8 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   // Initialise playerState in the UNSTARTED state, whose code is -1. This way we can detect an initial change if necessary
   const [playerState, setPlayerState] = useState(-1);
 
-  // Allow the user to manually revert to standard YT controls to allow a manual adjustment to video quality
-  const [showYTControls, setShowYTControls] = useState(true);
-
   // Adds the YT Iframe to the div#player returned below
-  const { player } = useYouTubeIframe(videoId, true);
+  const { player } = useYouTubeIframe(videoId, false);
 
   // A general user activity function. Use this whenever the user performs an 'active' action and it will signal the user is interacting with the video, which then enables other features such as showing controls
   const signalUserActivity = () => {
@@ -193,18 +190,16 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     <div>
       <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)} tabIndex={0}>
         <div id="player"></div>
-        {!showYTControls && (
-          <div
-            className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''} ${(userActive || playerState === 2) ? '' : styles.overlayInactive}`}
-            onClick={playOrPauseVideo}
-            onDoubleClick={toggleFullscreen}
-            onMouseMove={throttleMousemove}
-            data-testid="overlay"
-          >
-          </div>
-        )}
+        <div
+          className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''} ${(userActive || playerState === 2) ? '' : styles.overlayInactive}`}
+          onClick={playOrPauseVideo}
+          onDoubleClick={toggleFullscreen}
+          onMouseMove={throttleMousemove}
+          data-testid="overlay"
+        >
+        </div>
 
-        {(!showYTControls && player) && (
+        {player && (
           <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove} data-testid="customControls">
             <YouTubeVideoControls
               player={player}
@@ -220,40 +215,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           </div>
         )}
 
-        {!showYTControls && (
-          <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`} data-testid="gradient"></div>
-        )}
+        <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`} data-testid="gradient"></div>
 
-        {showYTControls && (
-          <div className={styles.YTcontrolsBlocker} data-testid="controlsBlocker">
-            <div className={styles.YTprogressBlocker}></div>
-            <div className={styles.blockersContainer}>
-              <div className={styles.leftControlsBlocker}></div>
-              <div className={styles.rightControlsBlocker}></div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="playerMode">
-        <button onClick={() => {
-          setShowYTControls(true);
-          // If the user switches controls while paused, then pauses the video on YT controls, then switches back to custom controls while paused, the overlay is still in play mode. This happens because the setPlayerState is not called with YT native pause/play. Hence it is manually called here
-          if (player && player.getPlayerState() === 2) {
-            setPlayerState(2);
-          }
-        }}>Show YT Controls</button>
-        <button onClick={() => {
-          setShowYTControls(false);
-          // If the user switches controls while paused, then plays the video on YT controls, then switches back to custom controls while playing, the overlay is still in pause mode. This happens because the setPlayerState is not called with YT native pause/play. Hence it is manually called here
-          if (player && player.getPlayerState() === 1) {
-            setPlayerState(1);
-          }
-        }}>Hide YT Controls</button>
-        <p>{showYTControls ? 'YouTube mode' : 'Custom mode'}</p>
       </div>
     </div >
   )
 }
 
-export default YouTubePlayer;
+export default YouTubeCustomPlayer;
