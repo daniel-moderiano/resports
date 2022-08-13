@@ -340,24 +340,36 @@ declare namespace Twitch {
 
     /**
      * Sets the quality of the video.
-     * @param quality   Video quality from the available types
+     * @param quality   Video quality (string) from the available values
      */
     setQuality(quality: VideoQuality): void;
 
     /**
-     * @returns Whether the player is muted.
+     * Sets the video to be played to be played and starts playback at timestamp (in seconds).
+     * @param videoId   ID of the video
+     * @param timestamp   Timestamp, in seconds from the beginning of the video.
      */
-    isMuted(): boolean;
+    setVideo(videoId: string, timestamp: number): void;
 
     /**
      * Sets the player volume.
-     *
-     * @param volume   An integer between 0 and 100.
+     * @param volumeLevel   A number between 0 and 1.0.
      */
-    setVolume(volume: number): void;
+    setVolume(volumeLevel: number): void;
 
     /**
-     * @returns The player's current volume, an integer between 0 and 100.
+     * @returns Volume level, a number between 0 and 1.0.
+     */
+    getVolume(): number;
+
+    /**
+ * Sets the player volume.
+ * @param volumeLevel   A number between 0 and 1.0.
+ */
+    setVolume(volumeLevel: number): void;
+
+    /**
+     * @returns Volume level, a number between 0 and 1.0.
      */
     getVolume(): number;
 
