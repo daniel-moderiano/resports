@@ -173,42 +173,6 @@ declare namespace Twitch {
   }
 
   /**
-   * Handlers for events fired by the player.
-   */
-  export interface Events {
-    /**
-     * Event fired when a player has finished loading and is ready to begin receiving API calls.
-     */
-    onReady?: PlayerEventHandler<PlayerEvent> | undefined;
-
-    /**
-     * Event fired when the player's state changes.
-     */
-    onStateChange?: PlayerEventHandler<OnStateChangeEvent> | undefined;
-
-    /**
-     * Event fired when the playback quality of the player changes.
-     */
-    onPlaybackQualityChange?: PlayerEventHandler<OnPlaybackQualityChangeEvent> | undefined;
-
-    /**
-     * Event fired when the playback rate of the player changes.
-     */
-    onPlaybackRateChange?: PlayerEventHandler<OnPlaybackRateChangeEvent> | undefined;
-
-    /**
-     * Event fired when an error in the player occurs
-     */
-    onError?: PlayerEventHandler<OnErrorEvent> | undefined;
-
-    /**
-     * Event fired to indicate thath the player has loaded, or unloaded, a module
-     * with exposed API methods. This currently only occurs for closed captioning.
-     */
-    onApiChange?: PlayerEventHandler<PlayerEvent> | undefined;
-  }
-
-  /**
    * Creates and controls a Twitch player in an <iframe>.
    */
   export class Player {
@@ -344,13 +308,5 @@ declare namespace Twitch {
      * @param callback   Callback/handler for the event.
      */
     addEventListener(event: PlayerEvent, callback: () => void): void;
-
-    /**
-     * Remove an event listener for the specified event.
-     *
-     * @param eventName   Name of the event.
-     * @param listener   Handler for the event.
-     */
-    removeEventListener<TEvent extends PlayerEvent>(eventName: keyof Events, listener: (event: TEvent) => void): void;
   }
 }
