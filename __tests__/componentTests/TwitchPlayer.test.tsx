@@ -4,11 +4,12 @@ import TwitchPlayer from '../../components/TwitchPlayer';
 
 // Named mocks to test player functions being called
 const muteMock = jest.fn();
-const unMuteMock = jest.fn();
+const isPausedMock = jest.fn();
 const playMock = jest.fn();
 const pauseMock = jest.fn();
-const seekToMock = jest.fn();
+const seekMock = jest.fn();
 const setVolumeMock = jest.fn();
+const setMutedMock = jest.fn();
 let getPlayerStateMock: () => number;
 
 
@@ -19,9 +20,11 @@ jest.mock('../../hooks/useTwitchPlayer', () => ({
     player: {
       getCurrentTime: jest.fn,
       getMuted: () => false,
+      setMuted: setMutedMock,
+      isPaused: isPausedMock,
       playVideo: playMock,
       pauseVideo: pauseMock,
-      seek: seekToMock,
+      seek: seekMock,
       setVolume: setVolumeMock,
       getVolume: jest.fn,
     }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from '../styles/componentStyles/YouTubePlayer.module.css';
 import * as React from 'react';
-import { useTwitchPlayer } from 'hooks/useTwitchPlayer';
+import { useTwitchPlayer } from '../hooks/useTwitchPlayer';
 import TwitchPlayerControls from './TwitchPlayerControls';
 
 interface TwitchPlayerProps {
@@ -160,11 +160,11 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
           break;
         case "Down": // IE/Edge specific value
         case "ArrowDown":
-          player.setVolume(player.getVolume() - 5);
+          player.setVolume(player.getVolume() - 0.05);
           break;
         case "Up": // IE/Edge specific value
         case "ArrowUp":
-          player.setVolume(player.getVolume() + 5);
+          player.setVolume(player.getVolume() + 0.05);
           break;
         case "Left": // IE/Edge specific value
         case "ArrowLeft":

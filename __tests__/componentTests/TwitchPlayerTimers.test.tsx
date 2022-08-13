@@ -4,15 +4,14 @@ import TwitchPlayer from '../../components/TwitchPlayer';
 import { act } from 'react-dom/test-utils';
 
 // Provide channel data and other UI states via this mock of the channel search API call
-jest.mock('../../hooks/useYouTubeIframe', () => ({
+jest.mock('../../hooks/useTwitchPlayer', () => ({
   // Make sure a player object is returned here to trigger the functions requiring a truthy player object
-  useYouTubeIframe: () => ({
+  useTwitchPlayer: () => ({
     player: {
-      getCurrentTime: () => 0,
-      isMuted: jest.fn,
-      mute: jest.fn,
-      unMute: jest.fn,
-      getPlayerState: jest.fn,
+      getCurrentTime: jest.fn,
+      getMuted: () => false,
+      setMuted: jest.fn,
+      isPaused: jest.fn,
     }
   })
 }));
@@ -23,10 +22,8 @@ jest.setTimeout(10000)
 describe('YouTube player controls/user activity timers', () => {
   it('Hides custom controls 3 seconds after user activity is first registered', async () => {
     render(<TwitchPlayer videoId='1234' />)
-    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
 
     // First enable custom controls, then hover the relevant div to trigger user activity/controls to show
-    await userEvent.click(hideYTBtn);
     const overlay = screen.getByTestId('overlay');
     await userEvent.hover(overlay);
 
@@ -41,11 +38,9 @@ describe('YouTube player controls/user activity timers', () => {
 
   it('Shows controls on press of mute keyboard shortcut', async () => {
     render(<TwitchPlayer videoId='1234' />)
-    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
     const wrapper = screen.getByTestId('wrapper');
 
     // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
-    await userEvent.click(hideYTBtn);
     wrapper.focus();
     await userEvent.keyboard('m');
 
@@ -55,11 +50,9 @@ describe('YouTube player controls/user activity timers', () => {
 
   it('Fades controls after some time following a mute keyboard shortcut', async () => {
     render(<TwitchPlayer videoId='1234' />)
-    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
     const wrapper = screen.getByTestId('wrapper');
 
     // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
-    await userEvent.click(hideYTBtn);
     wrapper.focus();
     await userEvent.keyboard('m');
 
@@ -78,10 +71,8 @@ describe('YouTube player controls/user activity timers', () => {
 
   it('Cancels original fade out timer when user is active within original fade out timer', async () => {
     render(<TwitchPlayer videoId='1234' />)
-    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
 
     // First enable custom controls, then hover the relevant div to trigger user activity/controls to show
-    await userEvent.click(hideYTBtn);
     const overlay = screen.getByTestId('overlay');
     await userEvent.hover(overlay);
 
@@ -103,10 +94,8 @@ describe('YouTube player controls/user activity timers', () => {
 
   it('Resets fade out time when user is active during original fade out time', async () => {
     render(<TwitchPlayer videoId='1234' />)
-    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
 
     // First enable custom controls, then hover the relevant div to trigger user activity/controls to show
-    await userEvent.click(hideYTBtn);
     const overlay = screen.getByTestId('overlay');
     await userEvent.hover(overlay);
 
