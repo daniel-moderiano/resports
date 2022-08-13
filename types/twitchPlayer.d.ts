@@ -272,6 +272,11 @@ declare namespace Twitch {
     getChannel(): string;
 
     /**
+     * @returns The current video’s timestamp, in seconds.
+     */
+    getCurrentTime(): number;
+
+    /**
      * @returns The duration of the video, in seconds.
      */
     getDuration(): number;

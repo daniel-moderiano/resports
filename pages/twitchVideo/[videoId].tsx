@@ -1,7 +1,6 @@
 // The video/watch page that houses an embedded Twitch iframe/player
-import { useTwitchPlayer } from "hooks/useTwitchPlayer";
+import TwitchPlayer from "../../components/TwitchPlayer";
 import { GetServerSideProps } from "next";
-import { useEffect } from "react";
 import { sanitiseVideoQuery } from "../../helpers/queryHandling";
 
 interface TwitchVideoProps {
@@ -17,25 +16,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { videoId } }
 }
 
-
 const TwitchVideo = ({ videoId }: TwitchVideoProps) => {
-
-  const { player } = useTwitchPlayer(videoId);
-
-  useEffect(() => {
-    if (player) {
-      player.addEventListener('playing', (event) => {
-        console.log(event);
-
-      })
-    }
-  }, [player])
-
   return (
     <div>
-      <div id="player"></div>
-      <button onClick={() => console.log(player?.getQualities())}>Get quality</button>
-      <button onClick={() => console.log(player?.setQuality('chunked'))}>Set quality</button>
+      <TwitchPlayer videoId={videoId} />
     </div >
   );
 };
