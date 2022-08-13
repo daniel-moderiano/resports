@@ -1,4 +1,5 @@
 // The video/watch page that houses an embedded Twitch iframe/player
+import { useTwitchPlayer } from "hooks/useTwitchPlayer";
 import { GetServerSideProps } from "next";
 import { useEffect } from "react";
 import { sanitiseVideoQuery } from "../../helpers/queryHandling";
@@ -19,33 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const TwitchVideo = ({ videoId }: TwitchVideoProps) => {
 
-  useEffect(() => {
-    const tag = document.createElement('script');
-    tag.id = "twitchScript"
-
-    // This conditional ensures the script tag is added to a fresh page, but that if one exists, we fully reload the page. This ensures that any parameter change (e.g. change in videoId, or controls enabled vs disabled) full reloads a new iframe. The alternative would be a non-loading iframe, or no change in iframe at all
-    if (!window.Twitch) {
-      tag.src = "https://player.twitch.tv/js/embed/v1.js";
-      document.body.appendChild(tag);
-    }
-
-
-    function createPlayer() {
-      const player = new Twitch.Player('player', {
-        video: videoId,
-        width: 800,
-        height: 450,
-        muted: false,
-        // autoplay: false,
-      })
-    }
-
-    tag.onload = createPlayer;
-
-    return () => {    // ensure script tags are cleaned on dismount
-      tag.remove();
-    }
-  }, [videoId]);
+  const { player } = useTwitchPlayer(videoId);
 
   return (
     <div>
