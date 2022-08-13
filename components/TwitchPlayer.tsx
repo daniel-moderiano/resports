@@ -82,7 +82,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
   const playOrPauseVideo = React.useCallback(() => {
     if (player) {
       if (player.isPaused()) {
-        player.playVideo();
+        player.play();
         setTimeout(() => {    // Give the gradient time to fade so you can be sure the YT controls are hidden
           setPlayerState(1);
         }, 100);
@@ -95,7 +95,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
       } else {
         setPlayerState(2);
         setTimeout(() => {    // Give the gradient time to fade in so you can be sure the YT controls are hidden
-          player.pauseVideo();
+          player.pause();
         }, 350)
       }
     }
@@ -191,7 +191,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
       <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)} tabIndex={0}>
         <div id="player"></div>
         <div
-          className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''} ${(userActive || playerState === 2) ? '' : styles.overlayInactive}`}
+          className={`${styles.overlay} ${(userActive || playerState === 2) ? '' : styles.overlayInactive}`}
           onClick={playOrPauseVideo}
           onDoubleClick={toggleFullscreen}
           onMouseMove={throttleMousemove}

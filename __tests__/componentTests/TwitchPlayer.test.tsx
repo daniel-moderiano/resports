@@ -4,13 +4,12 @@ import TwitchPlayer from '../../components/TwitchPlayer';
 
 // Named mocks to test player functions being called
 const muteMock = jest.fn();
-const isPausedMock = jest.fn();
 const playMock = jest.fn();
 const pauseMock = jest.fn();
 const seekMock = jest.fn();
 const setVolumeMock = jest.fn();
 const setMutedMock = jest.fn();
-let getPlayerStateMock: () => number;
+let isPausedMock: () => boolean;
 
 
 // Provide channel data and other UI states via this mock of the channel search API call
@@ -22,8 +21,8 @@ jest.mock('../../hooks/useTwitchPlayer', () => ({
       getMuted: () => false,
       setMuted: setMutedMock,
       isPaused: isPausedMock,
-      playVideo: playMock,
-      pauseVideo: pauseMock,
+      play: playMock,
+      pause: pauseMock,
       seek: seekMock,
       setVolume: setVolumeMock,
       getVolume: jest.fn,
@@ -74,42 +73,6 @@ describe('YouTube player styling and modes', () => {
     expect(overlay).toBeInTheDocument();
     expect(customControls).toBeInTheDocument();
   });
-
-  it('Shows clear overlay when the video is playing', async () => {
-    getPlayerStateMock = () => 2;   // 'pause' the video
-    render(<TwitchPlayer videoId='1234' />)
-    const wrapper = screen.getByTestId('wrapper');
-
-    // Ensure the video is in a 'playing' state using key shortcuts
-    wrapper.focus();
-    await userEvent.keyboard('k');
-
-    // Allow for the timeout to expire before the playVideo func is called
-    await act(async () => {
-      await new Promise(res => setTimeout(res, 500));
-    });
-
-    const overlay = screen.getByTestId('overlay');
-    expect(overlay).toHaveClass('overlayPlaying');
-  });
-
-  it('Shows blocking overlay when the video is paused', async () => {
-    getPlayerStateMock = () => 1;   // 'play' the video
-    render(<TwitchPlayer videoId='1234' />)
-    const wrapper = screen.getByTestId('wrapper');
-
-    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
-    wrapper.focus();
-    await userEvent.keyboard('k');
-
-    // Allow time for the timout to expire before pausing video
-    await act(async () => {
-      await new Promise(res => setTimeout(res, 500));
-    })
-
-    const overlay = screen.getByTestId('overlay');
-    expect(overlay).toHaveClass('overlayPaused');
-  });
 });
 
 describe('YouTube player control toggles', () => {
@@ -153,11 +116,11 @@ describe('YouTube player keyboard shortcuts', () => {
     await userEvent.keyboard('m');
 
     // The mock iframe hook sets the initial mute state to 'unmuted', hence the mute mock should be called
-    expect(muteMock).toBeCalled();
+    expect(setMutedMock).toBeCalled();
   });
 
   it('Plays a paused video on "k" key press', async () => {
-    getPlayerStateMock = () => 2;   // 'pause' the video
+    isPausedMock = () => true;   // 'pause' the video
     render(<TwitchPlayer videoId='1234' />)
     const wrapper = screen.getByTestId('wrapper');
 
@@ -174,47 +137,13 @@ describe('YouTube player keyboard shortcuts', () => {
   });
 
   it('Pauses a playing video on "k" key press', async () => {
-    getPlayerStateMock = () => 1;   // 'play' the video
+    isPausedMock = () => false;   // 'play' the video
     render(<TwitchPlayer videoId='1234' />)
     const wrapper = screen.getByTestId('wrapper');
 
     // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
     wrapper.focus();
     await userEvent.keyboard('k');
-
-    // Allow time for the timout to expire before pausing video
-    await act(async () => {
-      await new Promise(res => setTimeout(res, 500));
-    })
-
-    expect(pauseMock).toBeCalled();
-  });
-
-  it('Plays a paused video on "k" key press', async () => {
-    getPlayerStateMock = () => 2;   // 'pause' the video
-    render(<TwitchPlayer videoId='1234' />)
-    const wrapper = screen.getByTestId('wrapper');
-
-    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
-    wrapper.focus();
-    await userEvent.keyboard('[Space]');
-
-    // Allow time for the timout to expire before playing video
-    await act(async () => {
-      await new Promise(res => setTimeout(res, 500));
-    })
-
-    expect(playMock).toBeCalled();
-  });
-
-  it('Pauses a playing video on "k" key press', async () => {
-    getPlayerStateMock = () => 1;   // 'play' the video
-    render(<TwitchPlayer videoId='1234' />)
-    const wrapper = screen.getByTestId('wrapper');
-
-    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
-    wrapper.focus();
-    await userEvent.keyboard('[Space]');
 
     // Allow time for the timout to expire before pausing video
     await act(async () => {
@@ -245,9 +174,8 @@ describe('YouTube player keyboard shortcuts', () => {
     await userEvent.keyboard('[ArrowLeft]');
     await userEvent.keyboard('[ArrowRight]');
 
-    expect(seekToMock).toBeCalledTimes(2);
+    expect(seekMock).toBeCalledTimes(2);
   });
 });
-
 
 

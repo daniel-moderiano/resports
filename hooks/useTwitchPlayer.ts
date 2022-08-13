@@ -22,6 +22,7 @@ export const useTwitchPlayer = (
         height: 450,
         muted: false,
         autoplay: false,
+        controls: false,
       });
 
       setPlayer(player)

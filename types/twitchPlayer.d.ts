@@ -187,12 +187,12 @@ declare namespace Twitch {
     /**
      * Plays the specified video.
      */
-    playVideo(): void;
+    play(): void;
 
     /**
      * Pauses the currently playing video.
      */
-    pauseVideo(): void;
+    pause(): void;
 
     /**
      * Seeks to a specified time in the video.
