@@ -14,6 +14,7 @@ import EnterFullscreenIcon from './icons/EnterFullscreenIcon';
 import TheaterIcon from './icons/TheaterIcon';
 import PlayIcon from './icons/PlayIcon';
 import PauseIcon from './icons/PauseIcon';
+import SettingsGearIcon from './icons/SettingsGearIcon';
 
 interface TwitchPlayerControlsProps {
   player: Twitch.Player;
@@ -108,6 +109,11 @@ const TwitchPlayerControls = ({
       </div>
 
       <div className={styles.rightControls}>
+
+        <button className={styles.controlsBtn}>
+          <SettingsGearIcon iconStyles={styles.icons24} fill="#FFFFFF" />
+        </button>
+
         <button className={styles.controlsBtn} onClick={toggleTheater} data-testid="theater" aria-label="Switch to theater mode">
           <TheaterIcon iconStyles={styles.icons24} fill="#FFFFFF" />
         </button>

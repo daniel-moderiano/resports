@@ -24,6 +24,7 @@ jest.mock('../../hooks/useTwitchPlayer', () => ({
       seek: seekMock,
       setVolume: setVolumeMock,
       getVolume: jest.fn,
+      addEventListener: jest.fn,
     }
   })
 }));

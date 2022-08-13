@@ -12,6 +12,7 @@ jest.mock('../../hooks/useTwitchPlayer', () => ({
       getMuted: () => false,
       setMuted: jest.fn,
       isPaused: jest.fn,
+      addEventListener: jest.fn,
     }
   })
 }));
