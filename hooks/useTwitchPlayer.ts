@@ -8,6 +8,8 @@ export const useTwitchPlayer = (
 
   useEffect(() => {
     const tag = document.createElement('script');
+    console.log(window.Twitch);
+
 
     // This conditional ensures the script tag is added to a fresh page, but that if one exists, we fully reload the page. This ensures that any parameter change (e.g. change in videoId, or controls enabled vs disabled) full reloads a new iframe. The alternative would be a non-loading iframe, or no change in iframe at all
     if (!window.YT) {

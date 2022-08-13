@@ -373,23 +373,33 @@ declare namespace Twitch {
     video?: string | undefined;
 
     /**
+     * ID of the collection to play videos from. 
+     */
+    collection?: string | undefined;
+
+    /**
+    * ID of the channel to play videos from. Channel will be preferred when specified alongside video and/or collection
+    */
+    channel?: string | undefined;
+
+    /**
      * List of other domains your site is to be embedded on.
      */
     parent?: string[] | undefined;
 
     /**
      * Whether controls are shown. This also enables/disables keyboard controls.
-     * ! This is a hidden option, and is not listed on Twitch's API documentation
+     * This is a hidden option, i.e. is not listed on Twitch's API documentation
      */
     controls?: boolean | undefined;
 
     /**
-     * Whether to start the video automatically. Autoplay is not compatible with an unmuted video to begin.
+     * Whether to start the video automatically (default true).
      */
     autoplay?: boolean | undefined;
 
     /**
-     * Whether to start the video muted (by default false).
+     * Whether to start the video muted (default false). This will be automatically set to true if autoplay is enabled.
      */
     muted?: boolean | undefined;
 

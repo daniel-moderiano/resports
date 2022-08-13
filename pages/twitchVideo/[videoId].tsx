@@ -21,20 +21,22 @@ const TwitchVideo = ({ videoId }: TwitchVideoProps) => {
 
   useEffect(() => {
     const tag = document.createElement('script');
+    tag.id = "twitchScript"
 
     // This conditional ensures the script tag is added to a fresh page, but that if one exists, we fully reload the page. This ensures that any parameter change (e.g. change in videoId, or controls enabled vs disabled) full reloads a new iframe. The alternative would be a non-loading iframe, or no change in iframe at all
-    if (!window.YT) {
+    if (!window.Twitch) {
       tag.src = "https://player.twitch.tv/js/embed/v1.js";
       document.body.appendChild(tag);
-    } else {
-      // * Reloading the iframe only does NOT achieve the desired effect!
-      window.location.reload();
     }
 
 
     function createPlayer() {
       const player = new Twitch.Player('player', {
         video: videoId,
+        width: 800,
+        height: 450,
+        muted: false,
+        // autoplay: false,
       })
     }
 
