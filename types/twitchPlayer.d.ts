@@ -7,187 +7,63 @@
  */
 declare namespace Twitch {
   /**
-   * State of a video player.
+   * Allowed suggested player video qualities (default is auto)
+   * Chunked represents source quality, and is the highest quality available.
    */
-  export enum PlayerState {
-    UNSTARTED = -1,
-    ENDED = 0,
-    PLAYING = 1,
-    PAUSED = 2,
-    BUFFERING = 3,
-    CUED = 5
-  }
+  export type VideoQualities = "160p" | "360p" | "480p" | "720p" | "1080p" | "auto" | "chunked";
 
   /**
-   * Known causes for player errors.
+   * Twitch player events that can be listened for.
    */
-  export enum PlayerError {
+  export type PlayerEvent =
     /**
-     * The request contained an invalid parameter value.
+     * Closed captions are found in the video content being played.
      */
-    InvalidParam = 2,
+    "captions" |
 
     /**
-     * The requested content cannot be played in an HTML5 player.
+     * Video or stream ends.
      */
-    Html5Error = 5,
+    "ended" |
+    /**
+     * Player is paused. Buffering and seeking is not considered paused.
+     */
+    "pause" |
 
     /**
-     * The video requested was not found.
+     * Player just unpaused, will either start video playback or start buffering.
      */
-    VideoNotFound = 100,
+    "play" |
 
     /**
-     * The owner of the requested video does not allow it to be played in embedded players.
+     * Player playback was blocked. Usually fired after an unmuted autoplay or unmuted programmatic call on play().
      */
-    EmbeddingNotAllowed = 101,
+    "playback_blocked" |
 
     /**
-     * This error is the same as 101. It's just a 101 error in disguise!
+     * 	Player started video playback.
      */
-    EmbeddingNotAllowed2 = 150
-  }
-
-  /**
-   * Whether to auto-hide video controls.
-   */
-  export enum AutoHide {
-    /**
-     * Controls are visible throughout the video
-     */
-    AlwaysVisible = 0,
+    "playing" |
 
     /**
-     * Progress bar and player controls slide out of view after a couple of seconds.
+     * Loaded channel goes offline.
      */
-    HideAllControls = 1,
+    "offline" |
 
     /**
-     * Progress bar fades out while the player controls remain visible.
+     * Loaded channel goes online.
      */
-    HideProgressBar = 2
-  }
-
-  /**
-   * Whether to autoplay the video.
-   */
-  export enum AutoPlay {
-    /**
-     * Video does not autoplay.
-     */
-    NoAutoPlay = 0,
+    "online" |
 
     /**
-     * Video will autoplay when loaded.
+     * Player is ready to accept function calls.
      */
-    AutoPlay = 1
-  }
+    "ready" |
 
-  /**
-   * Allowed suggested player video qualities.
-   */
-  export type VideoQuality = (
-    VideoQualityAuto
-    | VideoQualitySD160
-    | VideoQualitySD360
-    | VideoQualitySD480
-    | VideoQualityHD720
-    | VideoQualityHD1080
-    | VideoQualitySource);
-
-  /**
-   * Default video quality chosen by Twitch.
-   */
-  export type VideoQualityAuto = "auto";
-
-  /**
-   * Player height is 160px, and player dimensions are at least 284px by 160px for 16:9 aspect ratio.
-   */
-  export type VideoQualitySmall = "160p";
-
-  /**
-   * Player height is 360px, and player dimensions are 640px by 360px for 16:9 aspect ratio.
-   */
-  export type VideoQualityMedium = "360p";
-
-  /**
-   * Player height is 480px, and player dimensions are 852px by 480px for 16:9 aspect ratio. 
-   */
-  export type VideoQualityLarge = "480p";
-
-  /**
-   * Player height is 720px, and player dimensions are 1280px by 720px for 16:9 aspect ratio.
-   */
-  export type VideoQualityHD720 = "720p";
-
-  /**
-   * Player height is 1080px, and player dimensions are 1920px by 1080px for 16:9 aspect ratio.
-   */
-  export type VideoQualityHD1080 = "1080p";
-
-  /**
-   * Pass-through of the original source. The highest quality source, used with players larger than 1080px in height.
-   */
-  export type VideoQualitySource = "chunked";
-
-  /**
-   * Base interface for events triggered by a player.
-   */
-  export interface PlayerEvent {
     /**
-     * Video player corresponding to the event.
+     * 	User has used the player controls to seek a VOD, the seek() method has been called, or live playback has seeked to sync up after being paused.
      */
-    target: Player;
-  }
-
-  /**
-   * Event for player state change.
-   */
-  export interface OnStateChangeEvent extends PlayerEvent {
-    /**
-     * New player state.
-     */
-    data: PlayerState;
-  }
-
-  /**
-   * Event for playback quality change.
-   */
-  export interface OnPlaybackQualityChangeEvent extends PlayerEvent {
-    /**
-     * New playback quality.
-     */
-    data: string;
-  }
-
-  /**
-   * Event for playback rate change.
-   */
-  export interface OnPlaybackRateChangeEvent extends PlayerEvent {
-    /**
-     * New playback rate.
-     */
-    data: number;
-  }
-
-  /**
-   * Event for a player error.
-   */
-  export interface OnErrorEvent extends PlayerEvent {
-    /**
-     * Which type of error occurred.
-     */
-    data: PlayerError;
-  }
-
-  /**
-   * Handles a player event.
-   *
-   * @param event   The triggering event.
-   */
-  export interface PlayerEventHandler<TEvent extends PlayerEvent> {
-    (event: TEvent): void;
-  }
+    "seek";
 
   /**
    * YouTube player options.
@@ -390,7 +266,7 @@ declare namespace Twitch {
      * Sets the quality of the video.
      * @param quality   Video quality (string) from the available values
      */
-    setQuality(quality: VideoQuality): void;
+    setQuality(quality: VideoQualities): void;
 
     /**
      * Sets the video to be played to be played and starts playback at timestamp (in seconds).
@@ -449,7 +325,7 @@ declare namespace Twitch {
     /**
      * @returns The current quality of video playback.
      */
-    getQuality(): VideoQuality;
+    getQuality(): string;
 
     /**
      * @returns The video ID. Works only for VODs, not livestreams.
@@ -462,67 +338,12 @@ declare namespace Twitch {
     isPaused(): boolean;
 
     /**
-     * @returns Actual video quality of the current video.
-     */
-    getPlaybackQuality(): SuggestedVideoQuality;
-
-    /**
-     * Sets the suggested video quality for the current video.
-     *
-     * @param suggestedQuality   Suggested video quality for the current video.
-     */
-    setPlaybackQuality(suggestedQuality: SuggestedVideoQuality): void;
-
-    /**
-     * @returns Quality formats in which the current video is available.
-     */
-    getAvailableQualityLevels(): SuggestedVideoQuality[];
-
-    /**
-     * @returns Duration in seconds of the currently playing video.
-     */
-    getDuration(): number;
-
-    /**
-     * @returns YouTube.com URL for the currently loaded/playing video.
-     */
-    getVideoUrl(): string;
-
-    /**
-     * @returns The spherical video config object, with information about the viewport
-     * headings and zoom level.
-     */
-    getSphericalProperties(): SphericalProperties;
-
-    /**
-     * Sets the spherical video config object. The call will be No-Op for non-360
-     * videos, and will change the view port according to the input for 360
-     * videos.
-     */
-    setSphericalProperties(option: SphericalProperties): void;
-
-    /**
-     * @returns Embed code for the currently loaded/playing video.
-     */
-    getVideoEmbedCode(): string;
-
-    /**
-     * @returns Video IDs in the playlist as they are currently ordered.
-     */
-    getPlaylist(): string[];
-
-    /**
-     * @returns Index of the playlist video that is currently playing.
-     */
-    getPlaylistIndex(): number;
-
-    /**
      * Adds an event listener for the specified event.
      *
-     * @param eventName   Name of the event.
-     * @param listener   Handler for the event.
+     * @param event   Name of the event.
+     * @param callback   Callback/handler for the event.
      */
-    addEventListener<TEvent extends PlayerEvent>(eventName: keyof Events, listener: (event: TEvent) => void): void;
+    addEventListener(event: PlayerEvent, callback: () => void): void;
 
     /**
      * Remove an event listener for the specified event.
@@ -531,15 +352,5 @@ declare namespace Twitch {
      * @param listener   Handler for the event.
      */
     removeEventListener<TEvent extends PlayerEvent>(eventName: keyof Events, listener: (event: TEvent) => void): void;
-
-    /**
-     * @returns The DOM node for the embedded <iframe>.
-     */
-    getIframe(): HTMLIFrameElement;
-
-    /**
-     * Removes the <iframe> containing the player.
-     */
-    destroy(): void;
   }
 }

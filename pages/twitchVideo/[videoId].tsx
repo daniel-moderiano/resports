@@ -24,7 +24,10 @@ const TwitchVideo = ({ videoId }: TwitchVideoProps) => {
 
   useEffect(() => {
     if (player) {
-      console.log(player.getQuality());
+      player.addEventListener('playing', (event) => {
+        console.log(event);
+
+      })
     }
   }, [player])
 
@@ -32,7 +35,7 @@ const TwitchVideo = ({ videoId }: TwitchVideoProps) => {
     <div>
       <div id="player"></div>
       <button onClick={() => console.log(player?.getQualities())}>Get quality</button>
-      <button onClick={() => console.log(player?.setQuality('720p'))}>Set quality</button>
+      <button onClick={() => console.log(player?.setQuality('chunked'))}>Set quality</button>
     </div >
   );
 };
