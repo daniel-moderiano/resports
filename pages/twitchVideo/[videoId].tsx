@@ -22,12 +22,16 @@ const TwitchVideo = ({ videoId }: TwitchVideoProps) => {
 
   const { player } = useTwitchPlayer(videoId);
 
+  useEffect(() => {
+    if (player) {
+      console.log(player.getQuality());
+    }
+  }, [player])
+
   return (
     <div>
-      <p>{videoId}</p>
-      Hello Sarah
-
       <div id="player"></div>
+      <button onClick={() => console.log(player.getQuality())}>Get quality</button>
     </div>
   );
 };

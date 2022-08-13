@@ -84,215 +84,52 @@ declare namespace Twitch {
   }
 
   /**
-   * Whether to use user-preferred or forced caption loading.
+   * Allowed suggested player video qualities.
    */
-  export enum ClosedCaptionsLoadPolicy {
-    /**
-     * Defaults to the user's preferences.
-     */
-    UserDefault = 0,
-
-    /**
-     * For closed captions to be shown.
-     */
-    ForceOn = 1
-  }
+  export type VideoQuality = (
+    VideoQualityAuto
+    | VideoQualitySD160
+    | VideoQualitySD360
+    | VideoQualitySD480
+    | VideoQualityHD720
+    | VideoQualityHD1080
+    | VideoQualitySource);
 
   /**
-   * Allowed progress bar colors.
+   * Default video quality chosen by Twitch.
    */
-  export type ProgressBarColor = "red" | "white";
+  export type VideoQualityAuto = "auto";
 
   /**
-   * How video controls are shown.
+   * Player height is 160px, and player dimensions are at least 214px by 160px for 4:3 aspect ratio.
    */
-  export enum Controls {
-    /**
-     * Player controls do not display.
-     */
-    Hide = 0,
-
-    /**
-     * Player controls display.
-     */
-    ShowLoadPlayer = 1,
-
-    /**
-     * Player controls display after a delay.
-     */
-    ShowDelayLoadPlayer = 2
-  }
+  export type VideoQualitySmall = "160p30";
 
   /**
-   * Whether to allow keyboard controls.
+   * Player height is 360px, and player dimensions are 640px by 360px (for 16:9 aspect ratio) or 480px by 360px (for 4:3 aspect ratio).
    */
-  export enum KeyboardControls {
-    /**
-     * Keyboard controls are enabled.
-     */
-    Enable = 0,
-
-    /**
-     * Keyboard controls are disabled.
-     */
-    Disable = 1
-  }
+  export type VideoQualityMedium = "360p30";
 
   /**
-   * Whether the JavaScript API should be enabled.
+   * Player height is 480px, and player dimensions are 853px by 480px (for 16:9 aspect ratio) or 640px by 480px (for 4:3 aspect ratio).
    */
-  export enum JsApi {
-    /**
-     * JavaScript API will be disabled.
-     */
-    Disable = 0,
-
-    /**
-     * JavaScript API will be enabled.
-     */
-    Enable = 1
-  }
+  export type VideoQualityLarge = "480p30";
 
   /**
-   * Whether to display the full-screen button.
+   * Player height is 720px, and player dimensions are 1280px by 720px (for 16:9 aspect ratio) or 960px by 720px (for 4:3 aspect ratio).
    */
-  export enum FullscreenButton {
-    /**
-     * The full screen button is hidden.
-     */
-    Hide = 0,
-
-    /**
-     * The full screen button is visible.
-     */
-    Show = 1
-  }
+  export type VideoQualityHD720 = "720p60";
 
   /**
-   * Whether to show video annotations.
+   * Player height is 1080px, and player dimensions are 1920px by 1080px (for 16:9 aspect ratio) or 1440px by 1080px (for 4:3 aspect ratio).
    */
-  export enum IvLoadPolicy {
-    /**
-     * Video annotations will be shown.
-     */
-    Show = 1,
-
-    /**
-     * Video annotations will not be shown.
-     */
-    Hide = 3
-  }
+  export type VideoQualityHD1080 = "1080p60";
 
   /**
-   * Which type of content loads in the player.
+   * Player height is greater than 1080px, which means that the player's aspect ratio is greater than 1920px by 1080px.
+   * The highest video quality available.
    */
-  export type ListType = ListTypeSearch | ListTypeUserUploads | ListTypePlaylist;
-
-  /**
-   * A search area should be shown in the player.
-   * @deprecated
-   */
-  export type ListTypeSearch = "search";
-
-  /**
-   * The user's uploads should load in the player.
-   */
-  export type ListTypeUserUploads = "user_uploads";
-
-  /**
-   * A playlist should be shown in the player.
-   */
-  export type ListTypePlaylist = "playlist";
-
-  /**
-   * Whether a single video should be looped.
-   */
-  export enum Loop {
-    /**
-     * Video or playlist will be played only once.
-     */
-    SinglePlay = 0,
-
-    /**
-     * Video or playlist will be played over and over again.
-     */
-    Loop = 1
-  }
-
-  /**
-   * Comma separated list of video IDs to play after the URL path's video.
-   */
-  export enum ModestBranding {
-    /**
-     * Player will contain full YouTube branding.
-     */
-    Full = 0,
-
-    /**
-     * YouTube logo will not display in the control bar.
-     */
-    Modest = 1
-  }
-
-  /**
-   * Whether or not to start the video muted. Some browsers require this set to 1 for autoplay to work (e.g. Chrome).
-   */
-  export enum Mute {
-    /**
-     * Player will start not muted, with sound
-     */
-    NotMuted = 0,
-
-    /**
-     * Player will start muted
-     */
-    Muted = 1
-  }
-
-  /**
-   * Whether to playback video inline or full-screen in an HTML5 player on iOS
-   */
-  export enum PlaysInline {
-    /**
-     * Playback in fullscreen.
-     */
-    Fullscreen = 0,
-
-    /**
-     * Playback inline
-     */
-    Inline = 1
-  }
-
-  /**
-   * Whether to show related videos after the video finishes.
-   */
-  export enum RelatedVideos {
-    /**
-     * Hide related videos after playback is complete.
-     */
-    Hide = 0,
-
-    /**
-     * Show related videos after playback is complete.
-     */
-    Show = 1
-  }
-
-  /**
-   * Whether to show video information before playing.
-   */
-  export enum ShowInfo {
-    /**
-     * Hide video title and uploader before video starts playing.
-     */
-    Hide = 0,
-
-    /**
-     * Show video title and uploader before video starts playing.
-     */
-    Show = 1
-  }
+  export type VideoQualitySource = "chunked";
 
   /**
    * Base interface for events triggered by a player.
@@ -410,52 +247,6 @@ declare namespace Twitch {
     time?: string | undefined;
   }
 
-  /**
-   * Allowed suggested player video qualities.
-   */
-  export type SuggestedVideoQuality = (
-    VideoQualityDefault
-    | VideoQualitySmall
-    | VideoQualityMedium
-    | VideoQualityLarge
-    | VideoQualityHD720
-    | VideoQualityHD1080
-    | VideoQualityHighRes);
-
-  /**
-   * Default video quality chosen by YouTube.
-   */
-  export type VideoQualityDefault = "default";
-
-  /**
-   * Player height is 240px, and player dimensions are at least 320px by 240px for 4:3 aspect ratio.
-   */
-  export type VideoQualitySmall = "small";
-
-  /**
-   * Player height is 360px, and player dimensions are 640px by 360px (for 16:9 aspect ratio) or 480px by 360px (for 4:3 aspect ratio).
-   */
-  export type VideoQualityMedium = "medium";
-
-  /**
-   * Player height is 480px, and player dimensions are 853px by 480px (for 16:9 aspect ratio) or 640px by 480px (for 4:3 aspect ratio).
-   */
-  export type VideoQualityLarge = "large";
-
-  /**
-   * Player height is 720px, and player dimensions are 1280px by 720px (for 16:9 aspect ratio) or 960px by 720px (for 4:3 aspect ratio).
-   */
-  export type VideoQualityHD720 = "hd720";
-
-  /**
-   * Player height is 1080px, and player dimensions are 1920px by 1080px (for 16:9 aspect ratio) or 1440px by 1080px (for 4:3 aspect ratio).
-   */
-  export type VideoQualityHD1080 = "hd1080";
-
-  /**
-   * Player height is greater than 1080px, which means that the player's aspect ratio is greater than 1920px by 1080px.
-   */
-  export type VideoQualityHighRes = "highres";
 
   /**
    * Handlers for events fired by the player.
@@ -494,66 +285,6 @@ declare namespace Twitch {
   }
 
   /**
-   * Settings to load, play, or queue a video or playlist.
-   */
-  export interface VideoOrPlaylistSettings {
-    /**
-     * Time, in seconds from the beginning of the (first) video, when to start playing.
-     */
-    startSeconds?: number | undefined;
-
-    /**
-     * Time, in seconds from the end of the (first) video, when to end playing.
-     */
-    endSeconds?: number | undefined;
-
-    /**
-     * Suggested video player quality.
-     */
-    suggestedQuality?: SuggestedVideoQuality | undefined
-  }
-
-  /**
-   * Settings to play or queue a video by ID.
-   */
-  export interface VideoByIdSettings extends VideoOrPlaylistSettings {
-    /**
-     * Video ID.
-     */
-    videoId: string;
-  }
-
-  /**
-   * Settings to play or queue a video by media content URL.
-   */
-  export interface VideoByMediaContentUrlSettings extends VideoOrPlaylistSettings {
-    /**
-     * Fully qualified player URL.
-     */
-    mediaContentUrl: string;
-  }
-
-  /**
-   * Settings to load or queue a playlist.
-   */
-  export interface IPlaylistSettings extends VideoOrPlaylistSettings {
-    /**
-     * Identifier for the listType videos list.
-     */
-    list: string;
-
-    /**
-     * Which type of content loads in the player.
-     */
-    listType?: ListType | undefined;
-
-    /**
-     * Start index of the playlist, if not 0.
-     */
-    index?: number | undefined;
-  }
-
-  /**
    * Creates and controls a Twitch player in an <iframe>.
    */
   export class Player {
@@ -566,105 +297,7 @@ declare namespace Twitch {
     constructor(playerDivId: string, options: PlayerOptions);
 
     /**
-     * Queues a video by ID.
-     *
-     * @param videoId   Video ID.
-     * @param startSeconds   Time from which the video should start playing.
-     * @param suggestedQuality   Suggested video player quality.
-     */
-    cueVideoById(videoId: string, startSeconds?: number, suggestedQuality?: SuggestedVideoQuality): void;
-
-    /**
-     * Queues a video by ID.
-     *
-     * @param args   Settings to queue the video.
-     */
-    cueVideoById(args: VideoByIdSettings): void;
-
-    /**
-     * Loads and plays a video by ID.
-     *
-     * @param videoId   Video ID.
-     * @param startSeconds   Time from which the video should start playing.
-     * @param suggestedQuality   Suggested video player quality.
-     */
-    loadVideoById(videoId: string, startSeconds?: number, suggestedQuality?: SuggestedVideoQuality): void;
-
-    /**
-     * Loads and plays a video by ID.
-     *
-     * @param args   Settings to play the video.
-     */
-    loadVideoById(args: VideoByIdSettings): void;
-
-    /**
-     * Queues a video by media content URL.
-     *
-     * @param mediaContentUrl   Fully qualified player URL.
-     * @param startSeconds   Time from which the video should start playing.
-     * @param suggestedQuality   Suggested video player quality.
-     */
-    cueVideoByUrl(mediaContentUrl: string, startSeconds?: number, suggestedQuality?: SuggestedVideoQuality): void;
-
-    /**
-     * Queues a video by media content URL.
-     *
-     * @param args   Settings to play the video.
-     */
-    cueVideoByUrl(args: VideoByMediaContentUrlSettings): void;
-
-    /**
-     * Loads a video by media content URL.
-     *
-     * @param mediaContentUrl   Fully qualified player URL.
-     * @param startSeconds   Time from which the video should start playing.
-     * @param suggestedQuality   Suggested video player quality.
-     */
-    loadVideoByUrl(mediaContentUrl: string, startSeconds?: number, suggestedQuality?: SuggestedVideoQuality): void;
-
-    /**
-     * Loads a video by media content URL.
-     *
-     * @param args   Settings to play the video.
-     */
-    loadVideoByUrl(args: { mediaContentUrl: string; startSeconds?: number | undefined; endSeconds?: number | undefined; suggestedQuality?: SuggestedVideoQuality | undefined }): void;
-
-    /**
-     * Queues a playlist of videos.
-     *
-     * @param playlist   Video ID(s) to play.
-     * @param index   Start index of the playlist, if not 0.
-     * @param startSeconds   Time from which the video should start playing.
-     * @param suggestedQuality   Suggested video player quality.
-     */
-    cuePlaylist(playlist: string | string[], index?: number, startSeconds?: number, suggestedQuality?: SuggestedVideoQuality): void;
-
-    /**
-     * Queues a playlist of videos.
-     *
-     * @param args   Settings to queue the playlist.
-     */
-    cuePlaylist(args: IPlaylistSettings): void;
-
-    /**
-     * Loads a playlist of videos.
-     *
-     * @param playlist   Video ID(s) to play.
-     * @param index   Start index of the playlist, if not 0.
-     * @param startSeconds   Time from which the video should start playing.
-     * @param suggestedQuality   Suggested video player quality.
-     */
-    loadPlaylist(playlist: string | string[], index?: number, startSeconds?: number, suggestedQuality?: SuggestedVideoQuality): void;
-
-    /**
-     * Loads a playlist of videos.
-     *
-     * @param args    Settings to queue the playlist.
-     */
-    loadPlaylist(args: IPlaylistSettings): void;
-
-    /**
-     * Plays the currently cued/loaded video.
+     * Plays the specified video.
      */
     playVideo(): void;
 
@@ -674,44 +307,42 @@ declare namespace Twitch {
     pauseVideo(): void;
 
     /**
-     * Stops and cancels loading of the current video.
-     */
-    stopVideo(): void;
-
-    /**
      * Seeks to a specified time in the video.
      *
-     * @param seconds   Time, in seconds from the beginning of the video.
-     * @param allowSeekAhead   Whether the player is allowed to make a new request for unbuffered data.
+     * @param timestamp   Timestamp, in seconds from the beginning of the video.
      */
-    seekTo(seconds: number, allowSeekAhead: boolean): void;
+    seek(seconds: number): void;
 
     /**
-     * Loads and plays the next video in the playlist.
+     * Disables display of Closed Captions.
      */
-    nextVideo(): void;
+    disableCaptions(): void;
 
     /**
-     * Loads and plays the previous video in the playlist.
+     * Enables display of Closed Captions (if available).
      */
-    previousVideo(): void;
+    enableCaptions(): void;
 
     /**
-     * Loads and plays the specified video in the playlist.
+     * Sets the channel to be played.
      *
-     * @param index   Index of the video to play.
+     * @param index   ID of the channel to be played. 
      */
-    playVideoAt(index: number): void;
+    setChannel(channel: string): void;
 
     /**
-     * Mutes the player.
+     * Sets the collection to be played.
+     * Optionally also specifies the video within the collection, from which to start playback.
+     * @param collectionId   ID of the collection to be played from. 
+     * @param videoId   ID of the video to start with (within collection) 
      */
-    mute(): void;
+    setCollection(collectionId: string, videoId?: string): void;
 
     /**
-     * Unmutes the player.
+     * Sets the quality of the video.
+     * @param quality   Video quality from the available types
      */
-    unMute(): void;
+    setQuality(quality: VideoQuality): void;
 
     /**
      * @returns Whether the player is muted.
