@@ -20,8 +20,7 @@ export const useTwitchPlayer = (
         video: videoId,
         width: 800,
         height: 450,
-        muted: false,
-        autoplay: false,
+        autoplay: true,
         controls: false,
       });
 

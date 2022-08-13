@@ -27,6 +27,19 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
   // Adds the YT Iframe to the div#player returned below
   const { player } = useTwitchPlayer(videoId);
 
+  // Ensure the local playerState state is set on play/pause events. This ensures other elements modify with each of the changes as needed
+  React.useEffect(() => {
+    if (player) {
+      player.addEventListener('play', () => {
+        setPlayerState(1);
+      });
+
+      player.addEventListener('pause', () => {
+        setPlayerState(2);
+      });
+    }
+  }, [player])
+
   // A general user activity function. Use this whenever the user performs an 'active' action and it will signal the user is interacting with the video, which then enables other features such as showing controls
   const signalUserActivity = () => {
     setUserActive(true);
@@ -83,20 +96,13 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
     if (player) {
       if (player.isPaused()) {
         player.play();
-        setTimeout(() => {    // Give the gradient time to fade so you can be sure the YT controls are hidden
-          setPlayerState(1);
-        }, 100);
-
         // A longer timeout is used here because it can be quite anti-user experience to have controls and cursor fade almost immediately after pressing play. 
         setTimeout(() => {
           setUserActive(false);    // ensure video controls fade   
         }, 1000)
 
       } else {
-        setPlayerState(2);
-        setTimeout(() => {    // Give the gradient time to fade in so you can be sure the YT controls are hidden
-          player.pause();
-        }, 350)
+        player.pause();
       }
     }
   }, [player]);

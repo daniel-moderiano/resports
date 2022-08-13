@@ -74,7 +74,7 @@ describe('YouTube player styling and modes', () => {
   });
 
   it('Shows clear overlay when the video is playing (custom mode)', async () => {
-    getPlayerStateMock = () => 2;   // 'pause' the video
+    getPlayerStateMock = () => 2;   // 'play' the video
     render(<YouTubePlayer videoId='1234' />)
     const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
     const wrapper = screen.getByTestId('wrapper');
@@ -94,7 +94,7 @@ describe('YouTube player styling and modes', () => {
   });
 
   it('Shows blocking overlay when the video is paused', async () => {
-    getPlayerStateMock = () => 1;   // 'play' the video
+    getPlayerStateMock = () => 1;   // 'pause' the video
     render(<YouTubePlayer videoId='1234' />)
     const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
     const wrapper = screen.getByTestId('wrapper');
@@ -240,44 +240,6 @@ describe('YouTube player keyboard shortcuts', () => {
     await userEvent.click(hideYTBtn);
     wrapper.focus();
     await userEvent.keyboard('k');
-
-    // Allow time for the timout to expire before pausing video
-    await act(async () => {
-      await new Promise(res => setTimeout(res, 500));
-    })
-
-    expect(pauseMock).toBeCalled();
-  });
-
-  it('Plays a paused video on "k" key press', async () => {
-    getPlayerStateMock = () => 2;   // 'pause' the video
-    render(<YouTubePlayer videoId='1234' />)
-    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
-    const wrapper = screen.getByTestId('wrapper');
-
-    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
-    await userEvent.click(hideYTBtn);
-    wrapper.focus();
-    await userEvent.keyboard('[Space]');
-
-    // Allow time for the timout to expire before playing video
-    await act(async () => {
-      await new Promise(res => setTimeout(res, 500));
-    })
-
-    expect(playMock).toBeCalled();
-  });
-
-  it('Pauses a playing video on "k" key press', async () => {
-    getPlayerStateMock = () => 1;   // 'play' the video
-    render(<YouTubePlayer videoId='1234' />)
-    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
-    const wrapper = screen.getByTestId('wrapper');
-
-    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
-    await userEvent.click(hideYTBtn);
-    wrapper.focus();
-    await userEvent.keyboard('[Space]');
 
     // Allow time for the timout to expire before pausing video
     await act(async () => {

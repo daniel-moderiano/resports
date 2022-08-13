@@ -3,14 +3,12 @@ import userEvent from '@testing-library/user-event';
 import TwitchPlayer from '../../components/TwitchPlayer';
 
 // Named mocks to test player functions being called
-const muteMock = jest.fn();
 const playMock = jest.fn();
 const pauseMock = jest.fn();
 const seekMock = jest.fn();
 const setVolumeMock = jest.fn();
 const setMutedMock = jest.fn();
 let isPausedMock: () => boolean;
-
 
 // Provide channel data and other UI states via this mock of the channel search API call
 jest.mock('../../hooks/useTwitchPlayer', () => ({
