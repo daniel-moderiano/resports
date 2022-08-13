@@ -31,10 +31,10 @@ const TwitchVideo = ({ videoId }: TwitchVideoProps) => {
   return (
     <div>
       <div id="player"></div>
-      <button onClick={() => console.log(player.getQuality())}>Get quality</button>
-    </div>
+      <button onClick={() => console.log(player?.getQualities())}>Get quality</button>
+      <button onClick={() => console.log(player?.setQuality('720p'))}>Set quality</button>
+    </div >
   );
 };
 
 export default TwitchVideo;
-

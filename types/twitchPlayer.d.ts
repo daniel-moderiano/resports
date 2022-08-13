@@ -101,33 +101,32 @@ declare namespace Twitch {
   export type VideoQualityAuto = "auto";
 
   /**
-   * Player height is 160px, and player dimensions are at least 214px by 160px for 4:3 aspect ratio.
+   * Player height is 160px, and player dimensions are at least 284px by 160px for 16:9 aspect ratio.
    */
-  export type VideoQualitySmall = "160p30";
+  export type VideoQualitySmall = "160p";
 
   /**
-   * Player height is 360px, and player dimensions are 640px by 360px (for 16:9 aspect ratio) or 480px by 360px (for 4:3 aspect ratio).
+   * Player height is 360px, and player dimensions are 640px by 360px for 16:9 aspect ratio.
    */
-  export type VideoQualityMedium = "360p30";
+  export type VideoQualityMedium = "360p";
 
   /**
-   * Player height is 480px, and player dimensions are 853px by 480px (for 16:9 aspect ratio) or 640px by 480px (for 4:3 aspect ratio).
+   * Player height is 480px, and player dimensions are 852px by 480px for 16:9 aspect ratio. 
    */
-  export type VideoQualityLarge = "480p30";
+  export type VideoQualityLarge = "480p";
 
   /**
-   * Player height is 720px, and player dimensions are 1280px by 720px (for 16:9 aspect ratio) or 960px by 720px (for 4:3 aspect ratio).
+   * Player height is 720px, and player dimensions are 1280px by 720px for 16:9 aspect ratio.
    */
-  export type VideoQualityHD720 = "720p60";
+  export type VideoQualityHD720 = "720p";
 
   /**
-   * Player height is 1080px, and player dimensions are 1920px by 1080px (for 16:9 aspect ratio) or 1440px by 1080px (for 4:3 aspect ratio).
+   * Player height is 1080px, and player dimensions are 1920px by 1080px for 16:9 aspect ratio.
    */
-  export type VideoQualityHD1080 = "1080p60";
+  export type VideoQualityHD1080 = "1080p";
 
   /**
-   * Player height is greater than 1080px, which means that the player's aspect ratio is greater than 1920px by 1080px.
-   * The highest video quality available.
+   * Pass-through of the original source. The highest quality source, used with players larger than 1080px in height.
    */
   export type VideoQualitySource = "chunked";
 
@@ -247,6 +246,55 @@ declare namespace Twitch {
     time?: string | undefined;
   }
 
+  /**
+   * Statistics on the embedded video player and the current live stream or VOD 
+   */
+  export interface PlaybackStats {
+    /**
+     * The version of the Twitch video player backend.
+     */
+    backendVersion: string;
+
+    /**
+     * The size of the video buffer in seconds.
+     */
+    bufferSize: number;
+
+    /**
+     * Codecs currently in use, comma-separated (video,audio).
+     */
+    codecs: string;
+
+    /**
+     * 	The current size of the video player element (eg. 850x480).
+     */
+    displayResolution: string;
+
+    /**
+     * The video playback rate in frames per second. Not available on all browsers.
+     */
+    fps: number;
+
+    /**
+     * 	Current latency to the broadcaster in seconds. Only available for live content.
+     */
+    hlsLatencyBroadcaster: number;
+
+    /**
+     * The playback bitrate in Kbps.
+     */
+    playbackRate: number;
+
+    /**
+     * The number of dropped frames.
+     */
+    skippedFrames: number;
+
+    /**
+     * The native resolution of the current video (eg. 640x480).
+     */
+    videoResolution: string;
+  }
 
   /**
    * Handlers for events fired by the player.
@@ -363,69 +411,55 @@ declare namespace Twitch {
     getVolume(): number;
 
     /**
- * Sets the player volume.
- * @param volumeLevel   A number between 0 and 1.0.
- */
-    setVolume(volumeLevel: number): void;
+     * If true, mutes the player; otherwise, unmutes it. This is independent of the volume setting.
+     * @param muted   Desired mute state of the player
+     */
+    setMuted(muted: boolean): void;
 
     /**
-     * @returns Volume level, a number between 0 and 1.0.
+     * @returns True if the player is muted; otherwise, false.
      */
-    getVolume(): number;
+    getMuted(): boolean;
 
     /**
-     * Sets the size in pixels of the <iframe> that contains the player.
-     *
-     * @param width   Width in pixels of the <iframe>.
-     * @param height   Height in pixels of the <iframe>.
+     * @returns Statistics on the embedded player and current livestream or VOD.
      */
-    setSize(width: number, height: number): void;
+    getPlaybackStats(): PlaybackStats;
 
     /**
-     * @returns Playback rate of the currently playing video.
+     * @returns The channel's name.
      */
-    getPlaybackRate(): number;
+    getChannel(): string;
 
     /**
-     * Sets the suggested playback rate for the current video.
-     *
-     * @param suggestedRate   Suggested playback rate.
+     * @returns The duration of the video, in seconds.
      */
-    setPlaybackRate(suggestedRate: number): void;
+    getDuration(): number;
 
     /**
-     * @returns Available playback rates for the current video.
+     * @returns True if the live stream or VOD has ended; otherwise, false.
      */
-    getAvailablePlaybackRates(): number[];
+    getEnded(): boolean;
 
     /**
-     * Sets whether the player should continuously play a playlist.
-     *
-     * @param loopPlaylists   Whether to continuously loop playlists.
+     * @returns The available video qualities.
      */
-    setLoop(loopPlaylists: boolean): void;
+    getQualities(): string[];
 
     /**
-     * Sets whether a playlist's videos should be shuffled.
-     *
-     * @param shufflePlaylist   Whether to shuffle playlist videos.
+     * @returns The current quality of video playback.
      */
-    setShuffle(shufflePlaylist: boolean): void;
+    getQuality(): VideoQuality;
 
     /**
-     * @returns A number between 0 and 1 of how much the player has buffered.
+     * @returns The video ID. Works only for VODs, not livestreams.
      */
-    getVideoLoadedFraction(): number;
+    getVideo(): string;
 
     /**
-     * @returns Current player state.
+     * @returns True if the video is paused; otherwise false. Bufferring or seeking is considered playing.
      */
-    getPlayerState(): PlayerState;
-
-    /**
-     * @returns Elapsed time in seconds since the video started playing.
-     */
-    getCurrentTime(): number;
+    isPaused(): boolean;
 
     /**
      * @returns Actual video quality of the current video.
