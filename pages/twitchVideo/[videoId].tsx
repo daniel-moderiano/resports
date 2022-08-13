@@ -31,18 +31,14 @@ const TwitchVideo = ({ videoId }: TwitchVideoProps) => {
       window.location.reload();
     }
 
-    function createTwitchPlayer() {
-      new Twitch.Player("player", {
-        width: 854,
-        height: 480,
+
+    function createPlayer() {
+      const player = new Twitch.Player('player', {
         video: videoId,
-        controls: false,
-      });
+      })
     }
 
-    fetch('https://rechat.twitch.tv/rechat-messages?start=10&video_id=155772534').then((res) => console.log(res)).catch((err) => console.log(err))
-
-    tag.onload = createTwitchPlayer;
+    tag.onload = createPlayer;
 
     return () => {    // ensure script tags are cleaned on dismount
       tag.remove();
