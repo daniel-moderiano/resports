@@ -7,6 +7,11 @@ const playerMock = {
   getCurrentTime: () => 1,
   isMuted: () => false,
   getVolume: jest.fn,
+  getQualities: () => [
+    { "name": "Auto" },
+    { "name": "1080p60" },
+    { "name": "720p60" },
+  ],
 };
 
 let playerStateMock = -1;
@@ -254,7 +259,7 @@ describe('Settings menu display tests', () => {
     await userEvent.click(settingsBtn);
 
     // Click menu item/option
-    const menuItem = screen.getByRole('menuitem', { name: /1080p/i });
+    const menuItem = screen.getByRole('menuitem', { name: /1080p60/i });
     await userEvent.click(menuItem);
 
     const menu = screen.queryByTestId('twitchSettingsMenu');
@@ -269,7 +274,7 @@ describe('Settings menu display tests', () => {
     await userEvent.click(settingsBtn);
 
     // Outside click by clicking on another control btn
-    const theatreBtn = screen.getByRole('button', { name: /theatre/i })
+    const theatreBtn = screen.getByRole('button', { name: /theater/i })
     await userEvent.click(theatreBtn);
 
     const menu = screen.queryByTestId('twitchSettingsMenu');
@@ -282,7 +287,7 @@ describe('Settings menu display tests', () => {
     const settingsBtn = screen.getByRole('button', { name: /open video settings menu/i })
     await userEvent.click(settingsBtn);
 
-    await userEvent.keyboard('{esc}')
+    await userEvent.keyboard('[Escape]');
 
     const menu = screen.queryByTestId('twitchSettingsMenu');
     expect(menu).not.toBeInTheDocument();

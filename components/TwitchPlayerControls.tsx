@@ -15,6 +15,7 @@ import TheaterIcon from './icons/TheaterIcon';
 import PlayIcon from './icons/PlayIcon';
 import PauseIcon from './icons/PauseIcon';
 import SettingsGearIcon from './icons/SettingsGearIcon';
+import TwitchPlayerSettingsMenu from './TwitchPlayerSettingsMenu';
 
 interface TwitchPlayerControlsProps {
   player: Twitch.Player;
@@ -41,6 +42,9 @@ const TwitchPlayerControls = ({
 }: TwitchPlayerControlsProps) => {
   // A constantly updated duration state to provide a video duration elapsed to the UI
   const [elapsedDuration, setElapsedDuration] = useState('');
+
+  // Controls display of video quality settings menu
+  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
 
   useEffect(() => {
     // Call this immediately first, to avoid an initial 1 second delay before appearing in UI
@@ -110,11 +114,13 @@ const TwitchPlayerControls = ({
 
       <div className={styles.rightControls}>
 
-        <button className={styles.controlsBtn}>
+        <button className={styles.controlsBtn} aria-haspopup="menu" aria-label="Open video settings menu" onClick={() => setShowSettingsMenu((prevState) => !prevState)}>
           <SettingsGearIcon iconStyles={styles.icons24} fill="#FFFFFF" />
         </button>
 
-
+        {showSettingsMenu && (
+          <TwitchPlayerSettingsMenu closeMenu={() => setShowSettingsMenu(false)} videoQualities={player.getQualities()} />
+        )}
 
         <button className={styles.controlsBtn} onClick={toggleTheater} data-testid="theater" aria-label="Switch to theater mode">
           <TheaterIcon iconStyles={styles.icons24} fill="#FFFFFF" />

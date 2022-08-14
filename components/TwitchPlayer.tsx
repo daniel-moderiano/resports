@@ -4,6 +4,8 @@ import * as React from 'react';
 import { useTwitchPlayer } from '../hooks/useTwitchPlayer';
 import TwitchPlayerControls from './TwitchPlayerControls';
 
+// ! Overlay blocks user from clicking 'start watching' on mature audience marked channels
+
 interface TwitchPlayerProps {
   videoId: string;
 }
@@ -12,7 +14,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
   // This local state is used to avoid the long delays of an API call to check muted state when toggling icons and UI
-  const [playerMuted, setPlayerMuted] = useState(false);
+  const [playerMuted, setPlayerMuted] = useState(true);
 
   // useRef must be used here to avoid losing reference to timeout IDs as the component re-renders between hiding/showing controls
   const inactivityTimeout = React.useRef<null | NodeJS.Timeout>(null);

@@ -173,6 +173,20 @@ declare namespace Twitch {
   }
 
   /**
+   * Contains detailed information about an available video quality
+   */
+  export interface VideoQualityObject {
+    name: string;
+    group: string;
+    codecs: string;
+    bitrate: number;
+    width: number;
+    height: number;
+    framerate: number;
+    isDefault: boolean;
+  }
+
+  /**
    * Creates and controls a Twitch player in an <iframe>.
    */
   export class Player {
@@ -289,7 +303,7 @@ declare namespace Twitch {
     /**
      * @returns The available video qualities.
      */
-    getQualities(): string[];
+    getQualities(): VideoQualityObject[];
 
     /**
      * @returns The current quality of video playback.
