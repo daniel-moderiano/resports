@@ -205,3 +205,97 @@ describe('YouTube video controls functionality', () => {
   });
 });
 
+describe('Settings menu display tests', () => {
+  const setup = () => {
+    render(<TwitchPlayerControls
+      // @ts-expect-error a complete Player object is not required for these tests
+      player={playerMock}
+      playerState={playerStateMock}
+      playerMuted={playerMutedMock}
+      toggleFullscreen={toggleFullscreenMock}
+      togglePlay={togglePlayMock}
+      toggleTheater={toggleTheaterMock}
+      skipForward={skipForwardMock}
+      skipBackward={skipBackwardMock}
+      toggleMute={toggleMuteMock}
+    />)
+  };
+
+  it('Hides settings menu by default', () => {
+    setup();
+    const menu = screen.queryByTestId('twitchSettingsMenu');
+    expect(menu).not.toBeInTheDocument();
+  });
+
+  it('Opens settings menu on click of settings btn if menu is currently closed', async () => {
+    setup();
+    const settingsBtn = screen.getByRole('button', { name: /open video settings menu/i })
+    await userEvent.click(settingsBtn);
+
+    const menu = screen.queryByTestId('twitchSettingsMenu');
+    expect(menu).toBeInTheDocument();
+  });
+
+  it('Closes settings menu on click of settings btn if menu is already open', async () => {
+    setup();
+    // Open and close with double btn press
+    const settingsBtn = screen.getByRole('button', { name: /open video settings menu/i })
+    await userEvent.click(settingsBtn);
+    await userEvent.click(settingsBtn);
+
+    const menu = screen.queryByTestId('twitchSettingsMenu');
+    expect(menu).not.toBeInTheDocument();
+  });
+
+  it('Closes menu when any quality option (menuitem) is selected', async () => {
+    setup();
+    // Open menu
+    const settingsBtn = screen.getByRole('button', { name: /open video settings menu/i })
+    await userEvent.click(settingsBtn);
+
+    // Click menu item/option
+    const menuItem = screen.getByRole('menuitem', { name: /1080p/i });
+    await userEvent.click(menuItem);
+
+    const menu = screen.queryByTestId('twitchSettingsMenu');
+    expect(menu).not.toBeInTheDocument();
+  });
+
+  it('Closes menu when outside click occurs', async () => {
+    setup();
+
+    // Open menu
+    const settingsBtn = screen.getByRole('button', { name: /open video settings menu/i })
+    await userEvent.click(settingsBtn);
+
+    // Outside click by clicking on another control btn
+    const theatreBtn = screen.getByRole('button', { name: /theatre/i })
+    await userEvent.click(theatreBtn);
+
+    const menu = screen.queryByTestId('twitchSettingsMenu');
+    expect(menu).not.toBeInTheDocument();
+  });
+
+  it('Closes menu when Esc key is pressed', async () => {
+    setup();
+    // Open menu
+    const settingsBtn = screen.getByRole('button', { name: /open video settings menu/i })
+    await userEvent.click(settingsBtn);
+
+    await userEvent.keyboard('{esc}')
+
+    const menu = screen.queryByTestId('twitchSettingsMenu');
+    expect(menu).not.toBeInTheDocument();
+  });
+
+  it('Does not close menu when menu is clicked in a non-button area (e.g. menu background', async () => {
+    setup();
+    // Open menu
+    const settingsBtn = screen.getByRole('button', { name: /open video settings menu/i })
+    await userEvent.click(settingsBtn);
+
+    const menu = screen.getByTestId('twitchSettingsMenu');
+    await userEvent.click(menu);
+    expect(menu).toBeInTheDocument();
+  });
+});

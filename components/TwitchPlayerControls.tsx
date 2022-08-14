@@ -114,6 +114,8 @@ const TwitchPlayerControls = ({
           <SettingsGearIcon iconStyles={styles.icons24} fill="#FFFFFF" />
         </button>
 
+
+
         <button className={styles.controlsBtn} onClick={toggleTheater} data-testid="theater" aria-label="Switch to theater mode">
           <TheaterIcon iconStyles={styles.icons24} fill="#FFFFFF" />
         </button>
