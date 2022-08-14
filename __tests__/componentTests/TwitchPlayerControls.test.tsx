@@ -8,10 +8,20 @@ const playerMock = {
   isMuted: () => false,
   getVolume: jest.fn,
   getQualities: () => [
-    { "name": "Auto" },
-    { "name": "1080p60" },
-    { "name": "720p60" },
+    {
+      "name": "Auto",
+      "group": "auto",
+    },
+    {
+      "name": "1080p60",
+      "group": "chunked",
+    },
+    {
+      "name": "720p60",
+      "group": "720p60",
+    },
   ],
+  setQuality: jest.fn,
 };
 
 let playerStateMock = -1;
@@ -293,7 +303,7 @@ describe('Settings menu display tests', () => {
     expect(menu).not.toBeInTheDocument();
   });
 
-  it('Does not close menu when menu is clicked in a non-button area (e.g. menu background', async () => {
+  it('Does not close menu when menu is clicked in a non-button area (e.g. menu background)', async () => {
     setup();
     // Open menu
     const settingsBtn = screen.getByRole('button', { name: /open video settings menu/i })
@@ -302,5 +312,15 @@ describe('Settings menu display tests', () => {
     const menu = screen.getByTestId('twitchSettingsMenu');
     await userEvent.click(menu);
     expect(menu).toBeInTheDocument();
+  });
+
+  it('Indicates source/chunked quality option among quality options', async () => {
+    setup();
+    // Open menu
+    const settingsBtn = screen.getByRole('button', { name: /open video settings menu/i })
+    await userEvent.click(settingsBtn);
+
+    const sourceQuality = screen.getByText('1080p60 (Source)');
+    expect(sourceQuality).toBeInTheDocument();
   });
 });

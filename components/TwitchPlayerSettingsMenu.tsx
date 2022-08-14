@@ -4,22 +4,21 @@ import React from 'react';
 
 interface TwitchPlayerSettingsMenuProps {
   closeMenu: () => void;
-  videoQualities: Twitch.VideoQualityObject[];
+  player: Twitch.Player;
 }
 
-const TwitchPlayerSettingsMenu = ({ closeMenu, videoQualities }: TwitchPlayerSettingsMenuProps) => {
+const TwitchPlayerSettingsMenu = ({ closeMenu, player }: TwitchPlayerSettingsMenuProps) => {
   useMenuCloseEvents('twitchSettingsMenu', closeMenu);
   useKeyboardNavigation('twitchSettingsMenu');
 
-  console.log('Menu opened');
-
   return (
     <ul id="twitchSettingsMenu" data-id="twitchSettingsMenu" role="menu" aria-label="Video settings menu" data-testid="twitchSettingsMenu">
-      {videoQualities.map((quality) => (
+      {player.getQualities().map((quality) => (
         <li role="none" key={quality.name}>
           <button role="menuitem" onClick={() => {
+            player.setQuality(quality.group as Twitch.VideoQuality);
             closeMenu();
-          }}>{quality.name}</button>
+          }}>{quality.group === 'chunked' ? `${quality.name} (Source)` : `${quality.name}`}</button>
         </li>
       ))}
     </ul>
@@ -27,3 +26,4 @@ const TwitchPlayerSettingsMenu = ({ closeMenu, videoQualities }: TwitchPlayerSet
 }
 
 export default TwitchPlayerSettingsMenu;
+

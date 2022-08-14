@@ -6,11 +6,7 @@ export const useMenuCloseEvents = (dataId: string, closeElement: () => void) => 
   useEffect(() => {
     // Ensure the element closes when the user clicks any element outside the target element
     const handleOutsideClick = (event: MouseEvent) => {
-      console.log('Outside click registered');
-
       const clickTarget = event.target as HTMLElement;
-      console.log(clickTarget);
-
       if (clickTarget.dataset.id !== dataId) {
         closeElement();
       }

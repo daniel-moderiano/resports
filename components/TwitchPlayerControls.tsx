@@ -119,7 +119,7 @@ const TwitchPlayerControls = ({
         </button>
 
         {showSettingsMenu && (
-          <TwitchPlayerSettingsMenu closeMenu={() => setShowSettingsMenu(false)} videoQualities={player.getQualities()} />
+          <TwitchPlayerSettingsMenu closeMenu={() => setShowSettingsMenu(false)} player={player} />
         )}
 
         <button className={styles.controlsBtn} onClick={toggleTheater} data-testid="theater" aria-label="Switch to theater mode">

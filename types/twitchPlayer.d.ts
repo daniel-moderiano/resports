@@ -10,7 +10,19 @@ declare namespace Twitch {
    * Allowed suggested player video qualities (default is auto)
    * Chunked represents source quality, and is the highest quality available.
    */
-  export type VideoQualities = "160p" | "360p" | "480p" | "720p" | "1080p" | "auto" | "chunked";
+  export type VideoQuality =
+    "160p" |
+    "160p30" |
+    "360p" |
+    "306p30" |
+    "480p" |
+    "480p30" |
+    "720p" |
+    "720p60" |
+    "1080p" |
+    "1080p60" |
+    "auto" |
+    "chunked";
 
   /**
    * Twitch player events that can be listened for.
@@ -244,7 +256,7 @@ declare namespace Twitch {
      * Sets the quality of the video.
      * @param quality   Video quality (string) from the available values
      */
-    setQuality(quality: VideoQualities): void;
+    setQuality(quality: VideoQuality): void;
 
     /**
      * Sets the video to be played to be played and starts playback at timestamp (in seconds).
