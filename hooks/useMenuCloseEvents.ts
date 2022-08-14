@@ -1,13 +1,17 @@
 import { useEffect } from "react"
 
 // Use this hook for any menu to apply common 'expected' UX features such as closing on outside click or escape key press. Takes ID of the element to apply these events to, and the function that closes/dismissed the element
-export const useMenuCloseEvents = (elementId: string, closeElement: () => void) => {
+export const useMenuCloseEvents = (dataId: string, closeElement: () => void) => {
   // Effect to apply event listeners once on initial component mount
   useEffect(() => {
     // Ensure the element closes when the user clicks any element outside the target element
     const handleOutsideClick = (event: MouseEvent) => {
+      console.log('Outside click registered');
+
       const clickTarget = event.target as HTMLElement;
-      if (clickTarget.id !== elementId) {
+      console.log(clickTarget);
+
+      if (clickTarget.dataset.id !== dataId) {
         closeElement();
       }
     };
@@ -27,6 +31,6 @@ export const useMenuCloseEvents = (elementId: string, closeElement: () => void) 
       window.removeEventListener('click', handleOutsideClick);
       window.addEventListener('keydown', handleEscPress);
     }
-  }, [closeElement, elementId])
+  }, [closeElement, dataId])
 }
 

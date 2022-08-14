@@ -11,8 +11,10 @@ const TwitchPlayerSettingsMenu = ({ closeMenu, videoQualities }: TwitchPlayerSet
   useMenuCloseEvents('twitchSettingsMenu', closeMenu);
   useKeyboardNavigation('twitchSettingsMenu');
 
+  console.log('Menu opened');
+
   return (
-    <ul id="twitchSettingsMenu" role="menu" aria-label="Video settings menu" data-testid="twitchSettingsMenu">
+    <ul id="twitchSettingsMenu" data-id="twitchSettingsMenu" role="menu" aria-label="Video settings menu" data-testid="twitchSettingsMenu">
       {videoQualities.map((quality) => (
         <li role="none" key={quality.name}>
           <button role="menuitem" onClick={() => {

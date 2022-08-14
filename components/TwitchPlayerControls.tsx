@@ -114,7 +114,7 @@ const TwitchPlayerControls = ({
 
       <div className={styles.rightControls}>
 
-        <button className={styles.controlsBtn} aria-haspopup="menu" aria-label="Open video settings menu" onClick={() => setShowSettingsMenu((prevState) => !prevState)}>
+        <button className={styles.controlsBtn} aria-haspopup="menu" aria-label="Open video settings menu" onClick={() => setShowSettingsMenu((prevState) => !prevState)} data-id="twitchSettingsMenu">
           <SettingsGearIcon iconStyles={styles.icons24} fill="#FFFFFF" />
         </button>
 
