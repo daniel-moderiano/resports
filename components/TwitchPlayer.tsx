@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import styles from '../styles/componentStyles/YouTubePlayer.module.css';
+import styles from '../styles/componentStyles/TwitchPlayer.module.css';
 import * as React from 'react';
 import { useTwitchPlayer } from '../hooks/useTwitchPlayer';
 import TwitchPlayerControls from './TwitchPlayerControls';
 
-// ! Overlay blocks user from clicking 'start watching' on mature audience marked channels
+// TODO: Overlay blocks user from clicking 'start watching' on mature audience marked channels, as well as 'reload player' in cases of connection error
+// TODO: Seeking forward/back cannot be called in succession until previous seek completes. This is cumbersome and frustrating as a user. A recursive solution may be useful to solce this. 
 
 interface TwitchPlayerProps {
   videoId: string;
@@ -23,8 +24,8 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
   // Indicates whether the user is moving their mouse over the video (i.e. user is active)
   const [userActive, setUserActive] = useState(false);
 
-  // Initialise playerState in the UNSTARTED state, whose code is -1. This way we can detect an initial change if necessary
-  const [playerState, setPlayerState] = useState(-1);
+  // Initialise playerState in the PAUSED state, represented by 2.
+  const [playerState, setPlayerState] = useState(2);
 
   // Adds the YT Iframe to the div#player returned below
   const { player } = useTwitchPlayer(videoId);
@@ -199,7 +200,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
       <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)} tabIndex={0}>
         <div id="player"></div>
         <div
-          className={`${styles.overlay} ${(userActive || playerState === 2) ? '' : styles.overlayInactive}`}
+          className={`${styles.overlay} ${(userActive || playerState === 2) ? '' : styles.overlayInactive} ${(playerState === 2) ? styles.overlayPaused : ''}`}
           onClick={playOrPauseVideo}
           onDoubleClick={toggleFullscreen}
           onMouseMove={throttleMousemove}

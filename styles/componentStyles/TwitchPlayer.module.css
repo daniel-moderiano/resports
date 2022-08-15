@@ -41,6 +41,10 @@
   opacity: 0;
 }
 
+.overlayPaused {
+  pointer-events: none;
+}
+
 .overlayEnd {
   background-color: black;
 }

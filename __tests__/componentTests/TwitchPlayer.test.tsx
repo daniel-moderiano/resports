@@ -72,6 +72,13 @@ describe('YouTube player styling and modes', () => {
     expect(overlay).toBeInTheDocument();
     expect(customControls).toBeInTheDocument();
   });
+
+  it('Overlay does not block underlying player/iframe when video is paused', () => {
+    isPausedMock = () => true;   // 'pause' the video
+    render(<TwitchPlayer videoId='1234' />)
+    const overlay = screen.getByTestId('overlay');
+    expect(overlay).toHaveClass('overlayPaused');
+  });
 });
 
 describe('YouTube player control toggles', () => {
