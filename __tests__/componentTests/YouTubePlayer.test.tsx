@@ -17,7 +17,7 @@ jest.mock('../../hooks/useYouTubeIframe', () => ({
   // Make sure a player object is returned here to trigger the functions requiring a truthy player object
   useYouTubeIframe: () => ({
     player: {
-      getCurrentTime: jest.fn,
+      getCurrentTime: () => 100,    // Ensure the skipBackward functions work as intended
       isMuted: () => false,
       mute: muteMock,
       unMute: unMuteMock,
@@ -263,7 +263,7 @@ describe('YouTube player keyboard shortcuts', () => {
     expect(setVolumeMock).toBeCalledTimes(2);
   });
 
-  it('Seeks forward/backward on right/left arrow key press', async () => {
+  it('Seeks forward on right arrow key press', async () => {
     render(<YouTubePlayer videoId='1234' />)
     const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
     const wrapper = screen.getByTestId('wrapper');
@@ -271,10 +271,32 @@ describe('YouTube player keyboard shortcuts', () => {
     // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
     await userEvent.click(hideYTBtn);
     wrapper.focus();
-    await userEvent.keyboard('[ArrowLeft]');
+
     await userEvent.keyboard('[ArrowRight]');
 
-    expect(seekToMock).toBeCalledTimes(2);
+    // Allow time for the timout to expire before pausing video
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 1000));
+    })
+    expect(seekToMock).toBeCalled();
+  });
+
+  it('Seeks backward on left arrow key press', async () => {
+    render(<YouTubePlayer videoId='1234' />)
+    const hideYTBtn = screen.getByRole('button', { name: /hide YT controls/i });
+    const wrapper = screen.getByTestId('wrapper');
+
+    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
+    await userEvent.click(hideYTBtn);
+    wrapper.focus();
+
+    await userEvent.keyboard('[ArrowLeft]');
+
+    // Allow time for the timout to expire before pausing video
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 1000));
+    })
+    expect(seekToMock).toBeCalled();
   });
 });
 

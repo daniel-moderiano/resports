@@ -27,6 +27,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   // Allow the user to manually revert to standard YT controls to allow a manual adjustment to video quality
   const [showYTControls, setShowYTControls] = useState(true);
 
+  // The currently projected time (in seconds) that the player should be at once the currently queued seek completes.
+  // When this is not null, it implies we are currently performing a seek() call.
+  const [projectedTime, setProjectedTime] = React.useState<null | number>(null);
+
+
   // Adds the YT Iframe to the div#player returned below
   const { player } = useYouTubeIframe(videoId, true);
 
@@ -40,6 +45,17 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     }, 3000);
   };
 
+
+  // A critical effect hook that essentially performs the seek functions scheduled by user clicks and key presses. The 500 ms timeout enables the compound seeking to still work when the seek is 'instant' to a pre-buffered section of video
+  React.useEffect(() => {
+    if (projectedTime && player) {
+      setTimeout(() => {
+        player.seekTo(projectedTime, true);
+      }, 500)
+    }
+  }, [projectedTime, player])
+
+
   // Use this to limit how many times the mousemove handler is called. Note this function itself will still be called every time
   const throttleMousemove = () => {
     if (!enableCall.current) {
@@ -52,19 +68,27 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     setTimeout(() => enableCall.current = true, 500);
   };
 
-  const skipForward = React.useCallback((timeToSkipInSeconds: number) => {
+  const scheduleSkipForward = React.useCallback((timeToSkipInSeconds: number) => {
     if (player) {
-      const currentTime = player.getCurrentTime();
-      player.seekTo(currentTime + timeToSkipInSeconds, true);
+      let currentTime = player.getCurrentTime();
+      if (projectedTime) {    // A projected time implies we are currently mid-seek
+        // Adjust current time using projected time as the base, rather than a getCurrentTime call, thus queuing the calls. E.g. user rapidly clicks +10 min 5 times -> this will ensure we skip back 50 mins
+        currentTime = projectedTime;
+      }
+      setProjectedTime(currentTime + timeToSkipInSeconds);
     }
-  }, [player]);
+  }, [player, projectedTime]);
 
-  const skipBackward = React.useCallback((timeToSkipInSeconds: number) => {
+  const scheduleSkipBackward = React.useCallback((timeToSkipInSeconds: number) => {
     if (player) {
-      const currentTime = player.getCurrentTime();
-      player.seekTo(currentTime - timeToSkipInSeconds, true);
+      let currentTime = player.getCurrentTime();
+      if (projectedTime) {    // A projected time implies we are currently mid-seek
+        // Adjust current time using projected time as the base, rather than a getCurrentTime call, thus queuing the calls.
+        currentTime = projectedTime;
+      }
+      setProjectedTime(currentTime - timeToSkipInSeconds);
     }
-  }, [player]);
+  }, [player, projectedTime]);
 
   // This function is distinct to manually setting a specific volume level, but counts as user activity
   const toggleMute = React.useCallback(() => {
@@ -171,11 +195,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           break;
         case "Left": // IE/Edge specific value
         case "ArrowLeft":
-          skipBackward(5);
+          scheduleSkipBackward(10);
           break;
         case "Right": // IE/Edge specific value
         case "ArrowRight":
-          skipForward(5)
+          scheduleSkipForward(10)
           break;
         default:
           return; // Quit when this doesn't handle the key event.
@@ -186,7 +210,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     }
-  }, [playOrPauseVideo, player, toggleMute, skipForward, skipBackward])
+  }, [playOrPauseVideo, player, toggleMute, scheduleSkipForward, scheduleSkipBackward])
 
 
   return (
@@ -214,8 +238,8 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
               togglePlay={playOrPauseVideo}
               toggleMute={toggleMute}
               playerMuted={playerMuted}
-              skipForward={skipForward}
-              skipBackward={skipBackward}
+              skipForward={scheduleSkipForward}
+              skipBackward={scheduleSkipBackward}
             />
           </div>
         )}

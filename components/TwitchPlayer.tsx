@@ -58,7 +58,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
   }, [player]);
 
 
-  // A critical effect hook that essentially performs the seek functions scheduled by user clicks and key presses
+  // A critical effect hook that essentially performs the seek functions scheduled by user clicks and key presses. The 500 ms timeout enables the compound seeking to still work when the seek is 'instant' to a pre-buffered section of video
   React.useEffect(() => {
     if (projectedTime && player) {
       setTimeout(() => {
