@@ -32,10 +32,8 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
   // Initialise playerState in the PAUSED state, represented by 2 (playing state is 1)
   const [playerState, setPlayerState] = useState(-1);
 
-  // A dynamic state that indicates whether the player is currently seeking forwards or backwards
-  const [currentlySeeking, setCurrentlySeeking] = useState(false);
-
-  // The currently projected time (in seconds) that the player should be at once the currently queued seek completes
+  // The currently projected time (in seconds) that the player should be at once the currently queued seek completes.
+  // When this is not null, it implies we are currently performing a seek() call.
   const [projectedTime, setProjectedTime] = React.useState<null | number>(null);
 
   // Adds the YT Iframe to the div#player returned below
@@ -52,17 +50,20 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
         setPlayerState(2);
       });
 
-      // Reset the 'currentlySeeking' state whenever a seek completes
+      // Ensure projectedTime is reset to null to avoid infinite loop seeking or video freezing at fixed time
       player.addEventListener('seek', () => {
-        // setCurrentlySeeking(false);
         setProjectedTime(null);
       });
     }
   }, [player]);
 
+
+  // A critical effect hook that essentially performs the seek functions scheduled by user clicks and key presses
   React.useEffect(() => {
     if (projectedTime && player) {
-      player.seek(projectedTime);
+      setTimeout(() => {
+        player.seek(projectedTime);
+      }, 500)
     }
   }, [projectedTime, player])
 
@@ -88,18 +89,22 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
     setTimeout(() => enableCall.current = true, 500);
   };
 
-  const skipForward = React.useCallback((timeToSkipInSeconds: number) => {
-    if (player) {
-      const currentTime = player.getCurrentTime();
-      player.seek(currentTime + timeToSkipInSeconds);
-    }
-  }, [player]);
-
-  const skipBackward = React.useCallback((timeToSkipInSeconds: number) => {
+  const scheduleSkipForward = React.useCallback((timeToSkipInSeconds: number) => {
     if (player) {
       let currentTime = player.getCurrentTime();
-      if (projectedTime) {    // Presence of a projected time implies we are currently mid-seek
-        // Adjust projected time using that as the base, rather than a getCurrentTime() call
+      if (projectedTime) {    // A projected time implies we are currently mid-seek
+        // Adjust current time using projected time as the base, rather than a getCurrentTime call, thus queuing the calls. E.g. user rapidly clicks +10 min 5 times -> this will ensure we skip back 50 mins
+        currentTime = projectedTime;
+      }
+      setProjectedTime(currentTime + timeToSkipInSeconds);
+    }
+  }, [player, projectedTime]);
+
+  const scheduleSkipBackward = React.useCallback((timeToSkipInSeconds: number) => {
+    if (player) {
+      let currentTime = player.getCurrentTime();
+      if (projectedTime) {    // A projected time implies we are currently mid-seek
+        // Adjust current time using projected time as the base, rather than a getCurrentTime call, thus queuing the calls.
         currentTime = projectedTime;
       }
       setProjectedTime(currentTime - timeToSkipInSeconds);
@@ -204,11 +209,11 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
           break;
         case "Left": // IE/Edge specific value
         case "ArrowLeft":
-          skipBackward(10);
+          scheduleSkipBackward(10);
           break;
         case "Right": // IE/Edge specific value
         case "ArrowRight":
-          skipForward(10)
+          scheduleSkipForward(10)
           break;
         default:
           return; // Quit when this doesn't handle the key event.
@@ -219,7 +224,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     }
-  }, [playOrPauseVideo, player, toggleMute, skipForward, skipBackward])
+  }, [playOrPauseVideo, player, toggleMute, scheduleSkipForward, scheduleSkipBackward])
 
 
   return (
@@ -245,8 +250,8 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
               togglePlay={playOrPauseVideo}
               toggleMute={toggleMute}
               playerMuted={playerMuted}
-              skipForward={skipForward}
-              skipBackward={skipBackward}
+              skipForward={scheduleSkipForward}
+              skipBackward={scheduleSkipBackward}
             />
           </div>
         )}
