@@ -54,17 +54,17 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
 
       // Reset the 'currentlySeeking' state whenever a seek completes
       player.addEventListener('seek', () => {
-        setCurrentlySeeking(false);
+        // setCurrentlySeeking(false);
         setProjectedTime(null);
       });
     }
   }, [player]);
 
   React.useEffect(() => {
-    if (projectedTime && !currentlySeeking && player) {
+    if (projectedTime && player) {
       player.seek(projectedTime);
     }
-  }, [projectedTime, currentlySeeking, player])
+  }, [projectedTime, player])
 
   // A general user activity function. Use this whenever the user performs an 'active' action and it will signal the user is interacting with the video, which then enables other features such as showing controls
   const signalUserActivity = () => {
@@ -103,7 +103,6 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
         currentTime = projectedTime;
       }
       setProjectedTime(currentTime - timeToSkipInSeconds);
-      // player.seek(currentTime - timeToSkipInSeconds);
     }
   }, [player, projectedTime]);
 
