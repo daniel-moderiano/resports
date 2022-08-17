@@ -6,6 +6,8 @@ import TwitchPlayerControls from './TwitchPlayerControls';
 
 // TODO: Seeking forward/back cannot be called in succession until previous seek completes. This is cumbersome and frustrating as a user. A recursive solution may be useful to solve this. 
 
+
+
 interface TwitchPlayerProps {
   videoId: string;
 }
@@ -30,6 +32,12 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
   // Initialise playerState in the PAUSED state, represented by 2 (playing state is 1)
   const [playerState, setPlayerState] = useState(-1);
 
+  // A dynamic state that indicates whether the player is currently seeking forwards or backwards
+  const [currentlySeeking, setCurrentlySeeking] = useState(false);
+
+  // The currently projected time (in seconds) that the player should be at once the currently queued seek completes
+  const [projectedTime, setProjectedTime] = React.useState<null | number>(null);
+
   // Adds the YT Iframe to the div#player returned below
   const { player } = useTwitchPlayer(videoId);
 
@@ -43,8 +51,20 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
       player.addEventListener('pause', () => {
         setPlayerState(2);
       });
+
+      // Reset the 'currentlySeeking' state whenever a seek completes
+      player.addEventListener('seek', () => {
+        setCurrentlySeeking(false);
+        setProjectedTime(null);
+      });
     }
-  }, [player])
+  }, [player]);
+
+  React.useEffect(() => {
+    if (projectedTime && !currentlySeeking && player) {
+      player.seek(projectedTime);
+    }
+  }, [projectedTime, currentlySeeking, player])
 
   // A general user activity function. Use this whenever the user performs an 'active' action and it will signal the user is interacting with the video, which then enables other features such as showing controls
   const signalUserActivity = () => {
@@ -77,10 +97,15 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
 
   const skipBackward = React.useCallback((timeToSkipInSeconds: number) => {
     if (player) {
-      const currentTime = player.getCurrentTime();
-      player.seek(currentTime - timeToSkipInSeconds);
+      let currentTime = player.getCurrentTime();
+      if (projectedTime) {    // Presence of a projected time implies we are currently mid-seek
+        // Adjust projected time using that as the base, rather than a getCurrentTime() call
+        currentTime = projectedTime;
+      }
+      setProjectedTime(currentTime - timeToSkipInSeconds);
+      // player.seek(currentTime - timeToSkipInSeconds);
     }
-  }, [player]);
+  }, [player, projectedTime]);
 
   // This function is distinct to manually setting a specific volume level, but counts as user activity
   const toggleMute = React.useCallback(() => {
@@ -180,11 +205,11 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
           break;
         case "Left": // IE/Edge specific value
         case "ArrowLeft":
-          skipBackward(5);
+          skipBackward(10);
           break;
         case "Right": // IE/Edge specific value
         case "ArrowRight":
-          skipForward(5)
+          skipForward(10)
           break;
         default:
           return; // Quit when this doesn't handle the key event.
