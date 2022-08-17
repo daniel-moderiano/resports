@@ -15,7 +15,7 @@ jest.mock('../../hooks/useTwitchPlayer', () => ({
   // Make sure a player object is returned here to trigger the functions requiring a truthy player object
   useTwitchPlayer: () => ({
     player: {
-      getCurrentTime: jest.fn,
+      getCurrentTime: () => 100,
       getMuted: () => false,
       setMuted: setMutedMock,
       isPaused: isPausedMock,
@@ -189,7 +189,24 @@ describe('YouTube player keyboard shortcuts', () => {
     expect(setVolumeMock).toBeCalledTimes(2);
   });
 
-  it('Seeks forward/backward on right/left arrow key press', async () => {
+  it('Seeks forward on right arrow key press', async () => {
+    render(<TwitchPlayer videoId='1234' />)
+    const wrapper = screen.getByTestId('wrapper');
+
+    // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
+    wrapper.focus();
+    await userEvent.keyboard('[ArrowRight]');
+    // await userEvent.keyboard('[ArrowRight]');
+
+    // Allow time for the seek timeouts 
+    await act(async () => {
+      await new Promise(res => setTimeout(res, 1000));
+    })
+
+    expect(seekMock).toBeCalled();
+  });
+
+  it('Seeks backward on left arrow key press', async () => {
     render(<TwitchPlayer videoId='1234' />)
     const wrapper = screen.getByTestId('wrapper');
 
