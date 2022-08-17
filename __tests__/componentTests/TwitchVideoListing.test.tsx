@@ -59,7 +59,7 @@ describe('Twitch video listing component', () => {
 
   it('Includes player link', () => {
     render(<TwitchVideoListing videoData={testData} />)
-    const playerLink = screen.getByRole('link', { name: /view on player/i });
+    const playerLink = screen.getByRole('link', { name: /view in player/i });
     expect(playerLink).toBeInTheDocument();
   });
 });

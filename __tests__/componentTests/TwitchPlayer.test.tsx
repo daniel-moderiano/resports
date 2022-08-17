@@ -73,11 +73,14 @@ describe('YouTube player styling and modes', () => {
     expect(customControls).toBeInTheDocument();
   });
 
-  it('Overlay does not block underlying player/iframe when video is paused', () => {
-    isPausedMock = () => true;   // 'pause' the video
+  it('Overlay is disabled when disable toggle is used', async () => {
     render(<TwitchPlayer videoId='1234' />)
     const overlay = screen.getByTestId('overlay');
-    expect(overlay).toHaveClass('overlayPaused');
+    const toggle = screen.getByRole('button', { name: /toggle/i });
+
+    // Disable the overlay manually
+    await userEvent.click(toggle);
+    expect(overlay).toHaveClass('overlayDisabled');
   });
 });
 
@@ -96,6 +99,21 @@ describe('YouTube player control toggles', () => {
 
     const customControls = screen.getByTestId('customControls');
     expect(customControls).not.toHaveClass('controlsHide');
+  });
+
+  it('Controls do not appear when disabled manually', async () => {
+    render(<TwitchPlayer videoId='1234' />)
+    const overlay = screen.getByTestId('overlay');
+    const toggle = screen.getByRole('button', { name: /toggle/i });
+
+    // Disable the controls manually
+    await userEvent.click(toggle);
+    await userEvent.hover(overlay);
+
+    const customControls = screen.getByTestId('customControls');
+    const gradient = screen.getByTestId('gradient');
+    expect(customControls).toHaveClass('controlsDisabled');
+    expect(gradient).toHaveClass('gradientHide');
   });
 
   it('Shows gradient alongside custom controls', async () => {

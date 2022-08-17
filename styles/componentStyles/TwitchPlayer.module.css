@@ -41,7 +41,7 @@
   opacity: 0;
 }
 
-.overlayPaused {
+.overlayDisabled {
   pointer-events: none;
 }
 
@@ -69,6 +69,13 @@
   opacity: 0;
   transition: opacity 1s;
   cursor: none;
+}
+
+.controlsDisabled {
+  opacity: 0;
+  transition: opacity 1s;
+  pointer-events: none;
+  cursor: auto;
 }
 
 .gradient {

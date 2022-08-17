@@ -4,8 +4,7 @@ import * as React from 'react';
 import { useTwitchPlayer } from '../hooks/useTwitchPlayer';
 import TwitchPlayerControls from './TwitchPlayerControls';
 
-// TODO: Overlay blocks user from clicking 'start watching' on mature audience marked channels, as well as 'reload player' in cases of connection error
-// TODO: Seeking forward/back cannot be called in succession until previous seek completes. This is cumbersome and frustrating as a user. A recursive solution may be useful to solce this. 
+// TODO: Seeking forward/back cannot be called in succession until previous seek completes. This is cumbersome and frustrating as a user. A recursive solution may be useful to solve this. 
 
 interface TwitchPlayerProps {
   videoId: string;
@@ -24,8 +23,12 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
   // Indicates whether the user is moving their mouse over the video (i.e. user is active)
   const [userActive, setUserActive] = useState(false);
 
-  // Initialise playerState in the PAUSED state, represented by 2.
-  const [playerState, setPlayerState] = useState(2);
+  // The user should be able to manually disable the overlay to interact with the player in certain circumstances, e.g. mature content, reloading player, etc.
+  const [disableControls, setDisableControls] = useState(false);
+
+  // TODO: Consider changing this to isPaused boolean to reflect Twitch API
+  // Initialise playerState in the PAUSED state, represented by 2 (playing state is 1)
+  const [playerState, setPlayerState] = useState(-1);
 
   // Adds the YT Iframe to the div#player returned below
   const { player } = useTwitchPlayer(videoId);
@@ -141,7 +144,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
       const focusedElement = event.target as HTMLElement;
 
       // Ensure these key actions do not mess with normal button expectations and functionality
-      if (focusedElement.nodeName === "BUTTON") {
+      if (focusedElement.nodeName === "BUTTON" || focusedElement.nodeName === "INPUT") {
         if (focusedElement.className.includes('controlsBtn')) {   // user is interacting with video controls
           signalUserActivity();
         }
@@ -200,7 +203,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
       <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)} tabIndex={0}>
         <div id="player"></div>
         <div
-          className={`${styles.overlay} ${(userActive || playerState === 2) ? '' : styles.overlayInactive} ${(playerState === 2) ? styles.overlayPaused : ''}`}
+          className={`${styles.overlay} ${(userActive || playerState === 2) ? '' : styles.overlayInactive} ${disableControls ? styles.overlayDisabled : ''}`}
           onClick={playOrPauseVideo}
           onDoubleClick={toggleFullscreen}
           onMouseMove={throttleMousemove}
@@ -209,7 +212,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
         </div>
 
         {player && (
-          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove} data-testid="customControls">
+          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide} ${disableControls ? styles.controlsDisabled : ''}`} onMouseMove={throttleMousemove} data-testid="customControls">
             <TwitchPlayerControls
               player={player}
               playerState={playerState}
@@ -224,9 +227,10 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
           </div>
         )}
 
-        <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`} data-testid="gradient"></div>
+        <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide} ${disableControls ? styles.gradientHide : ''}`} data-testid="gradient"></div>
 
       </div>
+      <button onClick={() => setDisableControls((prevState) => !prevState)}>Toggle custom controls</button>
     </div >
   )
 }
