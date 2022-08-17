@@ -1,18 +1,22 @@
-import { useYouTubeIframe } from '../hooks/useYouTubeIframe';
 import { useState } from 'react'
-import styles from '../styles/componentStyles/YouTubePlayer.module.css';
-import YouTubeVideoControls from './YouTubeVideoControls';
+import styles from '../styles/componentStyles/TwitchPlayer.module.css';
 import * as React from 'react';
+import { useTwitchPlayer } from '../hooks/useTwitchPlayer';
+import TwitchPlayerControls from './TwitchPlayerControls';
 
-interface YouTubePlayerProps {
+// TODO: Seeking forward/back cannot be called in succession until previous seek completes. This is cumbersome and frustrating as a user. A recursive solution may be useful to solve this. 
+
+
+
+interface TwitchPlayerProps {
   videoId: string;
 }
 
-const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
+const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
   const [theaterMode, setTheaterMode] = useState(false);
 
   // This local state is used to avoid the long delays of an API call to check muted state when toggling icons and UI
-  const [playerMuted, setPlayerMuted] = useState(false);
+  const [playerMuted, setPlayerMuted] = useState(true);
 
   // useRef must be used here to avoid losing reference to timeout IDs as the component re-renders between hiding/showing controls
   const inactivityTimeout = React.useRef<null | NodeJS.Timeout>(null);
@@ -21,19 +25,47 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   // Indicates whether the user is moving their mouse over the video (i.e. user is active)
   const [userActive, setUserActive] = useState(false);
 
-  // Initialise playerState in the UNSTARTED state, whose code is -1. This way we can detect an initial change if necessary
-  const [playerState, setPlayerState] = useState(-1);
+  // The user should be able to manually disable the overlay to interact with the player in certain circumstances, e.g. mature content, reloading player, etc.
+  const [disableControls, setDisableControls] = useState(false);
 
-  // Allow the user to manually revert to standard YT controls to allow a manual adjustment to video quality
-  const [showYTControls, setShowYTControls] = useState(true);
+  // TODO: Consider changing this to isPaused boolean to reflect Twitch API
+  // Initialise playerState in the PAUSED state, represented by 2 (playing state is 1)
+  const [playerState, setPlayerState] = useState(-1);
 
   // The currently projected time (in seconds) that the player should be at once the currently queued seek completes.
   // When this is not null, it implies we are currently performing a seek() call.
   const [projectedTime, setProjectedTime] = React.useState<null | number>(null);
 
-
   // Adds the YT Iframe to the div#player returned below
-  const { player } = useYouTubeIframe(videoId, true);
+  const { player } = useTwitchPlayer(videoId);
+
+  // Ensure the local playerState state is set on play/pause events. This ensures other elements modify with each of the changes as needed
+  React.useEffect(() => {
+    if (player) {
+      player.addEventListener('play', () => {
+        setPlayerState(1);
+      });
+
+      player.addEventListener('pause', () => {
+        setPlayerState(2);
+      });
+
+      // Ensure projectedTime is reset to null to avoid infinite loop seeking or video freezing at fixed time
+      player.addEventListener('seek', () => {
+        setProjectedTime(null);
+      });
+    }
+  }, [player]);
+
+
+  // A critical effect hook that essentially performs the seek functions scheduled by user clicks and key presses. The 500 ms timeout enables the compound seeking to still work when the seek is 'instant' to a pre-buffered section of video
+  React.useEffect(() => {
+    if (projectedTime && player) {
+      setTimeout(() => {
+        player.seek(projectedTime);
+      }, 500)
+    }
+  }, [projectedTime, player])
 
   // A general user activity function. Use this whenever the user performs an 'active' action and it will signal the user is interacting with the video, which then enables other features such as showing controls
   const signalUserActivity = () => {
@@ -44,17 +76,6 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       setUserActive(false);
     }, 3000);
   };
-
-
-  // A critical effect hook that essentially performs the seek functions scheduled by user clicks and key presses. The 500 ms timeout enables the compound seeking to still work when the seek is 'instant' to a pre-buffered section of video
-  React.useEffect(() => {
-    if (projectedTime && player) {
-      setTimeout(() => {
-        player.seekTo(projectedTime, true);
-      }, 500)
-    }
-  }, [projectedTime, player])
-
 
   // Use this to limit how many times the mousemove handler is called. Note this function itself will still be called every time
   const throttleMousemove = () => {
@@ -96,34 +117,27 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     if (!player) {
       return;
     }
-    if (player.isMuted()) {
+    if (player.getMuted()) {
       setPlayerMuted(false);
-      player.unMute();
+      player.setMuted(false);
     } else {
       setPlayerMuted(true);
-      player.mute();
+      player.setMuted(true);
     }
   }, [player]);
 
   // Use this function to play a paused video, or pause a playing video. Intended to activate on clicking the video, or pressing spacebar
   const playOrPauseVideo = React.useCallback(() => {
     if (player) {
-      if (player.getPlayerState() === 1) {
-        setPlayerState(2);
-        setTimeout(() => {    // Give the gradient time to fade in so you can be sure the YT controls are hidden
-          player.pauseVideo();
-        }, 350)
-      } else {
-        player.playVideo();
-
-        setTimeout(() => {    // Give the gradient time to fade so you can be sure the YT controls are hidden
-          setPlayerState(1);
-        }, 100);
-
+      if (player.isPaused()) {
+        player.play();
         // A longer timeout is used here because it can be quite anti-user experience to have controls and cursor fade almost immediately after pressing play. 
         setTimeout(() => {
           setUserActive(false);    // ensure video controls fade   
         }, 1000)
+
+      } else {
+        player.pause();
       }
     }
   }, [player]);
@@ -159,7 +173,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
       const focusedElement = event.target as HTMLElement;
 
       // Ensure these key actions do not mess with normal button expectations and functionality
-      if (focusedElement.nodeName === "BUTTON") {
+      if (focusedElement.nodeName === "BUTTON" || focusedElement.nodeName === "INPUT") {
         if (focusedElement.className.includes('controlsBtn')) {   // user is interacting with video controls
           signalUserActivity();
         }
@@ -187,11 +201,11 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           break;
         case "Down": // IE/Edge specific value
         case "ArrowDown":
-          player.setVolume(player.getVolume() - 5);
+          player.setVolume(player.getVolume() - 0.05);
           break;
         case "Up": // IE/Edge specific value
         case "ArrowUp":
-          player.setVolume(player.getVolume() + 5);
+          player.setVolume(player.getVolume() + 0.05);
           break;
         case "Left": // IE/Edge specific value
         case "ArrowLeft":
@@ -217,20 +231,18 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
     <div>
       <div id="wrapper" className={`${styles.wrapper} ${theaterMode ? styles.wrapperTheater : styles.wrapperNormal} ${player ? '' : styles.wrapperInitial}`} data-testid="wrapper" onMouseLeave={() => setUserActive(false)} tabIndex={0}>
         <div id="player"></div>
-        {!showYTControls && (
-          <div
-            className={`${styles.overlay} ${playerState === 1 ? styles.overlayPlaying : ''} ${playerState === 2 ? styles.overlayPaused : ''} ${playerState === 0 ? styles.overlayEnd : ''} ${(userActive || playerState === 2) ? '' : styles.overlayInactive}`}
-            onClick={playOrPauseVideo}
-            onDoubleClick={toggleFullscreen}
-            onMouseMove={throttleMousemove}
-            data-testid="overlay"
-          >
-          </div>
-        )}
+        <div
+          className={`${styles.overlay} ${(userActive || playerState === 2) ? '' : styles.overlayInactive} ${disableControls ? styles.overlayDisabled : ''}`}
+          onClick={playOrPauseVideo}
+          onDoubleClick={toggleFullscreen}
+          onMouseMove={throttleMousemove}
+          data-testid="overlay"
+        >
+        </div>
 
-        {(!showYTControls && player) && (
-          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide}`} onMouseMove={throttleMousemove} data-testid="customControls">
-            <YouTubeVideoControls
+        {player && (
+          <div className={`${styles.controls} ${(userActive || playerState === 2) ? '' : styles.controlsHide} ${disableControls ? styles.controlsDisabled : ''}`} onMouseMove={throttleMousemove} data-testid="customControls">
+            <TwitchPlayerControls
               player={player}
               playerState={playerState}
               toggleFullscreen={toggleFullscreen}
@@ -244,40 +256,12 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
           </div>
         )}
 
-        {!showYTControls && (
-          <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide}`} data-testid="gradient"></div>
-        )}
+        <div className={`${styles.gradient} ${(userActive || playerState === 2) ? '' : styles.gradientHide} ${disableControls ? styles.gradientHide : ''}`} data-testid="gradient"></div>
 
-        {showYTControls && (
-          <div className={styles.YTcontrolsBlocker} data-testid="controlsBlocker">
-            <div className={styles.YTprogressBlocker}></div>
-            <div className={styles.blockersContainer}>
-              <div className={styles.leftControlsBlocker}></div>
-              <div className={styles.rightControlsBlocker}></div>
-            </div>
-          </div>
-        )}
       </div>
-
-      <div className="playerMode">
-        <button onClick={() => {
-          setShowYTControls(true);
-          // If the user switches controls while paused, then pauses the video on YT controls, then switches back to custom controls while paused, the overlay is still in play mode. This happens because the setPlayerState is not called with YT native pause/play. Hence it is manually called here
-          if (player && player.getPlayerState() === 2) {
-            setPlayerState(2);
-          }
-        }}>Show YT Controls</button>
-        <button onClick={() => {
-          setShowYTControls(false);
-          // If the user switches controls while paused, then plays the video on YT controls, then switches back to custom controls while playing, the overlay is still in pause mode. This happens because the setPlayerState is not called with YT native pause/play. Hence it is manually called here
-          if (player && player.getPlayerState() === 1) {
-            setPlayerState(1);
-          }
-        }}>Hide YT Controls</button>
-        <p>{showYTControls ? 'YouTube mode' : 'Custom mode'}</p>
-      </div>
+      <button onClick={() => setDisableControls((prevState) => !prevState)}>Toggle custom controls</button>
     </div >
   )
 }
 
-export default YouTubePlayer;
+export default TwitchPlayer;

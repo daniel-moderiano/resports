@@ -63,16 +63,20 @@
 
 .icons24 {
   width: 24px;
+  pointer-events: none;
 }
 
 .icons27 {
   width: 27px;
+  pointer-events: none;
 }
 
 .icons30 {
   width: 30px;
+  pointer-events: none;
 }
 
 .icons32 {
   width: 32px;
+  pointer-events: none;
 }
