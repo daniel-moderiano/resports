@@ -31,9 +31,14 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
   // When this is not null, it implies we are currently performing a seek() call.
   const [projectedTime, setProjectedTime] = React.useState<null | number>(null);
 
+  const onPlayerStateChange = (event: YT.OnStateChangeEvent) => {
+    if (event.data === 1) {   // playing has commenced, e.g. after a successful seek
+      setProjectedTime(null);
+    }
+  }
 
   // Adds the YT Iframe to the div#player returned below
-  const { player } = useYouTubeIframe(videoId, true);
+  const { player } = useYouTubeIframe(videoId, false, () => { }, onPlayerStateChange);
 
   // A general user activity function. Use this whenever the user performs an 'active' action and it will signal the user is interacting with the video, which then enables other features such as showing controls
   const signalUserActivity = () => {
@@ -240,6 +245,7 @@ const YouTubePlayer = ({ videoId }: YouTubePlayerProps) => {
               playerMuted={playerMuted}
               skipForward={scheduleSkipForward}
               skipBackward={scheduleSkipBackward}
+              projectedTime={projectedTime}
             />
           </div>
         )}

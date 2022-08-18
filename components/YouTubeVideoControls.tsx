@@ -14,6 +14,7 @@ import EnterFullscreenIcon from './icons/EnterFullscreenIcon';
 import TheaterIcon from './icons/TheaterIcon';
 import PlayIcon from './icons/PlayIcon';
 import PauseIcon from './icons/PauseIcon';
+import * as React from 'react';
 
 interface YouTubeVideoControlsProps {
   player: YT.Player;
@@ -25,6 +26,7 @@ interface YouTubeVideoControlsProps {
   skipForward: (timeToSkipInSeconds: number) => void
   skipBackward: (timeToSkipInSeconds: number) => void
   playerMuted: boolean;
+  projectedTime: number | null;
 }
 
 const YouTubeVideoControls = ({
@@ -36,21 +38,32 @@ const YouTubeVideoControls = ({
   toggleMute,
   skipBackward,
   skipForward,
-  playerMuted
+  playerMuted,
+  projectedTime,
 }: YouTubeVideoControlsProps) => {
+  const durationInterval = React.useRef<null | NodeJS.Timer>(null);
+
   // A constantly updated duration state to provide a video duration elapsed to the UI
   const [elapsedDuration, setElapsedDuration] = useState('');
 
+  // An initial render effect only to avoid a 1 second delay in showing elapsed time
   useEffect(() => {
-    // Call this immediately first, to avoid an initial 1 second delay before appearing in UI
     const elapsedTime = player.getCurrentTime();
     setElapsedDuration(formatElapsedTime(elapsedTime));
-
-    setInterval(() => {
-      const elapsedTime = player.getCurrentTime();
-      setElapsedDuration(formatElapsedTime(elapsedTime));
-    }, 1000)
   }, [player])
+
+
+  useEffect(() => {
+    if (projectedTime) {
+      clearInterval(durationInterval.current as NodeJS.Timer);
+      setElapsedDuration(formatElapsedTime(projectedTime));
+    } else {
+      durationInterval.current = setInterval(() => {
+        const elapsedTime = player.getCurrentTime();
+        setElapsedDuration(formatElapsedTime(elapsedTime));
+      }, 1000)
+    }
+  }, [player, projectedTime])
 
   // Use this function in any position where the user's focus should return to the video
   const releaseFocus = () => {

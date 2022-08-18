@@ -4,9 +4,7 @@ import * as React from 'react';
 import { useTwitchPlayer } from '../hooks/useTwitchPlayer';
 import TwitchPlayerControls from './TwitchPlayerControls';
 
-// TODO: Seeking forward/back cannot be called in succession until previous seek completes. This is cumbersome and frustrating as a user. A recursive solution may be useful to solve this. 
-
-
+// TODO: Adjust duration UI so it reflects projected time, not playing catch up with getCurrentTime calls
 
 interface TwitchPlayerProps {
   videoId: string;
@@ -252,6 +250,7 @@ const TwitchPlayer = ({ videoId }: TwitchPlayerProps) => {
               playerMuted={playerMuted}
               skipForward={scheduleSkipForward}
               skipBackward={scheduleSkipBackward}
+              projectedTime={projectedTime}
             />
           </div>
         )}

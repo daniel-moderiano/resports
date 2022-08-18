@@ -32,6 +32,7 @@ const toggleMuteMock = jest.fn();
 const skipForwardMock = jest.fn();
 const skipBackwardMock = jest.fn();
 let playerMutedMock = true;
+let projectedTime: number | null = null;
 
 
 // The max test timeout should be increase to deal with waiting for timeout intervals in certain tests
@@ -50,6 +51,7 @@ describe('YouTube video controls icons and label toggles', () => {
       skipForward={skipForwardMock}
       skipBackward={skipBackwardMock}
       toggleMute={toggleMuteMock}
+      projectedTime={projectedTime}
     />)
   };
 
