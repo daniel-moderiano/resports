@@ -4,7 +4,6 @@ import * as React from 'react'
 export const useYouTubeIframe = (
   videoId: string,
   enableControls: boolean,
-  onPlayerReady?: (event: YT.PlayerEvent) => void,
   onPlayerStateChange?: (event: YT.OnStateChangeEvent) => void,
 ) => {
   const [player, setPlayer] = React.useState<YT.Player | undefined>(undefined);
@@ -18,7 +17,8 @@ export const useYouTubeIframe = (
       document.body.appendChild(tag);
     } else {
       // * Reloading the iframe only does NOT achieve the desired effect!
-      // window.location.reload();
+      // ! Adding a reload here causes an infinite loop with 
+      window.location.reload();
     }
 
     // This function/property fires only once the API has loaded. This is different to the window.YT object simply becoming 'available'. However, within this function, YT can be called directly, vs calling window.YT
@@ -46,7 +46,7 @@ export const useYouTubeIframe = (
           onReady: () => {
             // By setting the player here, we can ensure that the player state always returns a fully initialised player that is able to have its methods called.
             setPlayer(player);
-            onPlayerReady
+            // onPlayerReady
           },
           onStateChange: onPlayerStateChange,
         }
@@ -56,7 +56,7 @@ export const useYouTubeIframe = (
     return () => {    // ensure script tags are cleaned on dismount
       tag.remove();
     }
-  }, [videoId, onPlayerReady, onPlayerStateChange, enableControls]);
+  }, [videoId, onPlayerStateChange, enableControls]);
 
   return {
     player

@@ -28,14 +28,14 @@ const YouTubeCustomPlayer = ({ videoId }: YouTubeCustomPlayerProps) => {
   // When this is not null, it implies we are currently performing a seek() call.
   const [projectedTime, setProjectedTime] = React.useState<null | number>(null);
 
-  const onPlayerStateChange = (event: YT.OnStateChangeEvent) => {
+  const onPlayerStateChange = React.useCallback((event: YT.OnStateChangeEvent) => {
     if (event.data === 1) {   // playing has commenced, e.g. after a successful seek
       setProjectedTime(null);
     }
-  }
+  }, [])
 
   // Adds the YT Iframe to the div#player returned below
-  const { player } = useYouTubeIframe(videoId, false, () => { }, onPlayerStateChange);
+  const { player } = useYouTubeIframe(videoId, true, onPlayerStateChange);
 
 
 
