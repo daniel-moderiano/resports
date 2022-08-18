@@ -196,7 +196,6 @@ describe('YouTube player keyboard shortcuts', () => {
     // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
     wrapper.focus();
     await userEvent.keyboard('[ArrowRight]');
-    // await userEvent.keyboard('[ArrowRight]');
 
     // Allow time for the seek timeouts 
     await act(async () => {
@@ -213,7 +212,6 @@ describe('YouTube player keyboard shortcuts', () => {
     // First enable custom controls, then focus the wrapper to ensure the keypress is captured correctly
     wrapper.focus();
     await userEvent.keyboard('[ArrowLeft]');
-    // await userEvent.keyboard('[ArrowRight]');
 
     // Allow time for the seek timeouts 
     await act(async () => {
