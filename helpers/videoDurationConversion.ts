@@ -171,6 +171,10 @@ export const convertISOToSeconds = (duration: string) => {
 
 // Used to convert a raw duration in seconds to a UI-friendly video duration elapsed
 export const formatElapsedTime = (elapsedTimeInSeconds: number) => {
+  if (elapsedTimeInSeconds < 0) {   // user has skipped backwards beyond start of video, resulting in negative seconds 
+    return '0:00';    // treat as starting form beginning of video
+  }
+
   const time = {
     hours: 0,
     minutes: 0,

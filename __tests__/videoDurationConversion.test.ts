@@ -171,4 +171,8 @@ describe('Elapsed duration conversions', () => {
   it('Handles hanging second inputs combined with hours (2)', () => {
     expect(formatElapsedTime(4210)).toBe('1:10:10');
   });
+
+  it('Handles negative duration inputs (from backwards skipping)', () => {
+    expect(formatElapsedTime(-600)).toBe('0:00');
+  });
 });
